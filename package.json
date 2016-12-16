@@ -29,6 +29,6 @@
   },
   "homepage": "http://fis.baidu.com",
   "devDependencies": {
-    "fis-parser-node-sass": "^1.0.0"
+    "fis-parser-node-sass": "^1.0.1"
   }
 }
