@@ -1,0 +1,272 @@
+.register {
+  .register_head {
+    width: 100%;
+    height: 60px;
+    background-color: #333333;
+    position: absolute;
+    left: 0;
+    top: 0;
+    .register_logo {
+      width: 186px;
+      height: 40px;
+      margin-left: 200px;
+      margin-top: 7px;
+    }
+    .register_logo_desc {
+      width: 219px;
+      height: 32px;
+      margin-left: 20px;
+      margin-top: 9px;
+    }
+  }
+  .register_content {
+    position: absolute;
+    top: 60px;
+    bottom: 58px;
+    width: 100%;
+    overflow: hidden;
+    .register_content_detail {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+
+      //background: #fff none no-repeat center center;
+      background: #fff none no-repeat center center;
+      background-size: cover;
+      background-position: 0px 0px;
+      background-image: url("/lib/img/signin_bg-01.png");
+    }
+    .register_wrap{
+      position: absolute;
+      top:50%;
+      left:50%;
+      margin-left: -245px;
+      margin-top:-282px;
+      width: 490px;
+      //height: 510px;
+      //border: solid 1px #000000;
+      //box-shadow: 0 1px 6px 0 rgba(51, 51, 51, 0.3);
+      .warp_content{
+        .register_phone_head,.register_detail_head,.register_sucss_head{
+          float:left;
+          display: inline-block;
+          font-size: 20px;
+          width: 163px;
+          height: 60px;
+          background-color: #eeeeee;
+          //box-shadow: 0 1px 26px 0 rgba(51, 51, 51, 0.3);
+          text-align: center;
+          line-height: 60px;
+          cursor:pointer;
+          box-shadow: 0 1px 6px 0 rgba(51, 51, 51, 0.3);
+        }
+        .register_sucss_head{
+          width: 164px;
+        }
+       .complete{
+        z-index: 1000;
+        position: absolute;
+        width: 47px;
+        left: 0px;
+        }
+        .complete_second{
+          left: 163px;
+        }
+        .complete_third{
+          left: 326px;
+        }
+        .warp_content_detail{
+          width:490px;
+          height:auto ;
+          //border: solid 1px #000000;
+          box-shadow: 0 1px 6px 0 rgba(51, 51, 51, 0.3);
+          float: left;
+          background: #ffffff;
+          padding-left: 55px;
+          padding-top: 28px;
+
+          .form-group{
+            float:left;
+            width: 100%;
+            margin-bottom:10px;
+            position: relative;
+            input{
+              width: 380px;
+              height: 48px;
+              padding-left:54px;
+            }
+          }
+          .errorWrap{
+            text-align: left;
+            padding-top: 0px;
+            .errorInfo{
+              color: #ff8700 ;
+              text-align: left!important;
+            }
+          }
+          .has_account{
+            font-size: 13px;
+            float:right;
+            margin-right:56px ;
+            a{
+              color: #95ccf5;
+            }
+          }
+          .annotation{
+            font-size: 12px;
+            color: #fd4e34;
+            position: absolute;
+            top: 18px;
+            left: -15px;
+          }
+          .icon-icon_user,.icon-icon_mobile,.icon-icon_verificationcode,.icon-icon_password,.icon-icon_message
+          ,.icon-icon_company,.icon-icon_ie{
+            font-size: 24px;
+            color:#327999;
+            position: absolute;
+            top:12px;
+            left: 12px;
+          }
+          .picture_validate{
+            width: 200px!important;
+            float: left;
+          }
+          .validat_code{
+            width:160px;
+            height:48px;
+            display: inline-block;
+            border: solid 1px #dddddd;
+            line-height: 48px;
+            text-align: center;
+            margin-left: 20px;
+            .validat_mig{
+              cursor: pointer;
+              margin-top: -4px;
+            }
+          }
+          .msg_validate{
+            width: 160px!important;
+            float: left;
+          }
+          .msgBtn{
+            width: 200px;
+            height: 48px;
+            border-radius: 4px;
+            background-color: #ff8700;
+            color:#ffffff;
+            margin-left: 20px;
+          }
+
+          .read_check{
+            width:16px!important;
+          }
+          .read_wrap{
+            margin-top: -25px;
+          }
+          .read_content{
+            //width: 156px;
+            //height: 48px;
+            //line-height: 48px;
+            //display: inline-block;
+            position: absolute;
+            position: absolute;
+            left: 25px;
+            top: 19px;
+            a{
+              color: #00a0e9;
+            }
+          }
+
+          .register_sub{
+            margin-bottom: 50px;
+            .registerBtn{
+              width: 380px;
+              height: 58px;
+              border-radius: 4px;
+              background-color: #bbbbbb;
+              font-size: 18px;
+              text-align: center;
+              color: #ffffff;
+              margin-top:-10px;
+              &:hover{
+                background-color:#00a0e9;
+              }
+            }
+          }
+          .register_sub_detail{
+            margin-top:20px;
+            margin-bottom: 30px;
+            .sub_detail_Btn{
+              width: 380px;
+              height: 58px;
+              border-radius: 4px;
+              background-color: #bbbbbb;
+              font-size: 18px;
+              text-align: center;
+              color: #ffffff;
+              margin-top:-10px;
+              &:hover{
+                background-color:#00a0e9;
+              }
+            }
+          }
+          .register_sucss_detail{
+            width: 100%;
+            height: auto;
+            //border: solid 1px #000000;
+            margin-left: -26px;
+            text-align: center;
+            margin-top: 25px;
+            span{
+              display: inline-block;
+            }
+            .smile_wrap{
+              .icon-icon_smile{
+                font-size: 80px;
+                color: #00a0e9;
+
+              }
+            }
+            .smile_number,.smile_email,.smile_jump_desc{
+              color: #00a0e9;
+            }
+            .smile_jump{
+              margin-top:45px;
+              margin-bottom: 85px;
+
+            }
+            .smile_name{
+              margin-top: 27px;
+              .smile_name_desc{
+                color: #00a0e9;
+              }
+              .smile_now{
+                margin-top: 20px;
+              }
+            }
+          }
+
+        }
+
+      }
+
+    }
+  }
+
+  .head_foot {
+    height: 58px;
+    width: 100%;
+    background-color: #000000;
+    font-size: 14px;
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+
+    color: #bbbbbb;
+    p {
+      line-height: 58px;
+    }
+  }
+}

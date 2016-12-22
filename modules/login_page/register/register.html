@@ -1,0 +1,139 @@
+<div class="register">
+
+    <div class="register_head">
+        <img class="register_logo" src="/lib/img/logo186+50.svg"/>
+        <img class="register_logo_desc" src="/lib/img/slogan.svg"/>
+    </div>
+    <div class="register_content">
+        <div class="register_content_detail"></div>
+        <div class="register_wrap">
+            <div class="warp_content">
+               <form  role="form" name="register">
+                 <div>
+                   <div class="register_phone_head">
+                       <span class="register_phone">填写手机号</span>
+                       <img src="/lib/img/checkok.svg" class="complete" ng-show="complete_first"/>
+                   </div>
+                    <div class="register_detail_head">
+                        <span class="register_detail" >完善资料</span>
+                        <img src="/lib/img/checkok.svg" class="complete complete_second" ng-show="complete_second"/>
+                    </div>
+                    <div class="register_sucss_head">
+                        <span class="register_sucss" >注册完成</span>
+                        <img src="/lib/img/checkok.svg" class="complete complete_third" ng-show="complete_third"/>
+                    </div>
+
+                 </div>
+                 <div class="warp_content_detail" >
+                   <div name="first" ng-show="false">
+                     <div class="form-group">
+                             <div>
+                                 <span class="has_account">已有账号,<a href="#login">现在登录</a></span>
+                             </div>
+                        </div>
+                       <div class="form-group">
+                           <span class="icon-icon_mobile"></span>
+                           <input type="text" placeholder="请输入手机号码" name="phone_number" required ng-minlength="11" ng-maxlength="11"
+                                  ng-pattern="phone_pattern"   ng-model="phone.number"/>
+                       </div>
+                       <div class="form-group errorWrap">
+                           <span class="errorInfo" ng-show="register.phone_number.$touched&&register.phone_number.$error.required">必填</span>
+                           <span class="errorInfo" ng-show="
+                                 register.phone_number.$invalid&&register.phone_number.$touched">
+                               请输入有效的11位手机号</span>
+                       </div>
+                     <div class="form-group">
+                         <span class="icon-icon_verificationcode"></span>
+                         <input type="text" class="picture_validate" placeholder="请输入图形验证码" required ng-model="phone.validate_code"/>
+                         <span class="validat_code"><img ng-src="{{picture_src}}" class="validat_mig" ng-click="change_picture()"/></span>
+                     </div>
+                       <div class="form-group errorWrap" ng-show="err_validate_state">
+                           <span class="errorInfo" >{{err_validate}}</span>
+
+                       </div>
+                     <div class="form-group">
+                         <span class="icon-icon_verificationcode"></span>
+                         <input type="text" class="msg_validate" placeholder="短信验证码" required ng-model="phone.msg_code"/>
+                         <button class="msgBtn" ng-click="send_msg()">发送短信验证码</button>
+                     </div>
+                       <div class="form-group errorWrap" ng-show="err_msg_state">
+                           <span class="errorInfo" >{{err_msg_state}}</span>
+
+                       </div>
+                     <div class="form-group read_wrap">
+                         <input type="checkbox" ng-model="read_check" class="read_check"/>
+                         <span class="read_content">阅读并接收<a>《有色云协议》</a></span>
+                     </div>
+                     <div class="form-group register_sub">
+                         <button type="button" class="registerBtn" ng-click="register_go()">立即注册</button>
+                     </div>
+                   </div>
+                   <div name="second" ng-show="false">
+                       <div class="form-group">
+                           <div>
+                               <span class="has_account">已有账号,<a href="#login">现在登录</a></span>
+                           </div>
+                       </div>
+                       <div class="form-group">
+                           <span class="annotation">*</span>
+                           <span class="icon-icon_user"></span>
+                           <input type="text" placeholder="用户名" required ng-model="detail.username"/>
+                       </div>
+                       <div class="form-group">
+                           <span class="annotation">*</span>
+                           <span class="icon-icon_password" ></span>
+                           <input type="password" placeholder="请输入新密码" name="password" required ng-model="detail.password"/>
+                       </div>
+                       <div class="form-group">
+                           <span class="annotation">*</span>
+                           <span class="icon-icon_password"></span>
+                           <input type="password" placeholder="重复新密码" name="repassword" required ng-model="detail.repassword"/>
+                       </div>
+                       <div class="form-group errorWrap" ng-show="register.password.$valid&&register.repassword.$valid
+                         &&detail.password!=detail.repassword">
+                           <span class="errorInfo" >密码不一致</span>
+                       </div>
+                       <div class="form-group">
+                           <span class="icon-icon_message"></span>
+                           <input type="email" placeholder="请输入邮件地址" ng-model="detail.email"/>
+                       </div>
+                       <div class="form-group">
+                           <span class="icon-icon_company"></span>
+                           <input type="text" placeholder="公司／个人名称" ng-model="detail.company"/>
+                       </div>
+                       <div class="form-group">
+                           <span class="icon-icon_ie"></span>
+                           <input type="text" placeholder="网址"/>
+                       </div>
+                       <div class="form-group register_sub_detail">
+                           <button type="button" class="sub_detail_Btn" ng-click="complete_detail_registe()">提交资料</button>
+                       </div>
+                   </div>
+                   <div name="third" ng-show="true">
+                          <div class="register_sucss_detail">
+                              <p class="smile_wrap">
+                                  <span class="icon-icon_smile"></span>
+                              </p>
+                              <p class="smile_name">
+                                  <span>恭喜</span><span class="smile_name_desc">我爱电解铜</span><span>注册成功</span>
+                                  <br/>
+                                  <span class="smile_now">现在你可以通过用户名</span><br/>
+                                  <span>手机号</span><span class="smile_number">13588898987</span><br/>
+                                  <span>或者邮箱</span><span class="smile_email">chengyiyun123@126.com</span><br/>
+                                  <span>进行登录啦！</span><br/>
+                                  <span class="smile_jump">5</span><span>秒后跳转到</span><span class="smile_jump_desc">首页</span>
+
+
+
+                              </p>
+
+                          </div>
+                   </div>
+                 </div>
+               </form>
+            </div>
+
+        </div>
+    </div>
+    <link rel="import" href="/modules/partial/foot/foot.html?__inline"/>
+</div>

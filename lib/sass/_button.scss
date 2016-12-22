@@ -3,3 +3,16 @@
   width:50px;
   height:30px;
 }
+input,button{
+  border:solid 1px;
+  border-color: #dddddd;
+  border-radius: 4px;
+  outline: none;
+}
+a{
+  cursor: pointer;
+
+}
+a:hover{
+  text-decoration: none;
+}

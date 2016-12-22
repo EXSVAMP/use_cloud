@@ -12,7 +12,7 @@
     <link rel="stylesheet" type="text/css" href="/bower_components/ng-dialog/css/ngDialog.min.css">
     <link rel="stylesheet" type="text/css" href="/bower_components/ng-dialog/css/ngDialog-theme-default.min.css">
     <link rel="stylesheet" type="text/css" href="/bower_components/angular-ui-select/dist/select.min.css">
-
+    <link rel="stylesheet" type="text/css" href="/lib/icomoon/style.css">
     <link rel="stylesheet" type="text/css" href="/lib/sass/main.scss?">
     <!--<link rel="stylesheet" type="text/css" href="/lib/icomoon/style.css">-->
     <link rel="stylesheet" type="text/css" href="/bower_components/angular-busy/dist/angular-busy.min.css">
@@ -38,15 +38,10 @@
 
 </head>
 <body ng-controller="MasterCtrl">
-<link rel="import" href="/modules/partial/header/header.html?__inline"/>
-  <div id="page-wrapper">
-      <div id="content-wrapper" >
-          <div class="page-content">
 
-             <div ui-view></div>
-          </div>
-      </div>
-   </div>
+<div ui-view>
+    <link rel="import" href="/modules/partial/header/header.html?__inline"/>
+</div>
 
 </body>
    <script type="text/javascript">

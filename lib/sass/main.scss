@@ -2,6 +2,8 @@
 @import "button";
 @import "common";
 @import "login";
+@import "register";
+@import "forgetPassWord";
 @import "header";
 @import "sideBar";
 
@@ -13,7 +15,7 @@ body{
 }
 body, div, dl, dt, dd, ul, ol, li,
 h1, h2, h3, h4, h5, h6, label, form, input, button,
-textarea, p, section, strong, a, th, td, tr {
+textarea, p, section, strong, a, th, td, tr,span {
   padding: 0;
   margin: 0;
   font-family:"Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;

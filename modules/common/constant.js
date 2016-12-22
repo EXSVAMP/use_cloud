@@ -1,10 +1,11 @@
 var app = angular.module('RDash');
 app.constant("constant",{
+    url:"http://172.16.83.6:9115",
     // url:"http://139.196.148.70:9011",
     // websocket_url:"139.196.148.70",
 
-    url:"http://211.152.46.42:9011",
-    websocket_url:"211.152.46.42",
+    // url:"http://211.152.46.42:9011",
+    // websocket_url:"211.152.46.42",
 
     // url:"http://172.16.83.149:9011",
     // websocket_url:"172.16.83.149",
