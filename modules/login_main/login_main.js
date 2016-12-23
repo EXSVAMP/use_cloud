@@ -1,5 +1,6 @@
 angular.module("RDash", ['ui.bootstrap', 'ui.router', 'ngCookies', 'ngDialog'])
 require('login_router');
+require('interceptor');
 require('common/constant');
 require('common/service/utils')
 var app = angular.module('RDash');

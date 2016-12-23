@@ -25,7 +25,7 @@
 
                  </div>
                  <div class="warp_content_detail" >
-                   <div name="first" ng-show="false">
+                   <div name="first" ng-show="register_first">
                      <div class="form-group">
                              <div>
                                  <span class="has_account">已有账号,<a href="#login">现在登录</a></span>
@@ -54,7 +54,7 @@
                      <div class="form-group">
                          <span class="icon-icon_verificationcode"></span>
                          <input type="text" class="msg_validate" placeholder="短信验证码" required ng-model="phone.msg_code"/>
-                         <button class="msgBtn" ng-click="send_msg()">发送短信验证码</button>
+                         <button class="msgBtn" type="button" ng-click="send_msg()">发送短信验证码</button>
                      </div>
                        <div class="form-group errorWrap" ng-show="err_msg_state">
                            <span class="errorInfo" >{{err_msg_state}}</span>
@@ -68,7 +68,7 @@
                          <button type="button" class="registerBtn" ng-click="register_go()">立即注册</button>
                      </div>
                    </div>
-                   <div name="second" ng-show="false">
+                   <div name="second" ng-show="register_second">
                        <div class="form-group">
                            <div>
                                <span class="has_account">已有账号,<a href="#login">现在登录</a></span>
@@ -95,7 +95,11 @@
                        </div>
                        <div class="form-group">
                            <span class="icon-icon_message"></span>
-                           <input type="email" placeholder="请输入邮件地址" ng-model="detail.email"/>
+                           <input type="text" placeholder="请输入邮件地址" name="email" ng-model="detail.email"
+                             ng-pattern="email_pattern"/>
+                       </div>
+                       <div class="form-group errorWrap" ng-show="email_error">
+                           <span class="errorInfo" >邮箱格式错误</span>
                        </div>
                        <div class="form-group">
                            <span class="icon-icon_company"></span>
@@ -109,19 +113,19 @@
                            <button type="button" class="sub_detail_Btn" ng-click="complete_detail_registe()">提交资料</button>
                        </div>
                    </div>
-                   <div name="third" ng-show="true">
+                   <div name="third" ng-show="register_third">
                           <div class="register_sucss_detail">
                               <p class="smile_wrap">
                                   <span class="icon-icon_smile"></span>
                               </p>
                               <p class="smile_name">
-                                  <span>恭喜</span><span class="smile_name_desc">我爱电解铜</span><span>注册成功</span>
+                                  <span>恭喜</span><span class="smile_name_desc">{{register_suc.username}}</span><span>注册成功</span>
                                   <br/>
                                   <span class="smile_now">现在你可以通过用户名</span><br/>
-                                  <span>手机号</span><span class="smile_number">13588898987</span><br/>
-                                  <span>或者邮箱</span><span class="smile_email">chengyiyun123@126.com</span><br/>
+                                  <span>手机号</span><span class="smile_number">{{register_suc.phone}}</span><br/>
+                                  <span>或者邮箱</span><span class="smile_email">{{register_suc.email}}</span><br/>
                                   <span>进行登录啦！</span><br/>
-                                  <span class="smile_jump">5</span><span>秒后跳转到</span><span class="smile_jump_desc">首页</span>
+                                  <span class="smile_jump">{{count}}</span><span>秒后跳转到</span><span class="smile_jump_desc">首页</span>
 
 
 
