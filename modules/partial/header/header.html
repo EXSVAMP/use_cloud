@@ -1,8 +1,18 @@
 <div class="head_com" ng-controller="headerCtrl">
     <div class="btn_group">
-        <a class="manage_dash">管理控制台</a>
-        <a class="head_register">注册</a>
-        <a class="head_login" href="login.html">登录</a>
+
+        <a class="manage_dash" ng-show="state.manage">管理控制台</a>
+        <a class="head_register" ng-show="state.register">注册</a>
+        <a class="head_login" href="login.html" ng-show="state.login">登录</a>
+        <div class="head_login_name">
+         <a  class="dropdown-toggle" dropdown-toggle data-toggle="dropdown"  ng-show="state.user_name" ng-cloak>{{username}}</a>
+            <ul class="dropdown-menu dropdown-menu-register" role="menu">
+                <div class="triangle-up"></div>
+                <li><a href="#">退出</a></li>
+
+            </ul>
+        </div>
+
         <img class="head_img" src="/lib/img/logo200+100.svg" />
     </div>
     <div class="head_nav">

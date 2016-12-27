@@ -10,15 +10,15 @@
             <div class="warp_content">
                <form  role="form" name="register">
                  <div>
-                   <div class="register_phone_head">
+                   <div class="register_phone_head" ng-class="{true:'toggel_active',false:'toggel_unactive'}[state.first]" >
                        <span class="register_phone">填写手机号</span>
                        <img src="/lib/img/checkok.svg" class="complete" ng-show="complete_first"/>
                    </div>
-                    <div class="register_detail_head">
+                    <div class="register_detail_head" ng-class="{true:'toggel_active',false:'toggel_unactive'}[state.second]" >
                         <span class="register_detail" >完善资料</span>
                         <img src="/lib/img/checkok.svg" class="complete complete_second" ng-show="complete_second"/>
                     </div>
-                    <div class="register_sucss_head">
+                    <div class="register_sucss_head" ng-class="{true:'toggel_active',false:'toggel_unactive'}[state.third]">
                         <span class="register_sucss" >注册完成</span>
                         <img src="/lib/img/checkok.svg" class="complete complete_third" ng-show="complete_third"/>
                     </div>

@@ -15,7 +15,14 @@ app.register.controller("registerCtr", function ($scope, $http, $location, $uibM
     $scope.complete_third=false;
     $scope.count=5;
     $scope.email_error=false;
-    
+
+    $scope.state = {
+        first: true,
+        second: false,
+        third:false
+    }
+
+
     $scope.phone = {
         number: "",
         validate_code: "",
@@ -34,6 +41,8 @@ app.register.controller("registerCtr", function ($scope, $http, $location, $uibM
         phone:"",
         email:"",
     }
+
+
 
     $scope.change_picture = function () {
         $scope.Captcha_token = utils.gettoken();
@@ -89,6 +98,9 @@ app.register.controller("registerCtr", function ($scope, $http, $location, $uibM
                     //完善资料
                     // $scope.complete_detail_register();
 
+                    $scope.state.second=true;
+                    $scope.state.first=false;
+
                 }else{
                     $scope.err_msg_state=true;
                     $scope.err_msg_state=data.message;
@@ -129,6 +141,10 @@ app.register.controller("registerCtr", function ($scope, $http, $location, $uibM
                      $scope.complete_third=false;
                      $scope.register_second=false;
                      $scope.register_third=true;
+
+                     $scope.state.third=true;
+                     $scope.state.first=false;
+                     $scope.state.second=false;
 
                      $scope.register_suc.username=data.data.username;
                      $scope.register_suc.phone=data.data.phone;

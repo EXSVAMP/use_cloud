@@ -59,14 +59,22 @@ app.register.controller("loginCtr", function ($scope, $http, $location, $uibModa
 
         console.log("<==name=>" + $scope.person.username + "<====password===>" + $scope.person.password);
         if (flag == 1) {
-            $http.post(BaseUrl + "/api/1/user/login", $scope.person).success(function (data) {
+            if($scope.person.username&&$scope.person.password){
+             $http.post(BaseUrl + "/api/1/user/login", $scope.person).success(function (data) {
                 if (data.code == '200') {
+                    sessionStorage.setItem("loginName",$scope.person.username);
+                    sessionStorage.setItem("passwprd",$scope.person.password);
+                    sessionStorage.setItem("user_active",data.data.user_active);
+                   window.location.href="/index.html";
+
+
 
                 } else {
                     $scope.showError = true;
                     $scope.loginResponse = data.message;
                 }
-            })
+              })
+            }
         }
 
 
@@ -80,6 +88,10 @@ app.register.controller("loginCtr", function ($scope, $http, $location, $uibModa
                 $http.post(BaseUrl+"/api/1/user/login/phone", $scope.phone_params).success(function(data){
                     if(data.code==200){
                        $scope.err_msg_state=false;
+                        sessionStorage.setItem("loginName",$scope.person.username);
+                        sessionStorage.setItem("passwprd",$scope.person.password);
+                        sessionStorage.setItem("user_active",data.data.user_active);
+                        window.location.href="/index.html";
 
                     }else{
                         $scope.err_msg_state=true;

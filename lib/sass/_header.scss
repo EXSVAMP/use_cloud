@@ -34,6 +34,47 @@
       width: 68px;
       margin-right: 20px;
     };
+
+    .head_login_name{
+      float:right;
+      padding-left: 15px;
+      padding-right: 15px;
+      margin-right:20px;
+      position:relative;
+
+      a{
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+    }
+    .dropdown-menu-register{
+      min-width:66px ;
+      left:40%;
+      top:40px;
+      //height: 31px;
+      padding: 0px;
+      background-color: #00a0e9;
+      line-height: 24px;
+      //display: table;
+      a{
+        border: none;
+        width: 66px;
+        padding: 0px;
+        height:24px;
+        margin:0px;
+        line-height: 24px;
+        //position: relative;
+        //top: -2px;
+
+        //display: table-cell;
+        //vertical-align: middle;
+        text-align: center;
+        &:hover{
+          background-color:#00a0e9;
+        }
+
+      }
+    }
     .head_img{
       width: 200px;
       height: 100px;

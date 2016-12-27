@@ -110,8 +110,10 @@ app.config(['$httpProvider', function($httpProvider){
 }]);
 
 app.controller("MasterCtrl",function($scope, $cookieStore, $http, baseUrl, ngDialog, $rootScope){
+
     var baseUrl = baseUrl.getUrl();
    console.log("1234567");
+
     $rootScope.alert_pop = function(alert_info){
         $rootScope.alert_info = alert_info;
         ngDialog.open({
@@ -128,6 +130,30 @@ app.controller("MasterCtrl",function($scope, $cookieStore, $http, baseUrl, ngDia
 
 
 app.controller("headerCtrl",function($scope, $cookieStore, $http, $uibModal, baseUrl, ngDialog, $rootScope){
+
+    $scope.state={
+        manage:true,
+        register:true,
+        login:true,
+        user_name:false
+
+    }
+    var user_active=sessionStorage.getItem("user_active");
+    if(user_active==1){
+        var username=sessionStorage.getItem("loginName");
+        var password=sessionStorage.getItem("password");
+
+        $scope.username=username;
+        $scope.state.register=false;
+        $scope.state.login=false;
+        $scope.state.user_name=true;
+
+    }
+
+
+
+
+
 
 })
 
