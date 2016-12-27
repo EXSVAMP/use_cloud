@@ -15,6 +15,7 @@ app.register.controller("registerCtr", function ($scope, $http, $location, $uibM
     $scope.complete_third=false;
     $scope.count=5;
     $scope.email_error=false;
+    
 
     $scope.state = {
         first: true,
@@ -52,6 +53,10 @@ app.register.controller("registerCtr", function ($scope, $http, $location, $uibM
     $scope.read_check=false;
     $scope.err_validate_state=false;
     $scope.err_msg_state=false;
+
+    var wait=60;
+    $scope.send_msg_desc="发送短信验证码";
+    $scope.send_msg_btn=false;
     $scope.send_msg=function(){
         //
         // console.log("<==手机号==>"+$scope.phone.number);
@@ -66,6 +71,20 @@ app.register.controller("registerCtr", function ($scope, $http, $location, $uibM
             $http.post(BaseUrl+"/api/1/user/sms/",$scope.params).success(function(data){
                 if(data.code==200){
                     $scope.err_validate_state=false;
+                 var  time=function(){
+                      if(wait==0){
+                          $scope.send_msg_btn=false;
+                          $scope.send_msg_desc="发送短信验证码";
+                          wait=60;
+                          $interval.cancel(timer)
+
+                      }else{
+                          $scope.send_msg_btn=true;
+                          $scope.send_msg_desc=wait + "秒后重新获取验证码";
+                          wait--;
+                      }
+                  }
+                  var timer= $interval(time,1000);
 
 
                 }else{
@@ -92,9 +111,9 @@ app.register.controller("registerCtr", function ($scope, $http, $location, $uibM
                     $scope.register_first=false;
                     $scope.register_second=true;
                     $scope.complete_first=true;
-                    $cookieStore.put("usecloud-token",{
-                        token: data.data.token
-                    });
+                    sessionStorage.setItem("usecloud-token",
+                       data.data.token
+                    );
                     //完善资料
                     // $scope.complete_detail_register();
 

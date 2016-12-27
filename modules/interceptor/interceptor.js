@@ -12,9 +12,9 @@ function RDashInterceptor() {
 
         return {
             request: function(request) {
-                var security = $cookieStore.get(self.config.usecloud_token);
+                var security = sessionStorage.getItem("usecloud-token");
                 if(security){
-                    request.headers["usecloud-token"] =security.token;
+                    request.headers["usecloud-token"] =security;
                 }else{
 
                 }
@@ -28,7 +28,7 @@ function RDashInterceptor() {
                 if (response.headers) {
 
                     var headers = response.headers();
-                    var security = $cookieStore.get(self.config.usecloud_token);
+                    var security = sessionStorage.getItem("usecloud-token");
                     if (security) {
                         security = headers[self.config.usecloud_token];
                     }

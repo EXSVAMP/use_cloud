@@ -54,7 +54,7 @@
                      <div class="form-group">
                          <span class="icon-icon_verificationcode"></span>
                          <input type="text" class="msg_validate" placeholder="短信验证码" required ng-model="phone.msg_code"/>
-                         <button class="msgBtn" type="button" ng-click="send_msg()">发送短信验证码</button>
+                         <button class="msgBtn" type="button"  ng-disabled="send_msg_btn" ng-click="send_msg()">{{send_msg_desc}}</button>
                      </div>
                        <div class="form-group errorWrap" ng-show="err_msg_state">
                            <span class="errorInfo" >{{err_msg_state}}</span>

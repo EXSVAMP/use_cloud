@@ -150,6 +150,15 @@ app.controller("headerCtrl",function($scope, $cookieStore, $http, $uibModal, bas
 
     }
 
+    $scope.quit=function(){
+        sessionStorage.removeItem("user_active");
+        $scope.state.user_name=false;
+        window.location.href="/index.html";
+
+
+    }
+    
+
 
 
 

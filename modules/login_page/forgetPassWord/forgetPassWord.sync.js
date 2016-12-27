@@ -28,6 +28,10 @@ app.register.controller("forgetPassWordCtr", function ($scope, $http, $location,
 
     $scope.err_validate_state=false;
     $scope.err_msg_state=false;
+
+    var wait=60;
+    $scope.send_msg_desc="发送短信验证码";
+    $scope.send_msg_btn=false;
     $scope.send_msg=function(){
         $scope.params={
             mobile:$scope.phone.number,
@@ -40,7 +44,20 @@ app.register.controller("forgetPassWordCtr", function ($scope, $http, $location,
             $http.post(BaseUrl+"/api/1/user/sms/",$scope.params).success(function(data){
                 if(data.code==200){
                     $scope.err_validate_state=false;
+                    var  time=function(){
+                        if(wait==0){
+                            $scope.send_msg_btn=false;
+                            $scope.send_msg_desc="发送短信验证码";
+                            wait=60;
+                            $interval.cancel(timer)
 
+                        }else{
+                            $scope.send_msg_btn=true;
+                            $scope.send_msg_desc=wait + "秒后重新获取验证码";
+                            wait--;
+                        }
+                    }
+                    var timer= $interval(time,1000);
 
                 }else{
                     $scope.err_validate_state=true;
@@ -74,7 +91,7 @@ app.register.controller("forgetPassWordCtr", function ($scope, $http, $location,
                     };
 
                     $interval(toDo, 1000, 5);
-                    
+
                 }
 
 

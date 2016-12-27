@@ -1,5 +1,5 @@
 var app = angular.module('RDash');
-app.register.controller("loginCtr", function ($scope, $http, $location, $uibModal, $cookieStore, baseUrl, $rootScope, utils) {
+app.register.controller("loginCtr", function ($scope, $http, $location, $uibModal, $cookieStore, baseUrl, $rootScope,$interval, utils) {
     var BaseUrl = baseUrl.getUrl();
 
     // console.log("<=====登入1234567=======>"+BaseUrl);
@@ -52,8 +52,12 @@ app.register.controller("loginCtr", function ($scope, $http, $location, $uibModa
     }
 
 
-
-
+     $scope.remember_check=false;
+      if(sessionStorage.getItem("password")){
+          $scope.remember_check=true;
+          $scope.person.username=sessionStorage.getItem("loginName");
+          $scope.person.password=sessionStorage.getItem("password");
+      }
 
     $scope.login_go = function (flag) {
 
@@ -63,7 +67,14 @@ app.register.controller("loginCtr", function ($scope, $http, $location, $uibModa
              $http.post(BaseUrl + "/api/1/user/login", $scope.person).success(function (data) {
                 if (data.code == '200') {
                     sessionStorage.setItem("loginName",$scope.person.username);
-                    sessionStorage.setItem("passwprd",$scope.person.password);
+
+                    if($scope.remember_check){
+                        sessionStorage.setItem("password",$scope.person.password);
+                        $scope.remember_check=true;
+                    }else{
+                        sessionStorage.removeItem("password",$scope.person.password);
+                    }
+
                     sessionStorage.setItem("user_active",data.data.user_active);
                    window.location.href="/index.html";
 
@@ -112,8 +123,11 @@ app.register.controller("loginCtr", function ($scope, $http, $location, $uibModa
     
     $scope.err_validate_state=false;
     $scope.err_msg_state=false;
-   $scope.send_msg=function(){
+    var wait=60;
+    $scope.send_msg_desc="发送短信验证码";
+    $scope.send_msg_btn=false;
 
+   $scope.send_msg=function(){
        console.log("<==手机号==>"+$scope.phone.number);
        console.log("<==验证码==>"+$scope.phone.validate_code);
         $scope.params={
@@ -126,6 +140,20 @@ app.register.controller("loginCtr", function ($scope, $http, $location, $uibModa
        $http.post(BaseUrl+"/api/1/user/sms/",$scope.params).success(function(data){
            if(data.code==200){
                $scope.err_validate_state=false;
+               var  time=function(){
+                   if(wait==0){
+                       $scope.send_msg_btn=false;
+                       $scope.send_msg_desc="发送短信验证码";
+                       wait=60;
+                       $interval.cancel(timer)
+
+                   }else{
+                       $scope.send_msg_btn=true;
+                       $scope.send_msg_desc=wait + "秒后重新获取验证码";
+                       wait--;
+                   }
+               }
+               var timer= $interval(time,1000);
 
            }else{
                $scope.err_validate_state=true;
