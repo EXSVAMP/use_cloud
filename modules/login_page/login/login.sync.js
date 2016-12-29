@@ -196,7 +196,13 @@ app.register.controller("loginCtr", function ($scope, $http, $location, $uibModa
 
            }else{
                $scope.login_phone_error=true;
+               // $scope.err_user_state=false;
            }
+
+           if(newValue!=oldValue){
+               $scope.err_user_state=false;
+           }
+
        });
        $scope.$watch("phone.validate_code",function(newValue,oldValue){
            if(newValue){
@@ -220,6 +226,7 @@ app.register.controller("loginCtr", function ($scope, $http, $location, $uibModa
        $http.post(BaseUrl+"/api/1/user/sms/",$scope.params).success(function(data){
            if(data.code==200){
                $scope.err_validate_state=false;
+               $scope.err_user_state=false;
                var  time=function(){
                    if(wait==0){
                        $scope.send_msg_btn=false;
@@ -240,6 +247,12 @@ app.register.controller("loginCtr", function ($scope, $http, $location, $uibModa
                    $scope.err_validate_state=true;
                    $scope.err_validate=data.message;
                }
+              if(data.code==10003){
+                  $scope.err_user_state=true;
+                  $scope.err_user=data.message;
+              }
+               $scope.change_picture();
+
            }
        })
    }

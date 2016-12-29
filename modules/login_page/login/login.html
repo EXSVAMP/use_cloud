@@ -60,7 +60,10 @@
                                  login.phone_number.$invalid&&login.phone_number.$touched ||login_phone_error">
                                请输入有效的11位手机号</span>
                        </div>
+                       <div class="form-group errorWrap err_user" ng-show="err_user_state">
+                           <span class="errorInfo" >{{err_user}}</span>
 
+                       </div>
                        <div class="form-group">
                            <span class="icon-icon_verificationcode"></span>
                            <input type="text" class="picture_validate" placeholder="请输入图形验证码" required ng-model="phone.validate_code"/>

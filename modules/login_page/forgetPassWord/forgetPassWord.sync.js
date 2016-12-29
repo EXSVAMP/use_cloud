@@ -44,6 +44,9 @@ app.register.controller("forgetPassWordCtr", function ($scope, $http, $location,
             } else {
                 $scope.forget_phone_error = true;
             }
+            if(newValue!=oldValue){
+                $scope.err_user_state=false;
+            }
         });
         $scope.$watch("phone.validate_code", function (newValue, oldValue) {
             if (newValue) {
@@ -85,6 +88,11 @@ app.register.controller("forgetPassWordCtr", function ($scope, $http, $location,
                         $scope.err_validate_state=true;
                         $scope.err_validate=data.message;
                     }
+                    if(data.code==10003){
+                        $scope.err_user_state=true;
+                        $scope.err_user=data.message;
+                    }
+                    $scope.change_picture();
                 }
             })
         }
