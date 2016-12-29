@@ -1,6 +1,7 @@
 angular.module("RDash",['ui.bootstrap','ui.router','ngCookies','ngDialog','cgBusy','truncate','ui.select','ngSanitize','ngAnimate']);
 require('router');
 require('common/constant');
+require('common/service/utils');
 
 
 
@@ -138,8 +139,8 @@ app.controller("headerCtrl",function($scope, $cookieStore, $http, $uibModal, bas
         user_name:false
 
     }
-    var user_active=sessionStorage.getItem("user_active");
-    if(user_active==1){
+    var user_token=sessionStorage.getItem("user_token");
+    if(user_token){
         var username=sessionStorage.getItem("loginName");
         var password=sessionStorage.getItem("password");
 
@@ -151,23 +152,18 @@ app.controller("headerCtrl",function($scope, $cookieStore, $http, $uibModal, bas
     }
 
     $scope.quit=function(){
-        sessionStorage.removeItem("user_active");
+        sessionStorage.removeItem("user_token");
         $scope.state.user_name=false;
         window.location.href="/index.html";
 
-
     }
-    
-
-
-
-
-
 
 })
 
 
-
+app.controller('headerManageCtrl',function($scope, $cookieStore, $http, $uibModal, baseUrl, ngDialog, $rootScope){
+    console.log("<=====管理控制台首页header=====>")
+})
 
 
 

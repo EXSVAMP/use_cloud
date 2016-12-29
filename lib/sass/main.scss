@@ -6,6 +6,7 @@
 @import "forgetPassWord";
 @import "header";
 @import "sideBar";
+@import "headerManage";
 
 
 
@@ -19,4 +20,10 @@ textarea, p, section, strong, a, th, td, tr,span {
   padding: 0;
   margin: 0;
   font-family:"Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;
+}
+
+#page-wrap{
+  padding-left:200px ;
+  background: green;
+  //height: 800px;
 }

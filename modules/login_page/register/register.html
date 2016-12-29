@@ -1,4 +1,4 @@
-<div class="register">
+<div class="register" ng-controller="registerCtr">
 
     <div class="register_head">
         <img class="register_logo" src="/lib/img/logo186+50.svg"/>
@@ -33,15 +33,18 @@
                         </div>
                        <div class="form-group">
                            <span class="icon-icon_mobile"></span>
-                           <input type="text" placeholder="请输入手机号码" name="phone_number" required ng-minlength="11" ng-maxlength="11"
-                                  ng-pattern="phone_pattern"   ng-model="phone.number"/>
+                           <input type="text" placeholder="请输入手机号码" ng-model="phone.number" name="phone_number" required  ng-maxlength="11"
+                                 />
                        </div>
-                       <div class="form-group errorWrap">
-                           <span class="errorInfo" ng-show="register.phone_number.$touched&&register.phone_number.$error.required">必填</span>
+                       <div class="form-group errorWrap" >
+                           <span class="errorInfo" ng-show="register.phone_number.$touched&&register.phone_number.$error.required||register_phone_error">必填</span>
                            <span class="errorInfo" ng-show="
-                                 register.phone_number.$invalid&&register.phone_number.$touched">
+                                 register.phone_number.$touched&&register.phone_number.$invalid ||register_phone_error">
                                请输入有效的11位手机号</span>
                        </div>
+                       <!--<div class="form-group errorWrap" ng-show="register_phone_error">-->
+                           <!--<span class="errorInfo" >请输入有效的11位手机号</span>-->
+                       <!--</div>-->
                      <div class="form-group">
                          <span class="icon-icon_verificationcode"></span>
                          <input type="text" class="picture_validate" placeholder="请输入图形验证码" required ng-model="phone.validate_code"/>
@@ -51,19 +54,28 @@
                            <span class="errorInfo" >{{err_validate}}</span>
 
                        </div>
+                       <div class="form-group errorWrap" ng-show="register_validate_error">
+                           <span class="errorInfo" >请输入图形验证码</span>
+                       </div>
                      <div class="form-group">
                          <span class="icon-icon_verificationcode"></span>
                          <input type="text" class="msg_validate" placeholder="短信验证码" required ng-model="phone.msg_code"/>
                          <button class="msgBtn" type="button"  ng-disabled="send_msg_btn" ng-click="send_msg()">{{send_msg_desc}}</button>
                      </div>
                        <div class="form-group errorWrap" ng-show="err_msg_state">
-                           <span class="errorInfo" >{{err_msg_state}}</span>
+                           <span class="errorInfo" >{{err_msg_desc}}</span>
 
+                       </div>
+                       <div class="form-group errorWrap" ng-show="register_msgcode_error">
+                           <span class="errorInfo" >请输入短信验证码</span>
                        </div>
                      <div class="form-group read_wrap">
                          <input type="checkbox" ng-model="read_check" class="read_check"/>
-                         <span class="read_content">阅读并接收<a>《有色云协议》</a></span>
+                         <span class="read_content">阅读并接受<a>《有色云协议》</a></span>
                      </div>
+                       <div class="form-group errorWrap errorWrapRead" ng-show="register_check_error">
+                           <span class="errorInfo" >您还没有接受《有色云协议》</span>
+                       </div>
                      <div class="form-group register_sub">
                          <button type="button" class="registerBtn" ng-click="register_go()">立即注册</button>
                      </div>
@@ -77,12 +89,18 @@
                        <div class="form-group">
                            <span class="annotation">*</span>
                            <span class="icon-icon_user"></span>
-                           <input type="text" placeholder="用户名" required ng-model="detail.username"/>
+                           <input type="text" placeholder="用户名" name="detail_username" required ng-model="detail.username"/>
+                       </div>
+                       <div class="form-group errorWrap" ng-show="register.detail_username.$touched&&register.detail_username.$error.required||detail_username_error">
+                           <span class="errorInfo" >用户名必填</span>
                        </div>
                        <div class="form-group">
                            <span class="annotation">*</span>
                            <span class="icon-icon_password" ></span>
-                           <input type="password" placeholder="请输入新密码" name="password" required ng-model="detail.password"/>
+                           <input type="password" placeholder="请输入新密码"  name="password" required  ng-minlength="6" ng-maxlength="20"  ng-model="detail.password"/>
+                       </div>
+                       <div class="form-group errorWrap" ng-show="register.password.$touched&&register.password.$error.required||detail_password_error">
+                           <span class="errorInfo" >请输入6-20位字符</span>
                        </div>
                        <div class="form-group">
                            <span class="annotation">*</span>

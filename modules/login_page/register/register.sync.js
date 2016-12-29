@@ -50,7 +50,7 @@ app.register.controller("registerCtr", function ($scope, $http, $location, $uibM
         $scope.picture_src = BaseUrl + "/api/1/captcha/" + $scope.Captcha_token + ".jpeg?width=158&height=46";
         $scope.Captcha_token_temp=$scope.Captcha_token;
     }
-    $scope.read_check=false;
+    $scope.read_check=true;
     $scope.err_validate_state=false;
     $scope.err_msg_state=false;
 
@@ -61,6 +61,27 @@ app.register.controller("registerCtr", function ($scope, $http, $location, $uibM
         //
         // console.log("<==手机号==>"+$scope.phone.number);
         // console.log("<==验证码==>"+$scope.phone.validate_code);
+        $scope.$watch("phone.number",function(newValue,oldValue){
+            if(newValue){
+                if($scope.phone_pattern.test(newValue)){
+                    $scope.register_phone_error=false;
+                }else{
+                    $scope.register_phone_error=true;
+                }
+
+            }else{
+                $scope.register_phone_error=true;
+            }
+        });
+        $scope.$watch("phone.validate_code",function(newValue,oldValue){
+            if(newValue){
+                $scope.register_validate_error=false;
+
+            }else{
+                $scope.register_validate_error=true;
+                $scope.err_validate_state=false;
+            }
+        });
         $scope.params={
             mobile:$scope.phone.number,
             action:"register",
@@ -74,7 +95,7 @@ app.register.controller("registerCtr", function ($scope, $http, $location, $uibM
                  var  time=function(){
                       if(wait==0){
                           $scope.send_msg_btn=false;
-                          $scope.send_msg_desc="发送短信验证码";
+                          $scope.send_msg_desc="重新发送验证码";
                           wait=60;
                           $interval.cancel(timer)
 
@@ -88,23 +109,92 @@ app.register.controller("registerCtr", function ($scope, $http, $location, $uibM
 
 
                 }else{
-                    $scope.err_validate_state=true;
-                    $scope.err_validate=data.message;
+                    if(data.code==10001){
+                        $scope.err_validate_state=true;
+                        $scope.err_validate=data.message;
+                    }
+
                 }
             })
         }
 
 
     }
+
+    // $scope.register_phone_error=false;
+    // $scope.register_validate_error=false;
+    // $scope.register_msgcode_error=false;
+
+
     $scope.register_go=function(){
+        $scope.$watch("phone.number",function(newValue,oldValue){
+            if(newValue){
+                if($scope.phone_pattern.test(newValue)){
+                    $scope.register_phone_error=false;
+                }else{
+                    $scope.register_phone_error=true;
+                }
+
+            }else{
+                $scope.register_phone_error=true;
+            }
+        });
        // alert($scope.read_check);
+        $scope.$watch("phone.validate_code",function(newValue,oldValue){
+            if(newValue){
+                $scope.register_validate_error=false;
+            }else{
+                $scope.register_validate_error=true;
+            }
+        });
+        $scope.$watch("phone.msg_code",function(newValue,oldValue){
+            if(newValue){
+                $scope.register_msgcode_error=false;
+            }else{
+                $scope.register_msgcode_error=true;
+                $scope.err_msg_state=false;
+            }
+        });
+        $scope.$watch("read_check",function(newValue,oldValue){
+            if(newValue){
+                $scope.register_check_error=false;
+            }else{
+                $scope.register_check_error=true;
+                
+            }
+        });
+
+
+
+
+
+
+        // if($scope.phone.number){
+        //     $scope.register_phone_error=false;
+        // }else{
+        //     $scope.register_phone_error=true;
+        // }
+       //  if($scope.phone.validate_code){
+       //      $scope.register_validate_error=false;
+       //  }else{
+       //      $scope.register_validate_error=true;
+       //  }
+       // if($scope.phone.msg_code){
+       //     $scope.register_msgcode_error=false;
+       // }else{
+       //     $scope.register_msgcode_error=true;
+       // }
+
+
+
+
         if($scope.phone.number&&$scope.phone.msg_code&&$scope.read_check){
             $scope.phone_params={
                 phone:$scope.phone.number,
                 pcaptcha:$scope.phone.msg_code,
                 agree:"1"
             }
-
+             
             $http.post(BaseUrl+"/api/1/user/register", $scope.phone_params).success(function(data){
                 if(data.code==200){
                     $scope.err_msg_state=false;
@@ -114,6 +204,9 @@ app.register.controller("registerCtr", function ($scope, $http, $location, $uibM
                     sessionStorage.setItem("usecloud-token",
                        data.data.token
                     );
+                    sessionStorage.setItem("user_token",
+                        data.data.token
+                    );
                     //完善资料
                     // $scope.complete_detail_register();
 
@@ -122,7 +215,7 @@ app.register.controller("registerCtr", function ($scope, $http, $location, $uibM
 
                 }else{
                     $scope.err_msg_state=true;
-                    $scope.err_msg_state=data.message;
+                    $scope.err_msg_desc=data.message;
                 }
             })
 
@@ -140,6 +233,26 @@ app.register.controller("registerCtr", function ($scope, $http, $location, $uibM
 
       $scope.complete_detail_registe=function(){
           // var security=$cookieStore.get("usecloud-token");
+          $scope.$watch("detail.username",function(newValue,oldValue){
+              if(newValue){
+                  $scope.detail_username_error=false;
+              }else{
+                  $scope.detail_username_error=true;
+              }
+          })
+          $scope.$watch("detail.password",function(newValue,oldValue){
+              if (newValue == undefined || newValue == "") {
+                  $scope.detail_password_error = true;
+              } else {
+                  $scope.detail_password_error = false;
+              }
+          })
+
+
+
+
+
+
           $scope.datail_params={
               // "usecloud_token":security.token,
               username:$scope.detail.username,
@@ -155,6 +268,8 @@ app.register.controller("registerCtr", function ($scope, $http, $location, $uibM
           if($scope.detail.username&&$scope.detail.password&&$scope.detail.repassword){
                $http.post(BaseUrl+"/api/1/user/profile",$scope.datail_params).success(function (data) {
                  if(data.code==200){
+
+                     sessionStorage.setItem("loginName",data.data.username);
                      $scope.complete_first=true;
                      $scope.complete_second=true;
                      $scope.complete_third=false;
@@ -172,7 +287,7 @@ app.register.controller("registerCtr", function ($scope, $http, $location, $uibM
                      var toDo = function () {
                          $scope.count--;
                          if($scope.count == 1){
-                             window.location.href = "/login.html";
+                             window.location.href = "/index.html";
                          }
                      };
                      $interval(toDo, 1000, 5);
@@ -185,6 +300,7 @@ app.register.controller("registerCtr", function ($scope, $http, $location, $uibM
 
                })
 
+               
 
           }
 

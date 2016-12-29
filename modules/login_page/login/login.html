@@ -13,7 +13,7 @@
                        <span class="login_account">账号登入</span>
                        <!--<span class="login_account_trangle"  ></span>-->
                    </div>
-                   <div class="phone_head" ng-click="toggle(2)" ng-class="{true:'toggel_active',false:'toggel_unactive'}[state.phone]">
+                   <div class="phone_head" ng-click="toggle(2,record)" ng-class="{true:'toggel_active',false:'toggel_unactive'}[state.phone]">
                        <span class="login_phone" >手机登录</span>
                        <!--<span class="login_account_trangle" ></span>-->
                    </div>
@@ -26,6 +26,9 @@
                        <span class="icon-icon_user"></span>
                        <input type="text"  placeholder="邮箱／手机号／用户名" ng-click="showError=false" autocomplete="on" required ng-model="person.username"/>
                    </div>
+                     <div class="form-group errorWrap" ng-show="login_username_error">
+                         <span class="errorInfo" >请输入用户名</span>
+                     </div>
                    <div class="form-group">
                        <span class="icon-icon_password"></span>
                        <input type="password" placeholder="密码" ng-click="showError=false" autocomplete="on" required ng-model="person.password"/>
@@ -33,27 +36,31 @@
                      <div class="form-group errorWrap">
                          <span class="errorInfo"   ng-bind="loginResponse" ng-if="showError"></span>
                      </div>
+                     <div class="form-group errorWrap errorWrap_pass" ng-show="login_password_error">
+                         <span class="errorInfo" >请输入密码</span>
+                     </div>
                     <!--<div class="error_wrap">-->
                         <!--<span class="errorInfo"   ng-bind="loginResponse" ng-if="showError"></span>-->
                     <!--</div>-->
                    <div class="form-password">
                        <input type="checkbox" ng-model="remember_check"/>
-                       <label>记住密码</label>
+                       <label>记住用户</label>
                        <a href="#forgetPassWord">忘记密码</a>
                    </div>
                  </div>
                    <div class="login_phone_warp" ng-show="state.phone">
                        <div class="form-group">
                            <span class="icon-icon_mobile"></span>
-                           <input type="text" placeholder="请输入手机号码" name="phone_number" required ng-minlength="11" ng-maxlength="11"
-                                  ng-pattern="phone_pattern"   ng-model="phone.number"/>
+                           <input type="text" placeholder="请输入手机号码" name="phone_number" required  ng-maxlength="11"
+                                     ng-model="phone.number"/>
                        </div>
                        <div class="form-group errorWrap">
-                         <span class="errorInfo" ng-show="login.phone_number.$touched&&login.phone_number.$error.required">必填</span>
+                         <span class="errorInfo" ng-show="login.phone_number.$touched&&login.phone_number.$error.required ||login_phone_error">必填</span>
                            <span class="errorInfo" ng-show="
-                                 login.phone_number.$invalid&&login.phone_number.$touched">
+                                 login.phone_number.$invalid&&login.phone_number.$touched ||login_phone_error">
                                请输入有效的11位手机号</span>
                        </div>
+
                        <div class="form-group">
                            <span class="icon-icon_verificationcode"></span>
                            <input type="text" class="picture_validate" placeholder="请输入图形验证码" required ng-model="phone.validate_code"/>
@@ -63,6 +70,11 @@
                            <span class="errorInfo" >{{err_validate}}</span>
 
                        </div>
+
+                       <div class="form-group errorWrap" ng-show="login_validate_error">
+                           <span class="errorInfo" >请输入图形验证码</span>
+                       </div>
+
                        <div class="form-group">
                            <span class="icon-icon_verificationcode"></span>
                            <input type="text" class="msg_validate" placeholder="短信验证码" required ng-model="phone.msg_code"/>
@@ -70,7 +82,9 @@
                        </div>
                        <div class="form-group errorWrap" ng-show="err_msg_state">
                            <span class="errorInfo" >{{err_msg_state}}</span>
-
+                       </div>
+                       <div class="form-group errorWrap" ng-show="login_msgcode_error">
+                           <span class="errorInfo" >请输入短信验证码</span>
                        </div>
 
 
