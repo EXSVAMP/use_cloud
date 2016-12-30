@@ -42,9 +42,10 @@
                                  register.phone_number.$touched&&register.phone_number.$invalid ||register_phone_error">
                                请输入有效的11位手机号</span>
                        </div>
-                       <!--<div class="form-group errorWrap" ng-show="register_phone_error">-->
-                           <!--<span class="errorInfo" >请输入有效的11位手机号</span>-->
-                       <!--</div>-->
+                       <div class="form-group errorWrap err_user" ng-show="err_user_state">
+                           <span class="errorInfo" >{{err_user}}</span>
+
+                       </div>
                      <div class="form-group">
                          <span class="icon-icon_verificationcode"></span>
                          <input type="text" class="picture_validate" placeholder="请输入图形验证码" required ng-model="phone.validate_code"/>
@@ -57,6 +58,8 @@
                        <div class="form-group errorWrap" ng-show="register_validate_error">
                            <span class="errorInfo" >请输入图形验证码</span>
                        </div>
+
+
                      <div class="form-group">
                          <span class="icon-icon_verificationcode"></span>
                          <input type="text" class="msg_validate" placeholder="短信验证码" required ng-model="phone.msg_code"/>
@@ -93,6 +96,10 @@
                        </div>
                        <div class="form-group errorWrap" ng-show="register.detail_username.$touched&&register.detail_username.$error.required||detail_username_error">
                            <span class="errorInfo" >用户名必填</span>
+                       </div>
+                       <div class="form-group errorWrap " ng-show="err_username_state">
+                           <span class="errorInfo" >{{err_username}}</span>
+
                        </div>
                        <div class="form-group">
                            <span class="annotation">*</span>

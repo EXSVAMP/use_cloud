@@ -72,6 +72,13 @@ app.register.controller("registerCtr", function ($scope, $http, $location, $uibM
             }else{
                 $scope.register_phone_error=true;
             }
+
+            if(newValue!=oldValue){
+                $scope.err_user_state=false;
+            }
+
+
+
         });
         $scope.$watch("phone.validate_code",function(newValue,oldValue){
             if(newValue){
@@ -82,6 +89,7 @@ app.register.controller("registerCtr", function ($scope, $http, $location, $uibM
                 $scope.err_validate_state=false;
             }
         });
+
         $scope.params={
             mobile:$scope.phone.number,
             action:"register",
@@ -112,6 +120,10 @@ app.register.controller("registerCtr", function ($scope, $http, $location, $uibM
                     if(data.code==10001){
                         $scope.err_validate_state=true;
                         $scope.err_validate=data.message;
+                    }
+                    if(data.code==10002){
+                        $scope.err_user_state=true;
+                        $scope.err_user=data.message;
                     }
 
                 }
@@ -239,6 +251,9 @@ app.register.controller("registerCtr", function ($scope, $http, $location, $uibM
               }else{
                   $scope.detail_username_error=true;
               }
+              if(newValue!=oldValue){
+                  $scope.err_username_state=false;
+              }
           })
           $scope.$watch("detail.password",function(newValue,oldValue){
               if (newValue == undefined || newValue == "") {
@@ -294,6 +309,10 @@ app.register.controller("registerCtr", function ($scope, $http, $location, $uibM
                  }
                if(data.code==10012){
                    $scope.email_error=true
+               }
+               if(data.code==10021){
+                   $scope.err_username_state=true;
+                   $scope.err_username=data.message;
                }
 
 
