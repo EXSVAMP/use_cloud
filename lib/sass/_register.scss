@@ -117,8 +117,12 @@
             float:right;
             margin-right:56px ;
             a{
-              color: #95ccf5;
+              color: #00a0e9;
+              &:hover{
+                color:#008DCF;
+              }
             }
+
           }
           .annotation{
             font-size: 12px;
@@ -191,14 +195,14 @@
               width: 380px;
               height: 58px;
               border-radius: 4px;
-              background-color: #bbbbbb;
+              //background-color: #bbbbbb;
               font-size: 18px;
               text-align: center;
               color: #ffffff;
               margin-top:-10px;
-              &:hover{
-                background-color:#00a0e9;
-              }
+              //&:hover{
+              //  background-color:#00a0e9;
+              //}
             }
           }
           .register_sub_detail{
@@ -208,14 +212,14 @@
               width: 380px;
               height: 58px;
               border-radius: 4px;
-              background-color: #bbbbbb;
+              //background-color: #bbbbbb;
               font-size: 18px;
               text-align: center;
               color: #ffffff;
               margin-top:-10px;
-              &:hover{
-                background-color:#00a0e9;
-              }
+              //&:hover{
+              //  background-color:#00a0e9;
+              //}
             }
           }
           .register_sucss_detail{

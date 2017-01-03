@@ -1,8 +1,8 @@
 <div class="head_com" ng-controller="headerCtrl">
     <div class="btn_group">
-        <!--<a class="manage_dash" href="manageIndex.html" ng-show="state.manage">管理控制台</a>-->
+        <a class="manage_dash" href="manageIndex.html" ng-show="state.manage">管理控制台</a>
 
-        <a class="manage_dash"  ng-show="state.manage">管理控制台</a>
+        <!--<a class="manage_dash"  ng-show="state.manage">管理控制台</a>-->
         <a class="head_register" href="#register" ng-show="state.register">注册</a>
         <a class="head_login" href="login.html" ng-show="state.login">登录</a>
         <div class="head_login_name">
@@ -18,17 +18,17 @@
     </div>
     <div class="head_nav">
          <ul class="nav nav-tabs nav-head">
-             <li >
-                 <a><span>首页</span></a>
+             <li>
+                 <a ng-class="{true:'nav_active',flase:'nav_unactive'}[nav_state.first]"  ng-click="toggle('first')"><span>首页</span></a>
                  <!--<ul  class="dropdown-menu" role="menu">-->
                      <!--<li>java</li>-->
                      <!--<li>css</li>-->
                  <!--</ul>-->
              </li>
-             <li><a><span>案列</span></a></li>
-             <li><a><span>开发文档</span></a></li>
-             <li><a><span>解决方案</span></a></li>
-             <li><a><span>关于我们</span></a></li>
+             <li><a  ng-class="{true:'nav_active',flase:'nav_unactive'}[nav_state.second]"  ng-click="toggle('second')"><span>案列</span></a></li>
+             <li><a  ng-class="{true:'nav_active',flase:'nav_unactive'}[nav_state.third]" ng-click="toggle('third')"><span>开发文档</span></a></li>
+             <li><a  ng-class="{true:'nav_active',flase:'nav_unactive'}[nav_state.fourth]" ng-click="toggle('fourth')"><span>解决方案</span></a></li>
+             <li><a  ng-class="{true:'nav_active',flase:'nav_unactive'}[nav_state.fifth]" ng-click="toggle('fifth')"><span>关于我们</span></a></li>
          </ul>
     </div>
     <div class="head_banner">

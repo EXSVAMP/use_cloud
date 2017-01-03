@@ -56,6 +56,10 @@
           //color: #ffffff;
           box-shadow: 0 1px 6px 0 rgba(51, 51, 51, 0.3);
         }
+        .warp_content_head{
+          position: absolute;
+          top:-2px;
+        }
         .account_head{
 
         }
@@ -101,6 +105,10 @@
            padding-top: 20px;
            padding-left: 55px;
           box-shadow: 0 1px 6px 0 rgba(51, 51, 51, 0.3);
+          position: absolute;
+          top: 58px;
+          background: #ffffff;
+
              .form-group{
                margin-bottom: 0px;
                padding-top: 20px;
@@ -176,7 +184,7 @@
             margin-bottom: -8px;
           }
           .form-password{
-            margin-top: 15px;
+            margin-top: 22px;
             font-size: 13px;
             input{
               position: relative;
@@ -193,6 +201,9 @@
               float:right;
               margin-right: 55px;
               color: #00a0e9;
+              &:hover{
+                color:#008DCF;
+              }
             }
           }
           .form-login{
@@ -201,14 +212,14 @@
               width: 380px;
               height: 58px;
               border-radius: 4px;
-              background-color: #bbbbbb;
+              //background-color: #bbbbbb;
               font-size: 18px;
               text-align: center;
               color: #ffffff;
               margin-top: 30px;
-              &:hover{
-                background-color:#00a0e9;
-              }
+              //&:hover{
+              //  background-color:#00a0e9;
+              //}
 
             }
             .login_desc{
@@ -239,6 +250,11 @@
                 margin-top: 20px;
                 font-size: 14px;
                 color: #00a0e9;
+                a{
+                  &:hover{
+                    color:#008DCF!important;
+                  }
+                }
               }
             }
 

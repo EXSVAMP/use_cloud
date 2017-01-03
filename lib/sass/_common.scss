@@ -56,3 +56,31 @@
   font-size: 0;
   line-height: 0;
 }
+.input-btn{
+  &:hover{
+    input{
+      border-color:#008DCF;
+    }
+    .icon{
+      color:#008DCF!important;
+    }
+  }
+
+}
+.form-group-change{
+  margin-bottom: 20px!important;
+}
+.msg_active{
+  background-color:#bbbbbb!important;
+}
+.msg_unactive{
+  background-color:#ff8700!important;
+}
+.nav_active{
+  color:#00a0e9!important;
+
+}
+.nav_unactive{
+  color:#555555;!important;
+
+}

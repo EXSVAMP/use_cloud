@@ -15,7 +15,8 @@ app.register.controller("registerCtr", function ($scope, $http, $location, $uibM
     $scope.complete_third=false;
     $scope.count=5;
     $scope.email_error=false;
-    
+    $scope.btn_active = false;
+    $scope.detail_active=false;
 
     $scope.state = {
         first: true,
@@ -44,7 +45,76 @@ app.register.controller("registerCtr", function ($scope, $http, $location, $uibM
     }
 
 
+    //监控注册按钮
+    
+    $scope.watch_registerBtn=function(){
+        $scope.$watch("phone",function(newValue,oldValue){
+            if ($scope.phone.validate_code && $scope.phone.validate_code
+                &&$scope.phone.msg_code&&$scope.read_check) {
+                $scope.btn_active = true;
+            } else {
+                $scope.btn_active = false;
+            }
+        },true);
 
+
+        $scope.$watch("read_check",function(newValue,oldValue){
+            if ($scope.phone.validate_code && $scope.phone.validate_code
+                &&$scope.phone.msg_code&&$scope.read_check) {
+                $scope.btn_active = true;
+            } else {
+                $scope.btn_active = false;
+            }
+        });
+
+    }
+    
+      $scope.watch_registerBtn();
+    
+    
+    //监控完善资料按钮
+    $scope.watch_detailBtn=function(){
+        $scope.$watch("detail.username",function(newValue,oldValue){
+            if ($scope.detail.username && $scope.detail.password
+                &&$scope.detail.repassword) {
+                $scope.detail_active=true;
+            } else {
+                $scope.detail_active=false;
+            }
+
+        })
+        $scope.$watch("detail.repassword",function(newValue,oldValue){
+            if ($scope.detail.username && $scope.detail.password
+                &&$scope.detail.repassword&&$scope.detail.password==$scope.detail.repassword) {
+                $scope.detail_active=true;
+            } else {
+                $scope.detail_active=false;
+            }
+
+        })
+        $scope.$watch("detail.password",function(newValue,oldValue){
+            if ($scope.detail.username && $scope.detail.password
+                &&$scope.detail.repassword) {
+                $scope.detail_active=true;
+            } else {
+                $scope.detail_active=false;
+            }
+
+            if(newValue==undefined){
+                $scope.detail_password_error=true;
+            }else{
+                $scope.detail_password_error=false;
+            }
+
+        })
+
+    }
+    $scope.watch_detailBtn();
+    
+
+    
+    
+    
     $scope.change_picture = function () {
         $scope.Captcha_token = utils.gettoken();
         $scope.picture_src = BaseUrl + "/api/1/captcha/" + $scope.Captcha_token + ".jpeg?width=158&height=46";
@@ -105,11 +175,13 @@ app.register.controller("registerCtr", function ($scope, $http, $location, $uibM
                           $scope.send_msg_btn=false;
                           $scope.send_msg_desc="重新发送验证码";
                           wait=60;
-                          $interval.cancel(timer)
+                          $interval.cancel(timer);
+                          $scope.send_msg_state=false;
 
                       }else{
+                          $scope.send_msg_state=true;
                           $scope.send_msg_btn=true;
-                          $scope.send_msg_desc=wait + "秒后重新获取验证码";
+                          $scope.send_msg_desc ="验证码已发送("+wait+"s)";
                           wait--;
                       }
                   }

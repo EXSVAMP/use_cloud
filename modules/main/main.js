@@ -156,6 +156,24 @@ app.controller("headerCtrl",function($scope, $cookieStore, $http, $uibModal, bas
         $scope.state.user_name=false;
         window.location.href="/index.html";
 
+    };
+
+    $scope.nav_state={
+        first:true,
+        second:false,
+        third:false,
+        fourth:false,
+        fifth:false
+
+    }
+    $scope.toggle=function(state){
+        for(i in $scope.nav_state){
+            if(i==state){
+                $scope.nav_state[i]=true;
+            }else{
+                $scope.nav_state[i]=false
+            }
+        }
     }
 
 })
@@ -165,7 +183,9 @@ app.controller('headerManageCtrl',function($scope, $cookieStore, $http, $uibModa
     console.log("<=====管理控制台首页header=====>")
 })
 
-
+app.controller("sideBarCtrl",function($scope, $cookieStore, $http, $uibModal, baseUrl, ngDialog, $rootScope){
+    console.log("<=====管理控制台首页sidebar=====>")
+})
 
 
 

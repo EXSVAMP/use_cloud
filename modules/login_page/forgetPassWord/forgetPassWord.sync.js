@@ -19,6 +19,7 @@ app.register.controller("forgetPassWordCtr", function ($scope, $http, $location,
         repassword: ""
     }
     $scope.count = 5;
+    $scope.btn_active = false;
 
     $scope.change_picture = function () {
         $scope.Captcha_token = utils.gettoken();
@@ -74,10 +75,12 @@ app.register.controller("forgetPassWordCtr", function ($scope, $http, $location,
                             $scope.send_msg_desc = "重新发送验证码";
                             wait = 60;
                             $interval.cancel(timer)
+                            $scope.send_msg_state=false;
 
                         } else {
+                            $scope.send_msg_state=true;
                             $scope.send_msg_btn = true;
-                            $scope.send_msg_desc = wait + "秒后重新获取验证码";
+                            $scope.send_msg_desc ="验证码已发送("+wait+"s)";
                             wait--;
                         }
                     }
@@ -98,6 +101,22 @@ app.register.controller("forgetPassWordCtr", function ($scope, $http, $location,
         }
 
     }
+
+    //监控提交按钮
+      $scope.watch_submit=function(){
+          $scope.$watch("phone", function (newValue, oldValue) {
+               if($scope.phone.number&&$scope.phone.validate_code&&$scope.phone.msg_code
+                 &&$scope.phone.password&&$scope.phone.repassword&&$scope.phone.password==$scope.phone.repassword){
+                   $scope.btn_active = true;
+               }else{
+                   $scope.btn_active = false;
+               }
+          },true);
+
+      }
+
+     $scope.watch_submit();
+    //*************
 
     $scope.findPassword = function () {
         $scope.phone_params = {
