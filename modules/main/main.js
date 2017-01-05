@@ -185,6 +185,19 @@ app.controller('headerManageCtrl',function($scope, $cookieStore, $http, $uibModa
 
 app.controller("sideBarCtrl",function($scope, $cookieStore, $http, $uibModal, baseUrl, ngDialog, $rootScope){
     console.log("<=====管理控制台首页sidebar=====>")
+
+
+    $scope.status={
+        "subject":false,
+         "object":false,
+         'work_order':false
+    }
+    $scope.toggle=function(name){
+        if(name){
+            $scope.status[name]=!$scope.status[name];
+        }
+
+    }
 })
 
 
