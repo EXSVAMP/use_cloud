@@ -104,3 +104,27 @@
 
   }
 }
+
+.modal-md-quit{
+  font-size: 14px;
+  .modal-body{
+    text-align: center;
+    margin-bottom: 36px;
+    padding: 0px;
+    padding-top:46px ;
+     .icon-icon_poweroff{
+       font-size: 45px;
+       color:#ff6b6b;
+     }
+    .quit_desc{
+      position: relative;
+      top: -10px;
+      left: 16px;
+     }
+    }
+  .modal-footer{
+    margin-bottom: 30px;
+    padding-left: 30px;
+  }
+
+}

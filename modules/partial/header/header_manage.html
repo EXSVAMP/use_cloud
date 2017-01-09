@@ -1,4 +1,21 @@
 <div  class="headerManage" ng-controller="headerManageCtrl">
+  <script type="text/ng-template"  id="myModalContent.html">
+      <div class="modal-header">
+          <p>{{item.title}}</p>
+      </div>
+      <div class="modal-body">
+          <div>
+              <span class="icon-icon_poweroff"></span>
+              <span class="quit_desc">确定要退出吗?</span>
+          </div>
+      </div>
+      <div class="modal-footer">
+            <div>
+                <button type="button" class="btn btn_ok" ng-click="ok()">确定</button>
+                <button type="button" class="btn btn_cancel" ng-click="cancel()">取消</button>
+            </div>
+      </div>
+  </script>
     <div class="logo">
        <img src="/lib/img/logo200+80.svg"/>
     </div>
@@ -13,7 +30,7 @@
                      <span>DEVIC</span>
                  </div>
                 <ul class="dropdown-menu dropdown-user"  role="menu">
-                  <li><a  ng-click="" >退出</a></li>
+                  <li><a  ng-click="open('md-quit','quit')" >退出</a></li>
                 </ul>
                  <div class="work">
                      <span class="icon-icon_worksheet"></span>

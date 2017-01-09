@@ -153,7 +153,8 @@
             margin-left: 20px;
             .validat_mig{
               cursor: pointer;
-              margin-top: -4px;
+              margin-top: -2px;
+              width: 159px;
             }
           }
           .msg_validate{
@@ -171,6 +172,7 @@
 
           .read_check{
             width:16px!important;
+            padding-left: 0px!important;
           }
           .read_wrap{
             margin-top: -25px;
@@ -180,7 +182,6 @@
             //height: 48px;
             //line-height: 48px;
             //display: inline-block;
-            position: absolute;
             position: absolute;
             left: 25px;
             top: 19px;

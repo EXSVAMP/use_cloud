@@ -133,7 +133,7 @@ app.controller("MasterCtrl",function($scope, $cookieStore, $http, baseUrl, ngDia
 app.controller("headerCtrl",function($scope, $cookieStore, $http, $uibModal, baseUrl, ngDialog, $rootScope){
 
     $scope.state={
-        manage:true,
+        manage:false,
         register:true,
         login:true,
         user_name:false
@@ -143,7 +143,7 @@ app.controller("headerCtrl",function($scope, $cookieStore, $http, $uibModal, bas
     if(user_token){
         var username=sessionStorage.getItem("loginName");
         var password=sessionStorage.getItem("password");
-
+        $scope.state.manage=true;
         $scope.username=username;
         $scope.state.register=false;
         $scope.state.login=false;
@@ -180,9 +180,57 @@ app.controller("headerCtrl",function($scope, $cookieStore, $http, $uibModal, bas
 
 
 app.controller('headerManageCtrl',function($scope, $cookieStore, $http, $uibModal, baseUrl, ngDialog, $rootScope){
-    console.log("<=====管理控制台首页header=====>")
+    $scope.open=function(size, method){
+        var modalInstance=$uibModal.open({
+            animation: $scope.animationsEnabled,
+            controller: 'ModalHeader',
+            templateUrl: "myModalContent.html",
+            size: size,
+            resolve:{
+                items:function(){
+                    if(method=="quit"){
+                        return {
+                            title:"退出IOT云",
+                            method:"quit",
+                            scope:$scope
+                        }
+                    }
+                }
+            }
+        });
+        modalInstance.result.then(function(selectedItem) {
+            $scope.selected = selectedItem;
+        }, function(){});
+    }
 
 })
+
+app.controller('ModalHeader',function($scope,$cookieStore, $uibModalInstance,$http,items,baseUrl,url_junction,ngDialog){
+    baseUrl = baseUrl.getUrl();
+    $scope.item = items;
+    $scope.cancel = function(){
+        $uibModalInstance.dismiss('cancel');
+    };
+    if($scope.item.method=='quit'){
+        $scope.ok=function(){
+            $http.get(baseUrl+"/api/1/user/logout").success(function(data){
+                if(data.code=="200"){
+                    sessionStorage.removeItem("user_token");
+                    window.location.href = "/index.html"
+                }
+            }).error(function(){
+                ngDialog.open({
+                    template: '<p style=\"text-align: center\">退出出错:'+data.description+'</p>',
+                    plain: true
+                });
+            });
+            $uibModalInstance.close();
+        }
+    } 
+    
+    
+})
+
 
 app.controller("sideBarCtrl",function($scope, $cookieStore, $http, $uibModal,$location, baseUrl, ngDialog, $rootScope){
     console.log("<=====管理控制台首页sidebar=====>")
