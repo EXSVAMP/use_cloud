@@ -6,7 +6,11 @@
   z-index: 1000;
   margin-top: 80px;
   box-shadow: 0 0 6px 0 rgba(51, 51, 51, 0.3);
+  background-color: #ffffff;
   //background: #00A000;
+  a{
+    text-decoration: none;
+  }
   .side_user{
     width: 200px;
     height: 110px;
@@ -47,6 +51,11 @@
         padding-left: 28px;
         font-size: 16px;
         line-height: 46px;
+        &:hover{
+          color: #00a0e9!important;
+          border-left:solid 3px #00a0e9;
+          background-color:#f6f8fa;
+        }
         .icon{
           position: relative;
           top: 1px;
@@ -75,6 +84,11 @@
           line-height: 46px;
           display: inline-block;
           padding-left: 65px;
+          &:hover{
+            color: #00a0e9!important;
+            border-left:solid 3px #00a0e9;
+            background-color:#f6f8fa;
+          }
         }
       }
 
@@ -97,6 +111,8 @@
     }
   }
   .active{
-    color: red!important;
+    color: #00a0e9!important;
+    border-left:solid 3px #00a0e9;
+    background-color:#f6f8fa!important;
   }
 }

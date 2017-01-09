@@ -7,7 +7,7 @@
      </div>
      <div class="side-menu-group">
          <div class="side-menu">
-             <a class="menu-theme" ui-sref-active="active" ui-sref="manage">
+             <a class="menu-theme"  ui-sref-active="active" ui-sref="manage" >
                  <span class="icon-icon_console icon"></span>
                  <span>管理控制台</span>
              </a>
@@ -19,18 +19,15 @@
                     <span class="icon-icon_down icon-rotate"></span>
                 </span>
               <ul class="menu-group">
-                  <li class="sub-menu">
-                      <a>项目管理1</a>
-                  </li>
-                  <li class="sub-menu">
-                      <a>项目管理2</a>
+                  <li class="sub-menu" ui-sref-active="active" ui-sref="project">
+                      <a>项目管理</a>
                   </li>
               </ul>
 
             </div>
 
          <div class="side-menu">
-             <a class="menu-theme" ui-sref-active="active" >
+             <a class="menu-theme" ui-sref-active="active" ui-sref="analysis">
                  <span class="icon-icon_analysis icon"></span>
                  <span>物解析管理</span>
              </a>
@@ -48,11 +45,11 @@
                     <span class="icon-icon_down icon-rotate"></span>
                 </span>
              <ul class="menu-group">
-                 <li class="sub-menu">
-                     <a>工单管理1</a>
+                 <li class="sub-menu" ui-sref-active="active" ui-sref="subOrder">
+                     <a>提交工单</a>
                  </li>
-                 <li class="sub-menu">
-                     <a>工单管理2</a>
+                 <li class="sub-menu" ui-sref-active="active" ui-sref="myOrder">
+                     <a>我的工单</a>
                  </li>
              </ul>
          </div>

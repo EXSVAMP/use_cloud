@@ -16,6 +16,7 @@
     <link rel="stylesheet" type="text/css" href="/lib/sass/main.scss?">
     <!--<link rel="stylesheet" type="text/css" href="/lib/icomoon/style.css">-->
     <link rel="stylesheet" type="text/css" href="/bower_components/angular-busy/dist/angular-busy.min.css">
+    <link rel="stylesheet" type="text/css" href="/lib/build/loading-bar.css"/>
 
     <script src="/lib/jquery.js"></script>
     <script src="/lib/jquery-ui.min.js"></script>
@@ -35,15 +36,19 @@
     <script type="text/javascript" src="/bower_components/angular-ui-select/dist/select.min.js"></script>
     <script type="text/javascript" src="/bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="/bower_components/angular-loading-bar/build/loading-bar.min.js"></script>
 
 </head>
-<body ng-controller="MasterCtrl">
+<body ng-controller="MasterCtrl" class="cotanin">
 <link rel="import" href="/modules/partial/header/header_manage.html?__inline"/>
 <link rel="import" href="/modules/partial/sidebar/sidebar.html?__inline"/>
  <div id="page-wrap">
-       5678
-     <div ui-view>
+
+     <div class="page-content">
+       <div ui-view>
+       </div>
      </div>
+     <link rel="import" href="/modules/partial/foot/manage_foot.html?__inline"/>
  </div>
 </body>
 <script type="text/javascript">

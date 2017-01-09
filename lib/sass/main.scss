@@ -7,6 +7,7 @@
 @import "header";
 @import "sideBar";
 @import "headerManage";
+@import "manage";
 
 
 
@@ -25,9 +26,20 @@ textarea, p, section, strong, a, th, td, tr,span {
 #page-wrap{
   padding-left:200px ;
   width:100%;
-  height: 800px;
+  height:100%;
   //border:solid 2px;
   padding-left: 200px;
   padding-top: 80px;
+  //background-color: #f6f8fa;
 
 }
+.cotanin{
+  background-color: #f6f8fa;;
+}
+.page-content{
+  padding: 20px;
+}
+//#loading-bar  {
+//  position: relative;
+//  top:130px!important;
+//}

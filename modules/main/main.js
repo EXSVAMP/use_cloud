@@ -1,4 +1,4 @@
-angular.module("RDash",['ui.bootstrap','ui.router','ngCookies','ngDialog','cgBusy','truncate','ui.select','ngSanitize','ngAnimate']);
+angular.module("RDash",['ui.bootstrap','ui.router','ngCookies','ngDialog','cgBusy','truncate','ui.select','ngSanitize','angular-loading-bar','ngAnimate']);
 require('router');
 require('common/constant');
 require('common/service/utils');
@@ -110,11 +110,11 @@ app.config(['$httpProvider', function($httpProvider){
     $httpProvider.interceptors.push(HttpInterceptor);
 }]);
 
-app.controller("MasterCtrl",function($scope, $cookieStore, $http, baseUrl, ngDialog, $rootScope){
+app.controller("MasterCtrl",function($scope, $cookieStore, $http, baseUrl, ngDialog, $rootScope,cfpLoadingBar ){
 
     var baseUrl = baseUrl.getUrl();
-   console.log("1234567");
-
+    cfpLoadingBar.start();
+    cfpLoadingBar.complete();
     $rootScope.alert_pop = function(alert_info){
         $rootScope.alert_info = alert_info;
         ngDialog.open({
@@ -181,12 +181,15 @@ app.controller("headerCtrl",function($scope, $cookieStore, $http, $uibModal, bas
 
 app.controller('headerManageCtrl',function($scope, $cookieStore, $http, $uibModal, baseUrl, ngDialog, $rootScope){
     console.log("<=====管理控制台首页header=====>")
+
 })
 
-app.controller("sideBarCtrl",function($scope, $cookieStore, $http, $uibModal, baseUrl, ngDialog, $rootScope){
+app.controller("sideBarCtrl",function($scope, $cookieStore, $http, $uibModal,$location, baseUrl, ngDialog, $rootScope){
     console.log("<=====管理控制台首页sidebar=====>")
-
-
+    console.log("<==地址===>"+$location.path());
+    if($location.path()==""){
+        console.log("<====地址为空===>");
+    }
     $scope.status={
         "subject":false,
          "object":false,

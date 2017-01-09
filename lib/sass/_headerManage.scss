@@ -32,12 +32,41 @@
     .conten_right{
       float:right;
       padding-right:20px;
+      position: relative;
       .user{
         float:right;
         width:80px;
         height: 100%;
         line-height: 80px;
         text-align: center;
+        position: relative;
+        cursor: pointer;
+
+      }
+      //.dropdown-user{
+      //  min-width: 80px;
+      //  border-radius:0px;
+      //}
+      .dropdown-user{
+        position: absolute;
+        top: 77px;
+        min-width: 82px;
+        padding: 5px 0px;
+        text-align: center;
+        padding: 3px 0px;
+        left: 119px;
+        border-radius: 4px;
+        background-color: #00a0e9;
+        box-shadow: 0 1px 6px 0 rgba(51, 51, 51, 0.3);
+        li{
+          a{
+            color:#ffffff;
+            &:hover{
+              background-color: #00a0e9;
+            }
+          }
+        }
+
       }
       .work{
         float:right;
@@ -64,6 +93,11 @@
 
           //display: inline-block;
         }
+      }
+    }
+    .open{
+      .user{
+        background:#555555;
       }
     }
 

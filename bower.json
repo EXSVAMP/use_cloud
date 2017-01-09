@@ -40,7 +40,8 @@
     "angular-sanitize": "^1.5.8",
     "angular-ui-select": "^0.19.4",
     "selectize": "~0.8.5",
-    "bootstrap-datepicker": "^1.6.4"
+    "bootstrap-datepicker": "^1.6.4",
+    "angular-loading-bar": "^0.9.0"
   },
   "resolutions": {
     "bootstrap": "^3.3.7"
