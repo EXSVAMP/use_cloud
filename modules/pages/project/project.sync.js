@@ -17,7 +17,7 @@ app.register.controller("projectCtr", function ($scope, $http, $location, $uibMo
         if (PageHandle.setPageInput($scope.index_sel, $scope.total_page)) {
             $scope.bigCurrentPage = $scope.index_sel;
             $scope.index_sel = "";
-            // $scope.submit_search();
+            $scope.submit_search();
         } else
             $scope.index_sel = "";
     };
@@ -56,8 +56,8 @@ app.register.controller("projectCtr", function ($scope, $http, $location, $uibMo
         $scope.submit_search();
     }
       $scope.go=function(item){
-          $state.go('category',{projectId:item.id,projectName:item.name})
-
+          // $state.go('category',{projectId:item.id,projectName:item.name})
+          $location.path('/category').search({projectId:item.id,projectName:item.name});
       }
     $scope.open=function(size,method,index){
         var modalInstance = $uibModal.open({
@@ -74,6 +74,15 @@ app.register.controller("projectCtr", function ($scope, $http, $location, $uibMo
                             scope: $scope
                         }
                     }
+                    if(method=="delete"){
+                        return{
+                            title:"删除项目",
+                            method:"delete",
+                            id:index,
+                            scope:$scope
+                        }
+                    }
+
                 }
 
 

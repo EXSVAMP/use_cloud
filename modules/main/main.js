@@ -301,14 +301,19 @@ app.controller('ModalProject',function($scope,$cookieStore, $uibModalInstance,$h
     $scope.cancel = function(){
         $uibModalInstance.dismiss('cancel');
     };
-
+    $scope.state={
+        add:false,
+        delete:false
+    }
     // console.log("<==项目名称====>"+$scope.project_name);
     if($scope.item.method=='add'){
+        $scope.state.add=true;
+        $scope.state.delete=false;
         $scope.ok=function(){
             $scope.params={
                 name:$scope.project_name
             }
-            console.log("<==项目名称====>"+$scope.project_name);
+            // console.log("<==项目名称====>"+$scope.project_name);
             $http.post(baseUrl+"/api/1/topic/instance",$scope.params).success(function(data){
                 if(data.code=="200"){
                     items.scope.submit_search();
@@ -321,6 +326,26 @@ app.controller('ModalProject',function($scope,$cookieStore, $uibModalInstance,$h
             });
             $uibModalInstance.close();
         }
+    }
+
+    if($scope.item.method=='delete'){
+        $scope.state.add=false;
+        $scope.state.delete=true;
+        $scope.ok=function(){
+            $scope.pk=items.id;
+            $http.delete(baseUrl+"/api/1/topic/instance"+$scope.pk+"/").success(function(data){
+                if(data.code=="200"){
+                    items.scope.submit_search();
+                }
+
+            }).error(function(){
+                alert("有点故障！")
+            });
+            $uibModalInstance.close();
+        }
+
+
+
     }
 
 
