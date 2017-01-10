@@ -13,8 +13,9 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
     //    $scope.$broadcast('to-child', {id:$stateParams.projectId,name:$stateParams.projectName,tabName:'category'});
     //});
     var urlData = $location.search()
-    $scope.projectName = '';
-    $scope.projectId = '';
+    console.log('urlData',urlData)
+    $scope.projectName = urlData.projectName;
+    $scope.projectId = urlData.projectId;
 
     $scope.optip = 'obj-hide'
     $scope.optipHide = function(){
