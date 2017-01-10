@@ -1,6 +1,5 @@
-
 var app = angular.module('RDash');
-app.register.controller("categoryCtr", function ($scope, $http, $location, $uibModal,$interval,$cookieStore, baseUrl, $rootScope,utils,PageHandle,$stateParams,$timeout,url_junction) {
+app.register.controller("categoryCtr", function ($scope, $http, $location, $uibModal, $interval, $cookieStore, baseUrl, $rootScope, utils, PageHandle, $stateParams, $timeout, url_junction) {
     //console.log("主题2222项目管理控制台");
     //console.log('id',$stateParams.projectId)
     //console.log('name',$stateParams.projectName)
@@ -9,26 +8,27 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
     //$scope.projectId = $stateParams.projectId;
 
     var urlData = $location.search()
-    console.log('urlData',urlData)
+    console.log('urlData', urlData)
     $scope.projectName = urlData.projectName;
     $scope.projectId = urlData.projectId;
 
-    console.log('id',$scope.projectId)
-    console.log('name',$scope.projectName)
+    console.log('id', $scope.projectId)
+    console.log('name', $scope.projectName)
 
-    $scope.$on('to-pare', function(d,data) {
+    $scope.$on('to-pare', function (d, data) {
         console.log(data);
-        $scope.$broadcast('to-child', {id:$scope.projectId,name:$scope.projectName,tabName:'category'});
+        $scope.$broadcast('to-child', {id: $scope.projectId, name: $scope.projectName, tabName: 'category'});
     });
 
     $scope.optip = 'obj-hide'
-    $scope.optipHide = function(){
-        $timeout(function(){
+    $scope.optipHide = function () {
+        $timeout(function () {
             $scope.optip = 'obj-hide'
-        },1000)
+        }, 1000)
     }
 
-    $scope.opttipShow = function(){
+    $scope.optipShow = function (iFlag, message) {
+        $scope.$broadcast('optip', {flag: iFlag, msg: message});
         $scope.optip = 'obj-show'
         $scope.optipHide()
     }
@@ -39,6 +39,7 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
     $scope.bigCurrentPage = 1;
     $scope.numbers = [10, 20, 30, 40, 50];
     $scope.bigCurrentPage = 1;
+    $scope.query_result = [{name: 'test', topic: 'test2', description: "test3", id: '123'}]
     var BaseUrl = baseUrl.getUrl();
 
     $scope.setPage = function (pageNo) {
@@ -52,14 +53,15 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
 
     $scope.submit_search = function () {
         $http.get(BaseUrl + "/api/1/topic/class" + url_junction.getQuery({
-                name:$scope.category_name,
+                name: $scope.category_name,
                 index: $scope.bigCurrentPage,
                 number: $scope.number,
-                is_page:'1'
+                is_page: '1'
 
             })).success(function (data) {
             if (data.code == 200) {
                 $scope.query_result = data.data;
+                $scope.query_result = [{name: 'test', topic: 'test2', description: "test3", id: '123'}]
                 $scope.bigTotalItems = data.pageinfo.total_number;
                 $scope.total_page = data.pageinfo.total_page;
                 $scope.currentPageTotal = $scope.query_result.length;
@@ -85,8 +87,7 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
     }
 
 
-
-    $scope.open=function(size,method,index){
+    $scope.open = function (size, method, index) {
         var modalInstance = $uibModal.open({
             animation: $scope.animationsEnabled,
             controller: 'ModalCategory',
@@ -95,11 +96,24 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
             resolve: {
                 items: function () {
                     if (method == "add") {
-                        console.log(12334)
                         return {
                             title: "添加硬件类别",
                             method: "add",
                             scope: $scope
+                        }
+                    } else if (method == "modify") {
+                        return {
+                            title: "编辑硬件类别",
+                            method: "modify",
+                            scope: $scope,
+                            data: $scope.query_result[0]
+                        }
+                    } else if (method == "delete") {
+                        return {
+                            title: "删除硬件类别",
+                            method: "delete",
+                            scope: $scope,
+                            data: $scope.query_result[0]
                         }
                     }
                 }
@@ -113,13 +127,7 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
         })
 
 
-
-
     }
-
-
-
-
 
 
 })
