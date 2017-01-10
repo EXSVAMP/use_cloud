@@ -1,6 +1,6 @@
 
 var app = angular.module('RDash');
-app.register.controller("projectCtr", function ($scope, $http, $location, $uibModal,$interval,$cookieStore,$cookieStore, baseUrl, $rootScope,utils,PageHandle) {
+app.register.controller("projectCtr", function ($scope, $http, $location, $uibModal,$interval,$cookieStore,$cookieStore, baseUrl,url_junction, $rootScope,utils,PageHandle) {
 
     console.log("主题项目管理控制台");
 
@@ -9,9 +9,10 @@ app.register.controller("projectCtr", function ($scope, $http, $location, $uibMo
     $scope.maxSize = 5;
     $scope.bigCurrentPage = 1;
     $scope.numbers = [10, 20, 30, 40, 50];
-    $scope.bigTotalItems =50;
-    $scope.total_page = 7;
+    $scope.maxSize = 5;
+    $scope.bigCurrentPage = 1;
 
+    var BaseUrl = baseUrl.getUrl();
     $scope.setPage = function (pageNo) {
         if (PageHandle.setPageInput($scope.index_sel, $scope.total_page)) {
             $scope.bigCurrentPage = $scope.index_sel;
@@ -21,8 +22,39 @@ app.register.controller("projectCtr", function ($scope, $http, $location, $uibMo
             $scope.index_sel = "";
     };
 
+    $scope.submit_search = function () {
+        $http.get(BaseUrl + "/api/1/topic/instance" + url_junction.getQuery({
+                name:$scope.project_name,
+                index: $scope.bigCurrentPage,
+                number: $scope.number,
+                is_page:'1'
+
+            })).success(function (data) {
+            if (data.code == 200) {
+                $scope.query_result = data.data;
+                $scope.bigTotalItems = data.pageinfo.total_number;
+                $scope.total_page = data.pageinfo.total_page;
+                $scope.currentPageTotal = $scope.query_result.length;
 
 
+            } else {
+                console.log(data)
+            }
+        }).error(function (data, state) {
+            if (state == 403) {
+                BaseUrl.redirect()
+            }
+        })
+
+    };
+    $scope.submit_search();
+    $scope.changePage = function () {
+        $scope.submit_search();
+    }
+    $scope.setShowNum = function (number) {
+        $scope.number = number;
+        $scope.submit_search();
+    }
     $scope.open=function(size,method,index){
         var modalInstance = $uibModal.open({
             animation: $scope.animationsEnabled,

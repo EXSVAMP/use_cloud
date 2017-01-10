@@ -292,15 +292,17 @@ app.controller('ModalProject',function($scope,$cookieStore, $uibModalInstance,$h
     $scope.cancel = function(){
         $uibModalInstance.dismiss('cancel');
     };
-    $scope.params={
-        name:$scope.project_name
-    }
-    console.log("<==项目名称====>"+$scope.project_name);
+
+    // console.log("<==项目名称====>"+$scope.project_name);
     if($scope.item.method=='add'){
         $scope.ok=function(){
+            $scope.params={
+                name:$scope.project_name
+            }
+            console.log("<==项目名称====>"+$scope.project_name);
             $http.post(baseUrl+"/api/1/topic/instance",$scope.params).success(function(data){
                 if(data.code=="200"){
-
+                    items.scope.submit_search();
                 }
             }).error(function(){
                 ngDialog.open({

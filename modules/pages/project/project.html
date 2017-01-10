@@ -32,7 +32,7 @@
      </div>
      <div class="main-content">
           <div class="form-search">
-             <input class="project_name" placeholder="请输入项目名称"/>
+             <input class="project_name" ng-model="project_name" placeholder="请输入项目名称"/>
               <button type="button" class="searchBtn" type="button">搜索</button>
               <button type="button" class="addBtn" ng-click="open('md-add','add',$index)">
                   <span class="icon-icon_plus"></span>
@@ -50,11 +50,11 @@
                  </tr>
               </thead>
               <tbody>
-                  <tr>
-                      <td>1</td>
-                      <td>2</td>
-                      <td>3</td>
-                      <td>4</td>
+                  <tr ng-repeat="items in query_result">
+                      <td>{{items.name}}</td>
+                      <td>{{items.protocol}}</td>
+                      <td>{{items.topic}}</td>
+                      <td>{{items.created_at}}</td>
                       <td>5</td>
 
                   </tr>
