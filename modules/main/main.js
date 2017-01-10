@@ -3,7 +3,7 @@ require('router');
 require('interceptor');
 require('common/constant');
 require('common/service/utils');
-
+require('components/opTip');
 
 
 
@@ -359,7 +359,50 @@ app.controller('projectTabCtr',function($scope,$cookieStore, $http,baseUrl,url_j
 
 })
 
+app.controller('opTipCtr',function($scope,$cookieStore, $http,baseUrl,url_junction,ngDialog){
 
+
+})
+
+app.controller('ModalCategory',function($scope,$cookieStore, $uibModalInstance,$http,items,baseUrl,url_junction,ngDialog){
+    baseUrl = baseUrl.getUrl();
+    $scope.item = items;
+    $scope.cancel = function(){
+        $uibModalInstance.dismiss('cancel');
+    };
+    console.log(1234565667)
+    // console.log("<==项目名称====>"+$scope.project_name);
+    if($scope.item.method=='add'){
+        $scope.ok=function(){
+            $scope.params={
+                name:$scope.name,
+                topic:$scope.topic,
+                description:$scope.description,
+                instance:items.scope.projectId
+            }
+
+            console.log("<======>",$scope.params);
+            $http.post(baseUrl+"/api/1/topic/class",$scope.params).success(function(data){
+                if(data.code=="200"){
+                    items.scope.opttipShow()
+                    items.scope.submit_search();
+                }
+            }).error(function(){
+                ngDialog.open({
+                    template: '<p style=\"text-align: center\">添加失败:'+data.description+'</p>',
+                    plain: true
+                });
+            });
+            $uibModalInstance.close();
+        }
+    }
+
+
+
+
+
+
+})
 
 
 
