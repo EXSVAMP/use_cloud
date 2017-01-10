@@ -1,6 +1,6 @@
 
 var app = angular.module('RDash');
-app.register.controller("projectCtr", function ($scope, $http, $location, $uibModal,$interval,$cookieStore,$cookieStore, baseUrl,url_junction, $rootScope,utils,PageHandle) {
+app.register.controller("projectCtr", function ($scope, $http, $location, $uibModal,$interval,$cookieStore,$cookieStore,$state, baseUrl,url_junction, $rootScope,utils,PageHandle) {
 
     console.log("主题项目管理控制台");
 
@@ -55,6 +55,10 @@ app.register.controller("projectCtr", function ($scope, $http, $location, $uibMo
         $scope.number = number;
         $scope.submit_search();
     }
+      $scope.go=function(item){
+          $state.go('category',{projectId:item.id,projectName:item.name})
+
+      }
     $scope.open=function(size,method,index){
         var modalInstance = $uibModal.open({
             animation: $scope.animationsEnabled,
