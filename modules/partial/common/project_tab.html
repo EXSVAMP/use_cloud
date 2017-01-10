@@ -6,19 +6,19 @@
     </li>
 
     <li class="a-pare">
-        <a class="active">
+        <a ng-class="{true:'active',false:''}[item.category]" ui-sref="category({projectId:item.id})">
             <span>类别管理</span>
         </a>
     </li>
 
     <li class="a-pare">
-        <a ui-sref="identity({projectId:item.id})">
+        <a ng-class="{true:'active',false:''}[item.identity]" ui-sref="identity({projectId:item.id})">
             <span>身份管理</span>
         </a>
     </li>
 
     <li class="a-pare">
-        <a ui-sref="strategy">
+        <a ng-class="{true:'active',false:''}[item.strategy]" ui-sref="strategy({projectId:item.id})">
             <span>策略管理</span>
         </a>
     </li>
