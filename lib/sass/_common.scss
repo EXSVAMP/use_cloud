@@ -171,6 +171,15 @@
     border:solid 1px #008DCF;
   }
 }
+.btn_delete{
+  background-color: #ffffff;
+  border: solid 1px #ff6b6b;;
+  color: #ff6b6b;;
+  &:hover{
+    color:#E66060;
+    border:solid 1px #E66060;
+  }
+}
 .btn_cancel{
   background-color: #00a0e9;
   color: #ffffff;

@@ -3,6 +3,7 @@
         <div class="modal-header">
             <p>{{item.title}}</p>
         </div>
+      <div ng-show="state.add">
         <div class="modal-body">
             <div class="form-group form-group-selin form-group-project">
                 <div class="input-group">
@@ -23,9 +24,24 @@
                 <button type="button" class="btn btn_cancel" ng-click="ok()">保存</button>
             </div>
         </div>
-
-
-
+      </div>
+       <div ng-show="state.delete">
+           <div class="modal-body">
+               <div class="warn_delete">
+                   <span class="icon-icon_warn"></span>
+                   <div class='delete_desc'>
+                       <p>确定要删除这个项目吗</p>
+                       <p>注意：删除以后不可恢复！</p>
+                   </div>
+               </div>
+           </div>
+           <div class="modal-footer modal-footer-project">
+               <div>
+                   <button type="button" class="btn btn_delete" ng-click="ok()">删除</button>
+                   <button type="button" class="btn btn_cancel " ng-click="cancel()">取消</button>
+               </div>
+           </div>
+       </div>
     </script>
      <div class="main-top-bar">
           <p>主题管理／项目管理</p>
@@ -55,7 +71,10 @@
                       <td>{{items.protocol}}</td>
                       <td>{{items.topic}}</td>
                       <td>{{items.created_at| time_format}}</td>
-                      <td>5</td>
+                      <td>
+                          <span class="icon-icon_delete icon" ng-click="open('md-add','delete',items.id)"></span>
+
+                      </td>
 
                   </tr>
               </tbody>
