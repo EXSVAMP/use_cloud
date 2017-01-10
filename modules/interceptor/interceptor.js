@@ -12,7 +12,7 @@ function RDashInterceptor() {
 
         return {
             request: function(request) {
-                var security = sessionStorage.getItem("usecloud-token");
+                var security = sessionStorage.getItem("user_token");
                 if(security){
                     request.headers["usecloud-token"] =security;
                 }else{
@@ -28,7 +28,7 @@ function RDashInterceptor() {
                 if (response.headers) {
 
                     var headers = response.headers();
-                    var security = sessionStorage.getItem("usecloud-token");
+                    var security = sessionStorage.getItem("user_token");
                     if (security) {
                         security = headers[self.config.usecloud_token];
                     }
