@@ -51,10 +51,10 @@
               </thead>
               <tbody>
                   <tr ng-repeat="items in query_result">
-                      <td>{{items.name}}</td>
+                      <td ng-click="go(item)">{{items.name}}</td>
                       <td>{{items.protocol}}</td>
                       <td>{{items.topic}}</td>
-                      <td>{{items.created_at}}</td>
+                      <td>{{items.created_at| time_format}}</td>
                       <td>5</td>
 
                   </tr>

@@ -78,6 +78,15 @@ app.factory('PageHandle',function(ngDialog){
         }
     }
 });
+app.filter("time_format",function(){
+    return function(input){
+
+        if(input!=undefined){
+            input=input.replace("T"," ");
+        }
+        return input;
+    }
+});
 app.factory('HttpInterceptor', ['$q','$injector',HttpInterceptor]);
 function HttpInterceptor($q, $injector) {
     return {
