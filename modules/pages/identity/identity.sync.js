@@ -24,37 +24,11 @@ app.register.controller("identityCtr", function ($scope, $http, $location, $uibM
             $scope.index_sel = "";
     };
 
+   $scope.add=function(){
+       alert("123456");
+   }
 
 
-    //$scope.open=function(size,method,index){
-    //    var modalInstance = $uibModal.open({
-    //        animation: $scope.animationsEnabled,
-    //        controller: 'ModalProject',
-    //        templateUrl: "myModalproject.html",
-    //        size: size,
-    //        resolve: {
-    //            items: function () {
-    //                if (method == "add") {
-    //                    return {
-    //                        title: "添加项目",
-    //                        method: "add",
-    //                        scope: $scope
-    //                    }
-    //                }
-    //            }
-    //
-    //
-    //        }
-    //    });
-    //    modalInstance.result.then(function (selectedItem) {
-    //        $scope.selected = selectedItem;
-    //    }, function () {
-    //    })
-    //
-    //
-    //
-    //
-    //}
 
 
 

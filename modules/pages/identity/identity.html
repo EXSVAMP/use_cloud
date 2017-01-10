@@ -1,36 +1,14 @@
-<div class="project">
+<div class="identity">
 
-    <script  type="text/ng-template"  id="myModalproject.html" >
-        <div class="modal-header">
-            <p>{{item.title}}</p>
-        </div>
-        <div class="modal-body">
-            <div class="form-group form-group-selin">
-                <div class="input-group">
-                    <span class="input-group-addon inputdesc">项目管理</span>
-                    <input type="text" class="form-control" placeholder="Username">
-                </div>
-            </div>
-            <div class="form-group form-group-selin">
-                <div class="input-group">
-                    <span class="input-group-addon inputdesc">主题</span>
-                    <input type="text" class="form-control" placeholder="Username">
-                </div>
-            </div>
-        </div>
-
-
-
-    </script>
      <div class="main-top-bar">
          <p>主题管理／项目管理/ {{projectName}}</p>
      </div>
     <div class="main-content clear-padding-top">
          <link rel="import" href="/modules/partial/common/project_tab.html?__inline"/>
           <div class="form-search">
-             <input class="project_name" placeholder="请输入项目名称"/>
+             <input class="identity_name" placeholder="请输入项目名称"/>
               <button type="button" class="searchBtn" type="button">搜索</button>
-              <button type="button" class="addBtn" ng-click="open('md-add','add',$index)">
+              <button type="button" class="addBtn" ng-click="add()">
                   <span class="icon-icon_plus"></span>
                   <span class="addBtn_desc">添加项目</span>
               </button>
