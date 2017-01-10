@@ -402,7 +402,70 @@ app.controller('ModalCategory',function($scope,$cookieStore, $uibModalInstance,$
     $scope.cancel = function(){
         $uibModalInstance.dismiss('cancel');
     };
-    console.log(1234565667)
+    // console.log("<==项目名称====>"+$scope.project_name);
+    if($scope.item.method=='add'){
+        $scope.ok=function(){
+            $scope.params={
+                name:$scope.name,
+                topic:$scope.topic,
+                description:$scope.description,
+                instance:items.scope.projectId
+            }
+
+            console.log("<======>",$scope.params);
+            $http.post(baseUrl+"/api/1/topic/class",$scope.params).success(function(data){
+                if(data.code=="200"){
+                    items.scope.optipShow(1,'操作成功')
+                    items.scope.submit_search();
+                }
+            }).error(function(){
+                //ngDialog.open({
+                //    template: '<p style=\"text-align: center\">添加失败:'+data.description+'</p>',
+                //    plain: true
+                //});
+                items.scope.optipShow(0,'操作失败,'+data.description)
+            });
+            $uibModalInstance.close();
+        }
+    }else if($scope.item.method=='modify') {
+        var data = items.data;
+        console.log('data',data)
+        $scope.name = data.name;
+        $scope.topic = data.topic;
+        $scope.description = data.description;
+        $scope.ok = function () {
+            $scope.params = {
+                name: data.name,
+                topic: data.topic,
+                description: data.description
+            }
+
+            console.log("<======>", $scope.params);
+            $http.put(baseUrl + "/api/1/topic/class{" + data.id + "}/", $scope.params).success(function (data) {
+                if (data.code == "200") {
+                    items.scope.optipShow(1, '操作成功')
+                    items.scope.submit_search();
+                }
+            }).error(function () {
+                //ngDialog.open({
+                //    template: '<p style=\"text-align: center\">添加失败:'+data.description+'</p>',
+                //    plain: true
+                //});
+                items.scope.optipShow(0, '操作失败,' + data.description)
+            });
+            $uibModalInstance.close();
+        }
+    }
+
+
+})
+
+app.controller('ModalStrategy',function($scope,$cookieStore, $uibModalInstance,$http,items,baseUrl,url_junction,ngDialog){
+    baseUrl = baseUrl.getUrl();
+    $scope.item = items;
+    $scope.cancel = function(){
+        $uibModalInstance.dismiss('cancel');
+    };
     // console.log("<==项目名称====>"+$scope.project_name);
     if($scope.item.method=='add'){
         $scope.ok=function(){
