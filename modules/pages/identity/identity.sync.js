@@ -1,13 +1,13 @@
 
 var app = angular.module('RDash');
-app.register.controller("identityCtr", function ($scope, $http, $location, $uibModal,$interval,$cookieStore, baseUrl, $rootScope,utils,PageHandle,$stateParams) {
-    console.log($stateParams.projectId)
+app.register.controller("identityCtr", function ($scope, $http, $location, $uibModal,$interval,$cookieStore, baseUrl, $rootScope,utils,PageHandle) {
+    var urlData = $location.search()
+    $scope.projectName = urlData.projectName;
+    $scope.projectId = urlData.projectId;
+    $scope.$on('to-pare', function(d,data) {
+        $scope.$broadcast('to-child', {id:$scope.projectId,name:$scope.projectName,tabName:'identity'});
+    });
 
-    $scope.$broadcast('tabSel',$stateParams.projectId)
-
-    console.log("主题项目管理控制台");
-
-    // console.log("<========>"+$location.path());
     $scope.number = "10";
     $scope.maxSize = 5;
     $scope.bigCurrentPage = 1;
