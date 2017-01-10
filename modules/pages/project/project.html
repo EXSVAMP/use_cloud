@@ -49,7 +49,7 @@
      <div class="main-content">
           <div class="form-search">
              <input class="project_name" ng-model="project_name" placeholder="请输入项目名称"/>
-              <button type="button" class="searchBtn" type="button">搜索</button>
+              <button type="button" class="searchBtn" ng-click="submit_search()" type="button">搜索</button>
               <button type="button" class="addBtn" ng-click="open('md-add','add',$index)">
                   <span class="icon-icon_plus"></span>
                   <span class="addBtn_desc">添加项目</span>
@@ -67,7 +67,7 @@
               </thead>
               <tbody>
                   <tr ng-repeat="items in query_result">
-                      <td ng-click="go(items)">{{items.name}}</td>
+                      <td class="name_go" ng-click="go(items)">{{items.name}}</td>
                       <td>{{items.protocol}}</td>
                       <td>{{items.topic}}</td>
                       <td>{{items.created_at| time_format}}</td>
@@ -79,7 +79,12 @@
                   </tr>
               </tbody>
           </table>
-         <table class="table table-pagination">
+         <div class="no_content" ng-show="query_result.length==0">
+             <p><span class="icon-no_search"></span></p>
+             <p>找不到你需要的内容，请重新搜索</p>
+         </div>
+
+         <table class="table table-pagination" ng-show="query_result.length!=0">
              <thead>
              <tr>
                  <th class="pagination-items-per-page">
