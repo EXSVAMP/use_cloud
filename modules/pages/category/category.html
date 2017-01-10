@@ -1,9 +1,11 @@
 
 <div class="category">
     <script  type="text/ng-template"  id="myModalcategory.html" >
-        <div class="modal-header">
+        <div class="modal-header relative">
             <p>{{item.title}}</p>
+            <span class="icon-icon_close_circle_o category-pop-close" ng-click="cancel()"></span>
         </div>
+        <div ng-show="item.method=='add' || item.method=='modify'">
         <div class="modal-body">
             <div class="form-group form-group-selin form-group-category">
                 <div class="input-group">
@@ -11,10 +13,17 @@
                     <input type="text" class="form-control" placeholder="请输入类别名称" ng-model="name">
                 </div>
             </div>
-            <div class="form-group form-group-selin">
+            <div class="form-group form-group-selin" ng-show="item.method=='add'">
                 <div class="input-group">
                     <span class="input-group-addon bg-white inputdesc">主题</span>
                     <input type="text" class="form-control" placeholder="请输入主题" ng-model="topic">
+                </div>
+            </div>
+
+            <div class="form-group form-group-selin" ng-show="item.method=='modify'">
+                <div class="input-group">
+                    <span class="input-group-addon bg-white inputdesc">主题</span>
+                    <div type="text" class="form-control readonly" ng-bind="topic"></div>
                 </div>
             </div>
             <div class="form-group form-group-selin margin-bottom-30">
@@ -29,6 +38,26 @@
             <div>
                 <button type="button" class="btn btn_ok" ng-click="cancel()">取消</button>
                 <button type="button" class="btn btn_cancel" ng-click="ok()">保存</button>
+            </div>
+        </div>
+
+            </div>
+
+        <div ng-show="item.method == 'delete'">
+            <div class="modal-body">
+                <div class="warn_delete">
+                    <span class="icon-icon_warn"></span>
+                    <div class='delete_desc'>
+                        <p>确定要删除这个硬件吗</p>
+                        <p>注意：删除以后不可恢复！</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer modal-footer-project">
+                <div>
+                    <button type="button" class="btn btn_delete" ng-click="ok()">删除</button>
+                    <button type="button" class="btn btn_cancel " ng-click="cancel()">取消</button>
+                </div>
             </div>
         </div>
 
@@ -56,22 +85,26 @@
                      <th>操作</th>
                  </tr>
               </thead>
-              <tbody>
+              <tbody  ng-show="query_result.length>0">
                   <tr>
                       <td>1</td>
                       <td>2</td>
                       <td>3</td>
                       <td>4</td>
                       <td class="op-btns">
-                          <span class="icon-icon_edit edit-icon"></span>
+                          <span class="icon-icon_edit edit-icon" ng-click="open('md-add','modify',$index)"></span>
                           <span class="icon-icon_eye watch-icon"></span>
-                          <span class="icon-icon_delete delete-icon"></span>
+                          <span class="icon-icon_delete delete-icon" ng-click="open('md-add','delete',$index)"></span>
                       </td>
 
                   </tr>
               </tbody>
           </table>
-         <table class="table table-pagination">
+         <div class="no_content" ng-show="query_result.length==0">
+             <p><span class="icon-no_search"></span></p>
+             <p>找不到你需要的内容，请重新搜索</p>
+         </div>
+         <table class="table table-pagination" ng-show="query_result.length!=0">
              <thead>
              <tr>
                  <th class="pagination-items-per-page">
