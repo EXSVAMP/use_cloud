@@ -1,12 +1,13 @@
 
 var app = angular.module('RDash');
 app.register.controller("categoryCtr", function ($scope, $http, $location, $uibModal,$interval,$cookieStore, baseUrl, $rootScope,utils,PageHandle,$stateParams) {
-    console.log("主题2222项目管理控制台");
-
+    //console.log("主题2222项目管理控制台");
+    console.log('id',$stateParams.projectId)
+    console.log('name',$stateParams.projectName)
     $scope.$on('to-pare', function(d,data) {
         console.log(data);         //子级得不到值
 
-        $scope.$broadcast('to-child', {id:$stateParams.projectId,tabName:'category'});
+        $scope.$broadcast('to-child', {id:$stateParams.projectId,name:$stateParams.projectName,tabName:'category'});
     });
 
     // console.log("<========>"+$location.path());

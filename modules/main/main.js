@@ -327,6 +327,7 @@ app.controller('projectTabCtr',function($scope,$cookieStore, $http,baseUrl,url_j
         //console.log(10)
     $scope.item = {
         id:'',
+        name:'',
         category: false,
         identity: false,
         strategy: false
@@ -335,6 +336,7 @@ app.controller('projectTabCtr',function($scope,$cookieStore, $http,baseUrl,url_j
 
         console.log("projectId",data);
        $scope.item.id = data.id;
+        $scope.item.name = data.name;
         $scope.item[data.tabName] = true;
 
         console.log($scope.item.category);
