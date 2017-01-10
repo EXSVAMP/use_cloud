@@ -8,14 +8,18 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
     //$scope.projectName = $stateParams.projectName;
     //$scope.projectId = $stateParams.projectId;
 
-    //$scope.$on('to-pare', function(d,data) {
-    //    console.log(data);
-    //    $scope.$broadcast('to-child', {id:$stateParams.projectId,name:$stateParams.projectName,tabName:'category'});
-    //});
     var urlData = $location.search()
     console.log('urlData',urlData)
     $scope.projectName = urlData.projectName;
     $scope.projectId = urlData.projectId;
+
+    console.log('id',$scope.projectId)
+    console.log('name',$scope.projectName)
+
+    $scope.$on('to-pare', function(d,data) {
+        console.log(data);
+        $scope.$broadcast('to-child', {id:$scope.projectId,name:$scope.projectName,tabName:'category'});
+    });
 
     $scope.optip = 'obj-hide'
     $scope.optipHide = function(){
