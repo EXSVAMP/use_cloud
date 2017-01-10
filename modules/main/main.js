@@ -355,7 +355,7 @@ app.controller('ModalProject',function($scope,$cookieStore, $uibModalInstance,$h
 
 })
 
-app.controller('projectTabCtr',function($scope,$cookieStore, $http,baseUrl,url_junction,ngDialog){
+app.controller('projectTabCtr',function($scope,$cookieStore, $http,baseUrl,url_junction,ngDialog,$location){
         //baseUrl = baseUrl.getUrl();
         //$scope.item = items;
         //console.log(10)
@@ -379,7 +379,9 @@ app.controller('projectTabCtr',function($scope,$cookieStore, $http,baseUrl,url_j
 
     $scope.$emit('to-pare', 'ok');
 
-
+    $scope.go = function(tab){
+        $location.path('/'+tab).search({projectId:$scope.item.id,projectName:$scope.item.name});
+    }
 
 
 })
