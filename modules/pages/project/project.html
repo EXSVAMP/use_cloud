@@ -1,3 +1,93 @@
-<div>
-    236789
+<div class="project">
+    <script  type="text/ng-template"  id="myModalproject.html" >
+        <div class="modal-header">
+            <p>{{item.title}}</p>
+        </div>
+        <div class="modal-body">
+            <div class="form-group form-group-selin">
+                <div class="input-group">
+                    <span class="input-group-addon inputdesc">项目管理</span>
+                    <input type="text" class="form-control" placeholder="Username">
+                </div>
+            </div>
+            <div class="form-group form-group-selin">
+                <div class="input-group">
+                    <span class="input-group-addon inputdesc">主题</span>
+                    <input type="text" class="form-control" placeholder="Username">
+                </div>
+            </div>
+        </div>
+
+
+
+    </script>
+     <div class="main-top-bar">
+          <p>主题管理／项目管理</p>
+     </div>
+     <div class="main-content">
+          <div class="form-search">
+             <input class="project_name" placeholder="请输入项目名称"/>
+              <button type="button" class="searchBtn" type="button">搜索</button>
+              <button type="button" class="addBtn" ng-click="open('md-add','add',$index)">
+                  <span class="icon-icon_plus"></span>
+                  <span class="addBtn_desc">添加项目</span>
+              </button>
+          </div>
+          <table class="table table-bordered table-content">
+              <thead>
+                 <tr>
+                     <th>项目名称</th>
+                     <th>协议</th>
+                     <th>主题</th>
+                     <th>创建时间</th>
+                     <th>操作</th>
+                 </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td>1</td>
+                      <td>2</td>
+                      <td>3</td>
+                      <td>4</td>
+                      <td>5</td>
+
+                  </tr>
+              </tbody>
+          </table>
+         <table class="table table-pagination">
+             <thead>
+             <tr>
+                 <th class="pagination-items-per-page">
+                     <!-- <span>每页显示数量</span>
+                     <ui-select ng-model="number2" theme="bootstrap" on-select="setShowNum(number2)">
+                         <ui-select-match placeholder="10">{{$select.selected}}</ui-select-match>
+                         <ui-select-choices repeat="item in numbers">
+                             <div ng-bind-html="item"></div>
+                         </ui-select-choices>
+                     </ui-select> -->
+                     <div class="pagination-content">
+                         <span class="pagination-tip">每页显示数量</span>
+                         <ui-select ng-model="number" name="camera_page_select" theme="bootstrap" on-select="setShowNum(number)">
+                             <ui-select-match placeholder="10">{{$select.selected}}</ui-select-match>
+                             <ui-select-choices repeat="item in numbers">
+                                 <div ng-bind-html="item"></div>
+                                 <!-- <small ng-bind-html="item.email"></small> -->
+                             </ui-select-choices>
+                         </ui-select>
+                     </div>
+                 </th>
+                 <th>
+                     <uib-pagination items-per-page="number" total-items="bigTotalItems" ng-change="changePage()" ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm" boundary-link-numbers="true" num-pages="numPages" previous-text="上一页" next-text="下一页"></uib-pagination>
+                     <div class="pagination-detail">
+                         <span>共{{total_page}}页</span>
+                         <span>跳至<input type="text" name="camera_page" ng-model="index_sel"/>页</span>
+                         <span><button  name="camera_submmit" ng-click="setPage()">确定</button></span>
+                     </div>
+                 </th>
+
+             </tr>
+             </thead>
+
+         </table>
+     </div>
 </div>

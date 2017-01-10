@@ -52,7 +52,31 @@ app.service("baseUrl",function(constant){
         }
     }
 });
+app.factory('PageHandle',function(ngDialog){
+    return{
+        setPageInput: function(sPageInput,iMaxPage){
+            var isNum = /^\d+$/.test(sPageInput);
+            if(!isNum){
+                ngDialog.open({
+                    template: '<p style=\"text-align: center\">输入页码不正确</p>',
+                    plain: true
+                });
+                return false;
+            }else{
+                sPageInput = parseInt(sPageInput);
+                if(sPageInput == 0 || sPageInput > iMaxPage){
+                    ngDialog.open({
+                        template: '<p style=\"text-align: center\">输入页码不正确</p>',
+                        plain: true
+                    });
+                    return false;
+                }
 
+            }
+            return true;
+        }
+    }
+});
 app.factory('HttpInterceptor', ['$q','$injector',HttpInterceptor]);
 function HttpInterceptor($q, $injector) {
     return {
@@ -180,6 +204,11 @@ app.controller("headerCtrl",function($scope, $cookieStore, $http, $uibModal, bas
 
 
 app.controller('headerManageCtrl',function($scope, $cookieStore, $http, $uibModal, baseUrl, ngDialog, $rootScope){
+    var username=sessionStorage.getItem("loginName");
+    if(username){
+        $scope.user_name=username;
+    };
+
     $scope.open=function(size, method){
         var modalInstance=$uibModal.open({
             animation: $scope.animationsEnabled,
@@ -235,6 +264,10 @@ app.controller('ModalHeader',function($scope,$cookieStore, $uibModalInstance,$ht
 app.controller("sideBarCtrl",function($scope, $cookieStore, $http, $uibModal,$location, baseUrl, ngDialog, $rootScope){
     console.log("<=====管理控制台首页sidebar=====>")
     console.log("<==地址===>"+$location.path());
+    var username=sessionStorage.getItem("loginName");
+    if(username){
+       $scope.user_name=username;
+    }
     if($location.path()==""){
         console.log("<====地址为空===>");
     }
@@ -250,6 +283,22 @@ app.controller("sideBarCtrl",function($scope, $cookieStore, $http, $uibModal,$lo
 
     }
 })
+
+
+app.controller('ModalProject',function($scope,$cookieStore, $uibModalInstance,$http,items,baseUrl,url_junction,ngDialog){
+    baseUrl = baseUrl.getUrl();
+    $scope.item = items;
+
+
+
+
+
+
+})
+
+
+
+
 
 
 
