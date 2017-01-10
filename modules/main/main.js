@@ -321,6 +321,34 @@ app.controller('ModalProject',function($scope,$cookieStore, $uibModalInstance,$h
 
 })
 
+app.controller('projectTabCtr',function($scope,$cookieStore, $http,baseUrl,url_junction,ngDialog){
+        //baseUrl = baseUrl.getUrl();
+        //$scope.item = items;
+        //console.log(10)
+    $scope.item = {
+        id:'',
+        category: false,
+        identity: false,
+        strategy: false
+    }
+    $scope.$on('to-child', function(d,data) {
+
+        console.log("projectId",data);
+       $scope.item.id = data.id;
+        $scope.item[data.tabName] = true;
+
+        console.log($scope.item.category);
+
+    });
+
+    $scope.$emit('to-pare', 'ok');
+
+
+
+
+})
+
+
 
 
 
