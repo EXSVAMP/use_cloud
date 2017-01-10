@@ -285,9 +285,7 @@ app.register.controller("registerCtr", function ($scope, $http, $location, $uibM
                     $scope.register_first=false;
                     $scope.register_second=true;
                     $scope.complete_first=true;
-                    sessionStorage.setItem("usecloud-token",
-                       data.data.token
-                    );
+                   
                     sessionStorage.setItem("user_token",
                         data.data.token
                     );

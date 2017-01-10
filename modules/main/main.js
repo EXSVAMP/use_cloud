@@ -1,5 +1,6 @@
 angular.module("RDash",['ui.bootstrap','ui.router','ngCookies','ngDialog','cgBusy','truncate','ui.select','ngSanitize','angular-loading-bar','ngAnimate']);
 require('router');
+require('interceptor');
 require('common/constant');
 require('common/service/utils');
 
@@ -288,6 +289,28 @@ app.controller("sideBarCtrl",function($scope, $cookieStore, $http, $uibModal,$lo
 app.controller('ModalProject',function($scope,$cookieStore, $uibModalInstance,$http,items,baseUrl,url_junction,ngDialog){
     baseUrl = baseUrl.getUrl();
     $scope.item = items;
+    $scope.cancel = function(){
+        $uibModalInstance.dismiss('cancel');
+    };
+    $scope.params={
+        name:$scope.project_name
+    }
+    console.log("<==项目名称====>"+$scope.project_name);
+    if($scope.item.method=='add'){
+        $scope.ok=function(){
+            $http.post(baseUrl+"/api/1/topic/instance",$scope.params).success(function(data){
+                if(data.code=="200"){
+
+                }
+            }).error(function(){
+                ngDialog.open({
+                    template: '<p style=\"text-align: center\">添加失败:'+data.description+'</p>',
+                    plain: true
+                });
+            });
+            $uibModalInstance.close();
+        }
+    }
 
 
 

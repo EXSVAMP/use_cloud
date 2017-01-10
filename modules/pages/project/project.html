@@ -4,17 +4,23 @@
             <p>{{item.title}}</p>
         </div>
         <div class="modal-body">
-            <div class="form-group form-group-selin">
+            <div class="form-group form-group-selin form-group-project">
                 <div class="input-group">
                     <span class="input-group-addon inputdesc">项目管理</span>
-                    <input type="text" class="form-control" placeholder="Username">
+                    <input type="text" class="form-control" ng-model="project_name" placeholder="请输入项目名称">
                 </div>
             </div>
-            <div class="form-group form-group-selin">
-                <div class="input-group">
-                    <span class="input-group-addon inputdesc">主题</span>
-                    <input type="text" class="form-control" placeholder="Username">
-                </div>
+            <!--<div class="form-group form-group-selin">-->
+                <!--<div class="input-group">-->
+                    <!--<span class="input-group-addon inputdesc">主题</span>-->
+                    <!--<input type="text" class="form-control" placeholder="Devin/hulk/reader/请输入主题">-->
+                <!--</div>-->
+            <!--</div>-->
+        </div>
+        <div class="modal-footer modal-footer-project">
+            <div>
+                <button type="button" class="btn btn_ok" ng-click="cancel()">取消</button>
+                <button type="button" class="btn btn_cancel" ng-click="ok()">保存</button>
             </div>
         </div>
 
