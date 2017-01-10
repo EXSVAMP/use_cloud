@@ -56,8 +56,8 @@ app.register.controller("projectCtr", function ($scope, $http, $location, $uibMo
         $scope.submit_search();
     }
       $scope.go=function(item){
-          $state.go('category',{projectId:item.id,projectName:item.name})
-
+          // $state.go('category',{projectId:item.id,projectName:item.name})
+          $location.path('/category').search({projectId:item.id,projectName:item.name});
       }
     $scope.open=function(size,method,index){
         var modalInstance = $uibModal.open({
