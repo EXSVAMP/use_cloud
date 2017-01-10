@@ -296,6 +296,23 @@ app.controller('ModalProject',function($scope,$cookieStore, $uibModalInstance,$h
 
 })
 
+app.controller('projectTabCtr',function($scope,$cookieStore, $http,baseUrl,url_junction,ngDialog){
+        //baseUrl = baseUrl.getUrl();
+        //$scope.item = items;
+        console.log(10)
+    $scope.$on('to-child', function(d,data) {
+        console.log(d);         //子级得不到值
+        console.log(data);         //子级得不到值
+    });
+
+    $scope.$emit('to-pare', '8900');
+
+
+
+
+})
+
+
 
 
 
