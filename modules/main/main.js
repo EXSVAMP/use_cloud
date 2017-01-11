@@ -461,17 +461,12 @@ app.controller('ModalCategory',function($scope,$cookieStore, $uibModalInstance,$
 
 })
 
-app.controller('ModalStrategy',function($scope,$cookieStore, $http,baseUrl,url_junction,ngDialog){
+app.controller('ModalStrategy',function($scope,$cookieStore, $uibModalInstance,$http,items,baseUrl,url_junction,ngDialog){
     baseUrl = baseUrl.getUrl();
-    $scope.item = {};
+    $scope.item = items;
     $scope.cancel = function(){
-        $scope.$emit('addstrategyclose','close')
+        $uibModalInstance.dismiss('cancel');
     };
-
-    $scope.$on('addstrategy',function(q,data){
-        $scope.item = data;
-    })
-
     if($scope.item.method=='add'){
         $scope.ok=function(){
             $scope.params={
@@ -525,6 +520,126 @@ app.controller('ModalStrategy',function($scope,$cookieStore, $http,baseUrl,url_j
             $uibModalInstance.close();
         }
     }
+
+
+})
+
+app.controller('addStrategyCtr',function($scope,$cookieStore, $http,baseUrl,url_junction,ngDialog){
+    baseUrl = baseUrl.getUrl();
+    $scope.item = {};
+    $scope.cancel = function(){
+        //console.log($scope.addTopicList[0])
+        $scope.$emit('addstrategyclose','close')
+    };
+
+    $scope.$on('addstrategy',function(q,data){
+        $scope.item = data;
+        console.log('$scope.item',$scope.item)
+        if($scope.item.method=='add'){
+            $scope.ok=function(){
+                $scope.params={
+                    name:$scope.name,
+                    classification:$scope.classification,
+                    description:$scope.description,
+                    instance:$scope.item.projectId,
+                    topic: []
+                };
+                _.forEach($scope.addTopicList, function(value) {
+                    //console.log(value.name);
+                    //var pubsub = ''
+                    //if($scope.addTopicList[key]['p'] && $scope.addTopicList[key]['s']){
+                    //    pubsub = 'ps'
+                    //}else if($scope.addTopicList[key]['p']){
+                    //    pubsub = 'p'
+                    //}else if($scope.addTopicList[key]['s']){
+                    //    pubsub = 's'
+                    //}
+                    $scope.params.topic.push({name:value['name'],pubsub:value['pubsub']})
+                });
+
+                console.log("<======>",$scope.params);
+                $http.post(baseUrl+"/api/1/topic/class",$scope.params).success(function(data){
+                    if(data.code=="200"){
+                        items.scope.optipShow(1,'操作成功')
+                        items.scope.submit_search();
+                    }
+                }).error(function(){
+                    //ngDialog.open({
+                    //    template: '<p style=\"text-align: center\">添加失败:'+data.description+'</p>',
+                    //    plain: true
+                    //});
+                    items.scope.optipShow(0,'操作失败,'+data.description)
+                });
+                $uibModalInstance.close();
+            }
+        }else if($scope.item.method=='modify') {
+            var data = items.data;
+            console.log('data', data)
+            $scope.name = data.name;
+            $scope.topic = data.topic;
+            $scope.description = data.description;
+            $scope.ok = function () {
+                $scope.params = {
+                    name: data.name,
+                    topic: data.topic,
+                    description: data.description
+                }
+
+                console.log("<======>", $scope.params);
+                $http.put(baseUrl + "/api/1/topic/class{" + data.id + "}/", $scope.params).success(function (data) {
+                    if (data.code == "200") {
+                        items.scope.optipShow(1, '操作成功')
+                        items.scope.submit_search();
+                    }
+                }).error(function () {
+                    //ngDialog.open({
+                    //    template: '<p style=\"text-align: center\">添加失败:'+data.description+'</p>',
+                    //    plain: true
+                    //});
+                    items.scope.optipShow(0, '操作失败,' + data.description)
+                });
+                $uibModalInstance.close();
+            }
+        }
+    })
+
+    $scope.addTopicList = []; //{p:false,s:false}
+    $scope.remainTopicToAddCount = 5;
+    $scope.addPS = function(idx,type){
+        $scope.addTopicList[idx][type] = !$scope.addTopicList[idx][type];
+        //if(type == 'p' && /p/.test($scope.addTopicList[idex]['pubsub'])){
+        //    $scope.addTopicList[idex]['pubsub'] = $scope.addTopicList[idex]['pubsub'].replace('p','')
+        //}else if(type == 'p'){
+        //    $scope.addTopicList[idex]['pubsub'] += 'p'
+        //}else if(type == 's' && /s/.test($scope.addTopicList[idex]['pubsub'])){
+        //    $scope.addTopicList[idex]['pubsub'] = $scope.addTopicList[idex]['pubsub'].replace('s','')
+        //}else if(type == 'p'){
+        //    $scope.addTopicList[idex]['pubsub'] += 's'
+        //}
+
+        var reg = new RegExp(type)
+        if(reg.test($scope.addTopicList[idx]['pubsub'])){
+            $scope.addTopicList[idx]['pubsub'] = $scope.addTopicList[idx]['pubsub'].replace(type,'')
+        }else{
+            $scope.addTopicList[idx]['pubsub'] += type
+        }
+
+        console.log($scope.addTopicList[idx]['pubsub'])
+    }
+    $scope.addTopicFunc = function(){
+        $scope.remainTopicToAddCount--;
+        $scope.addTopicList.push({p:false,s:false,name:'',pubsub:''})
+        console.log($scope.addTopicList)
+    }
+    $scope.delTopicFunc =function(idx){
+        $scope.remainTopicToAddCount++;
+        _.pullAt($scope.addTopicList, [idx]);
+    }
+    $scope.setModel = function(idx){
+        return 'topic'+idx;
+    }
+
+
 
 
 })

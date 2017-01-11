@@ -54,6 +54,7 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
     $scope.submit_search = function () {
         $http.get(BaseUrl + "/api/1/topic/class" + url_junction.getQuery({
                 name: $scope.category_name,
+                instance:$scope.projectId,
                 index: $scope.bigCurrentPage,
                 number: $scope.number,
                 is_page: '1'
