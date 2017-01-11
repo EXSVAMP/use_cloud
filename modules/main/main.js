@@ -398,10 +398,16 @@ app.controller('opTipCtr',function($scope,$cookieStore, $http,baseUrl,url_juncti
 })
 
 app.controller('coverCtr',function($scope,$cookieStore, $http,baseUrl,url_junction,ngDialog){
-    $scope.$on("coverState",function(event,data){
+    baseUrl = baseUrl.getUrl();
+    $scope.item = {};
+    $scope.numbers = [10, 20, 30, 40, 50];
+    $scope.$on("identityState",function(event,data){
         console.log("<===广播数据==>"+data);
-        $scope.cover=data;
+        $scope.item = data;;
     })
+    $scope.cancel = function(){
+        $scope.$emit('addidentityclose','close')
+    };
 
 })
 

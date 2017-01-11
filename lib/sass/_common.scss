@@ -144,6 +144,7 @@
   padding-right:30px;
   margin-bottom: 20px;
   float: left;
+
   .input-group{
     .inputdesc{
       width: 90px;
@@ -153,7 +154,47 @@
       width:331px ;
       height: 40px;
     }
+    .modal_add{
+      width: 60px;
+      height:40px;
+      border: solid 1px #000;
+      display: inline-block;
+    }
   }
+  .input-group{
+    .ui-select-bootstrap>.ui-select-match>.btn {
+      width: 261px;
+      height: 40px;
+      border-top-right-radius: 4px!important;
+      border-bottom-right-radius: 4px!important;
+    }
+    .ui-select-bootstrap>input.ui-select-search.form-control {
+      width: 261px;
+      border-radius: 0px;
+      border-top-right-radius: 4px!important;
+      border-bottom-right-radius: 4px!important;
+
+    }
+    .ui-select-bootstrap>.ui-select-choices{
+      left:90px;
+      width: 261px;
+    }
+  }
+  .input-group-select{
+    width:352px;
+    float: left;
+  }
+  .select_addBtn{
+    width: 60px;
+    height: 40px;
+    float:right;
+    background-color: #ffffff;
+    .icon-icon_plus{
+      font-size: 30px;
+      color:#00a0e9 ;
+    }
+  }
+
 }
 
 
@@ -410,16 +451,15 @@ table.table-pagination{
 }
 
 .cover{
-  position: fixed;
-  top: 0px;
-  width: 100%;
-  /* margin-left: -220px; */
-  background-color: #000;
-  z-index: 1040;
-  right: 0;
-  left:0;
-  opacity: .5;
-  height: 100%;
+  //position: fixed;
+  //top: 0;
+  //right: 0;
+  //bottom: 0;
+  //left: 0;
+  //overflow: auto;
+  //z-index: 10000;
+  //background: rgba(0, 0, 0, 0.4);
+  //height: 100%;
 }
 
 

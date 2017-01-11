@@ -24,10 +24,15 @@ app.register.controller("identityCtr", function ($scope, $http, $location, $uibM
             $scope.index_sel = "";
     };
 
-    $scope.cover=true;
+
+
+    $scope.$on('addidentityclose',function(){
+        $scope.cover='obj-hide'
+    })
+    $scope.cover="obj-hide";
    $scope.add=function(){
-       $scope.cover=true;
-       $scope.$broadcast("coverState",$scope.cover);
+       $scope.cover='obj-show';
+       $scope.$broadcast('identityState', {method:'add',title:'添加身份'});
    }
 
 

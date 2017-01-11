@@ -1,5 +1,39 @@
-<div ng-controller="coverCtr" class="cover" ng-show="cover">
+<div ng-controller="coverCtr" class="cover_identity">
      <div class="identity_modal">
-         aaaa
+         <div class="identity_modal_header">
+                <p>{{item.title}}</p>
+             <span class="icon-icon_close_circle_o category-pop-close" ng-click="cancel()"></span>
+         </div>
+         <div class="identity_modal_body">
+             <div class="form-group form-group-selin form-group-identity">
+                 <div class="input-group">
+                     <span class="input-group-addon inputdesc">项目管理</span>
+                     <input type="text" class="form-control" ng-model="project_name" placeholder="请输入项目名称">
+                 </div>
+             </div>
+             <div class="form-group form-group-selin ">
+                 <div class="input-group input-group-select">
+                     <span class="input-group-addon inputdesc">项目管理</span>
+                     <ui-select ng-model="number" name="camera_page_select" theme="bootstrap" on-select="setShowNum(number)">
+                         <ui-select-match placeholder="10">{{$select.selected}}</ui-select-match>
+                         <ui-select-choices repeat="item in numbers">
+                             <div ng-bind-html="item"></div>
+                             <!-- <small ng-bind-html="item.email"></small> -->
+                         </ui-select-choices>
+                     </ui-select>
+                 </div>
+                 <button type="button" class="select_addBtn">
+                     <span class="icon-icon_plus"></span>
+                 </button>
+             </div>
+             <div class="form-group form-group-selin">
+                 <div class="input-group">
+                     <span class="input-group-addon inputdesc">项目管理</span>
+                     <input type="text" class="form-control" ng-model="project_name" placeholder="请输入项目名称">
+                 </div>
+             </div>
+
+         </div>
+
      </div>
 </div>
