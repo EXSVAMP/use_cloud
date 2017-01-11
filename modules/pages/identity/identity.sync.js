@@ -24,9 +24,11 @@ app.register.controller("identityCtr", function ($scope, $http, $location, $uibM
             $scope.index_sel = "";
     };
 
+    $scope.state.cover=false;
    $scope.add=function(){
-       alert("123456");
+       $scope.state.cover=true;
    }
+
 
 
 

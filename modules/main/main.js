@@ -4,6 +4,7 @@ require('interceptor');
 require('common/constant');
 require('common/service/utils');
 require('components/opTip');
+require('components/cover');
 
 
 
