@@ -114,3 +114,20 @@
   position: relative;
   top: 2px;
 }
+
+.categoryWatchTip{
+  position: absolute;
+  top: 22px;
+  left: 0px;
+  font-size: 16px;
+  color: #333;
+}
+
+.categoryWatchContent{
+  clear: both;
+  height: 470px;
+  border: 1px solid #ddd;
+  padding: 20px;
+  font-size: 14px;
+  color: #333;
+}

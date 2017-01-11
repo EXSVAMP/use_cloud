@@ -68,16 +68,17 @@ app.register.controller("strategyCtr", function (ngDialog,$scope, $http, $locati
     };
 
     $scope.submit_search = function () {
-        $http.get(BaseUrl + "/api/1/topic/class" + url_junction.getQuery({
-                name: $scope.category_name,
+        $http.get(BaseUrl + "/api/1/topic/strategy" + url_junction.getQuery({
+                name: $scope.strategy_name,
                 index: $scope.bigCurrentPage,
                 number: $scope.number,
-                is_page: '1'
+                is_page: '1',
+                instance: $scope.projectId
 
             })).success(function (data) {
             if (data.code == 200) {
                 $scope.query_result = data.data;
-                $scope.query_result = [{name: 'test', topic: 'test2', description: "test3", id: '123'}]
+                //$scope.query_result = [{name: 'test', topic: 'test2', description: "test3", id: '123'}]
                 $scope.bigTotalItems = data.pageinfo.total_number;
                 $scope.total_page = data.pageinfo.total_page;
                 $scope.currentPageTotal = $scope.query_result.length;

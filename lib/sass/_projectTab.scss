@@ -139,7 +139,7 @@ $poslist: top right bottom left;
   display: none !important;
 }
 
-.relative{
+.relative {
   position: relative;
 }
 
@@ -151,7 +151,7 @@ $poslist: top right bottom left;
   line-height: 28px;
 }
 
-.category-pop-close{
+.category-pop-close {
   font-size: 24px;
   color: #ddd;
   position: absolute;
@@ -159,3 +159,53 @@ $poslist: top right bottom left;
   right: 10px;
   cursor: pointer;
 }
+
+.height-auto {
+  height: auto;
+  overflow: hidden;
+}
+
+.border-light {
+  border-bottom: 1px solid #ddd;
+}
+
+.margin-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.expectBlock-wrap {
+  min-height: 600px;
+}
+
+.expectBlock {
+  width: 529px;
+  height: 346px;
+  background: #fff;
+  margin-top: 50px;
+  margin-left: auto;
+  margin-right: auto;
+  .expectBlockCont {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  .expectBlockIcon {
+    font-size: 160px;
+    color: #dddddd;
+  }
+  .expectBlockTip {
+    font-size: 16px;
+    color: #888;
+  }
+
+}
+
