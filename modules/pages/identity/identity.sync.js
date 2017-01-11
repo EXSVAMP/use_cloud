@@ -24,9 +24,10 @@ app.register.controller("identityCtr", function ($scope, $http, $location, $uibM
             $scope.index_sel = "";
     };
 
-    $scope.state.cover=false;
+    $scope.cover=true;
    $scope.add=function(){
-       $scope.state.cover=true;
+       $scope.cover=true;
+       $scope.$broadcast("coverState",$scope.cover);
    }
 
 

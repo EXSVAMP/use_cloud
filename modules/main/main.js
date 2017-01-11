@@ -397,6 +397,16 @@ app.controller('opTipCtr',function($scope,$cookieStore, $http,baseUrl,url_juncti
     });
 })
 
+app.controller('coverCtr',function($scope,$cookieStore, $http,baseUrl,url_junction,ngDialog){
+    $scope.$on("coverState",function(event,data){
+        console.log("<===广播数据==>"+data);
+        $scope.cover=data;
+    })
+
+})
+
+
+
 app.controller('ModalCategory',function($scope,$cookieStore, $uibModalInstance,$http,items,baseUrl,url_junction,ngDialog){
     baseUrl = baseUrl.getUrl();
     $scope.item = items;

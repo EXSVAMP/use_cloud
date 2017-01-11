@@ -409,7 +409,18 @@ table.table-pagination{
   }
 }
 
-
+.cover{
+  position: fixed;
+  top: 0px;
+  width: 100%;
+  /* margin-left: -220px; */
+  background-color: #000;
+  z-index: 1040;
+  right: 0;
+  left:0;
+  opacity: .5;
+  height: 100%;
+}
 
 
 
