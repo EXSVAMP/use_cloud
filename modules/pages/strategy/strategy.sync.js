@@ -42,7 +42,7 @@ app.register.controller("strategyCtr", function (ngDialog,$scope, $http, $locati
     //add
     $scope.addStrategy = function(){
         $scope.addstrategy = 'obj-show'
-        $scope.$broadcast('addstrategy', {method:'add',title:'添加策略'});
+        $scope.$broadcast('addstrategy', {method:'add',title:'添加策略',projectId:$scope.projectId});
     }
 
     $scope.$on('addstrategyclose',function(){

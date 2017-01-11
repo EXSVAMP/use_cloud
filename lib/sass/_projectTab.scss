@@ -54,7 +54,7 @@
 }
 
 //margin padding
-$list: 5 10 15 20 25 30 35 40 45 50;
+$list: 5 10 12 15 20 25 30 35 40 45 50;
 $poslist: top right bottom left;
 @each $i in $list {
   @each $j in $poslist {
