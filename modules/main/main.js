@@ -5,7 +5,7 @@ require('common/constant');
 require('common/service/utils');
 require('components/opTip');
 require('components/cover');
-
+require('components/addStrategy');
 
 
 
@@ -461,13 +461,17 @@ app.controller('ModalCategory',function($scope,$cookieStore, $uibModalInstance,$
 
 })
 
-app.controller('ModalStrategy',function($scope,$cookieStore, $uibModalInstance,$http,items,baseUrl,url_junction,ngDialog){
+app.controller('ModalStrategy',function($scope,$cookieStore, $http,baseUrl,url_junction,ngDialog){
     baseUrl = baseUrl.getUrl();
-    $scope.item = items;
+    $scope.item = {};
     $scope.cancel = function(){
-        $uibModalInstance.dismiss('cancel');
+        $scope.$emit('addstrategyclose','close')
     };
-    // console.log("<==项目名称====>"+$scope.project_name);
+
+    $scope.$on('addstrategy',function(q,data){
+        $scope.item = data;
+    })
+
     if($scope.item.method=='add'){
         $scope.ok=function(){
             $scope.params={

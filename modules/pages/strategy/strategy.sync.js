@@ -1,11 +1,16 @@
 var app = angular.module('RDash');
-app.register.controller("strategyCtr", function ($scope, $http, $location, $uibModal, $interval, $cookieStore, baseUrl, $rootScope, utils, PageHandle, $stateParams, $timeout, url_junction) {
+app.register.controller("strategyCtr", function (ngDialog,$scope, $http, $location, $uibModal, $interval, $cookieStore, baseUrl, $rootScope, utils, PageHandle, $stateParams, $timeout, url_junction) {
     //console.log("主题2222项目管理控制台");
     //console.log('id',$stateParams.projectId)
     //console.log('name',$stateParams.projectName)
 
     //$scope.projectName = $stateParams.projectName;
     //$scope.projectId = $stateParams.projectId;
+
+    //ngDialog.open({
+    //    template: '<p style=\"text-align: center\">添加失败</p>',
+    //    plain: true
+    //});
 
     var urlData = $location.search()
     console.log('urlData', urlData)
@@ -21,6 +26,7 @@ app.register.controller("strategyCtr", function ($scope, $http, $location, $uibM
     });
 
     $scope.optip = 'obj-hide'
+    $scope.addstrategy = 'obj-hide'
     $scope.optipHide = function () {
         $timeout(function () {
             $scope.optip = 'obj-hide'
@@ -32,6 +38,16 @@ app.register.controller("strategyCtr", function ($scope, $http, $location, $uibM
         $scope.optip = 'obj-show'
         $scope.optipHide()
     }
+
+    //add
+    $scope.addStrategy = function(){
+        $scope.addstrategy = 'obj-show'
+        $scope.$broadcast('addstrategy', {method:'add',title:'添加策略'});
+    }
+
+    $scope.$on('addstrategyclose',function(){
+        $scope.addstrategy = 'obj-hide'
+    })
 
     // console.log("<========>"+$location.path());
     $scope.number = "10";

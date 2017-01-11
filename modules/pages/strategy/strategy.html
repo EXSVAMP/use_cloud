@@ -70,7 +70,8 @@
         <div class="form-search">
             <input class="category_name" placeholder="请输入策略名称" ng-model="strategy_name"/>
             <button type="button" class="searchBtn" type="button" ng-click="searchBtn()">搜索</button>
-            <button type="button" class="addBtn" ng-click="open('md-add','add',$index)">
+            <!--<button type="button" class="addBtn" ng-click="open('md-add','add',$index)">-->
+            <button type="button" class="addBtn" ng-click="addStrategy()">
                 <span class="icon-icon_plus"></span>
                 <span class="addBtn_desc">添加策略</span>
             </button>
@@ -88,9 +89,26 @@
             <tbody  ng-show="query_result.length>0">
             <tr>
                 <td>1</td>
-                <td>2</td>
-                <td>3</td>
-                <td>4</td>
+                <td>
+
+                    <p class="strategy-topic"><span class="strategy-topic-flag">s</span><span
+                            class="strategy-topic-text">1234567/a6a84b9c-d704-11e6-92a8-000c29da3805/client</span></p>
+
+                    <p class="strategy-topic"><span class="strategy-topic-flag">sp</span><span
+                            class="strategy-topic-text">1234567/a6a84b9c-d704-11e6-92a8-000c29da3805/client</span></p>
+
+                    <p class="strategy-topic"><span class="strategy-topic-flag">s</span><span
+                            class="strategy-topic-text">1234567/a6a84b9c-d704-11e6-92a8-000c29da3805/client</span></p>
+
+                    <p class="strategy-topic"><span class="strategy-topic-flag">sp</span><span
+                            class="strategy-topic-text">1234567/a6a84b9c-d704-11e6-92a8-000c29da3805/client</span></p>
+
+                    <p class="strategy-topic"><span class="strategy-topic-flag">sp</span><span
+                            class="strategy-topic-text">1234567/a6a84b9c-d704-11e6-92a8-000c29da3805/client</span></p>
+
+                </td>
+                <td>上层仓储策略上层仓储策略</td>
+                <td>2016-01-01  17:17:17</td>
                 <td class="op-btns">
                     <span class="icon-icon_edit edit-icon margin-right-10" ng-click="open('md-add','modify',$index)"></span>
                     <!--<span class="icon-icon_eye watch-icon"></span>-->
@@ -141,4 +159,5 @@
         </table>
     </div>
     <optip ng-class="optip"></optip>
+    <addstrategy ng-class="addstrategy"></addstrategy>
 </div>

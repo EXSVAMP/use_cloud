@@ -132,11 +132,11 @@ $poslist: top right bottom left;
 }
 
 .obj-show {
-  display: block;
+  display: block !important;
 }
 
 .obj-hide {
-  display: none;
+  display: none !important;
 }
 
 .relative{
