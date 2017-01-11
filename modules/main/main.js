@@ -405,9 +405,27 @@ app.controller('coverCtr',function($scope,$cookieStore, $http,baseUrl,url_juncti
         console.log("<===广播数据==>"+data);
         $scope.item = data;;
     })
+
+    $scope.state={
+        pointer:false,
+        strategy:false
+    }
     $scope.cancel = function(){
+        $scope.state.pointer=false;
+        $scope.state.strategy=false;
         $scope.$emit('addidentityclose','close')
     };
+
+    $scope.selectAdd=function(){
+     $scope.state.pointer=true;
+     $scope.state.strategy=true;
+        
+    }
+   $scope.cancel_strategy=function(){
+       $scope.state.pointer=false;
+       $scope.state.strategy=false;
+   }
+
 
 })
 

@@ -194,9 +194,74 @@
       color:#00a0e9 ;
     }
   }
+  .strategy_addBtn{
+    float: left;
+  }
+  .input-group-strategy{
+    .ui-select-bootstrap>.ui-select-match>.btn {
+      width:331px;
+
+    }
+    .ui-select-bootstrap>input.ui-select-search.form-control {
+      width:331px;
+    }
+    .ui-select-bootstrap>.ui-select-choices{
+      left:88px;
+      width:331px;
+    }
+  }
 
 }
 
+.form-group-selin{
+  .permission_desc{
+    width: 90px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    border-radius: 4px;
+    background-color: #eeeeee;
+    border: solid 1px #bbbbbb;
+    display: inline-block;
+    border-bottom-right-radius: 0px;
+    border-top-right-radius: 0px;
+    float: left;
+  }
+  .permission_detail{
+    width: 330px;
+    height: 40px;
+    border-radius: 4px;
+    background-color: #ffffff;
+    border: solid 1px #bbbbbb;
+    display: inline-block;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-left: none;
+    line-height: 40px;
+    padding-left: 10px;
+    .pub_check{
+      width: 16px;
+      height: 16px;
+
+    }
+    .sub_check{
+      width: 16px;
+      height: 16px;
+      margin-left: 20px;
+    }
+    .pub_icon{
+      width: 22px;
+      height: 16px;
+      border-radius: 2px;
+      background-color: #00a0e9;
+      color: #ffffff;
+      text-align: center;
+      display: inline-block;
+      line-height: 16px;
+    }
+
+  }
+}
 
 
 
@@ -212,6 +277,7 @@
     border:solid 1px #008DCF;
   }
 }
+
 .btn_delete{
   background-color: #ffffff;
   border: solid 1px #ff6b6b;;
@@ -230,6 +296,16 @@
     background-color: #008DCF;
   }
 }
+.no_btn_cancel{
+  background-color: #ffffff;
+  border: solid 1px #eeeeee;
+  color:#eeeeee ;
+}
+.no_btn_ok{
+  background-color: #eeeeee;
+  color: #ffffff;
+}
+
 .ng-cloak{display:none;}
 .main-top-bar{
   width: 100%;

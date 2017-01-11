@@ -65,13 +65,15 @@
      z-index: 10000;
      background: rgba(0, 0, 0, 0.4);
      height: 100%;
-     .identity_modal{
-       position: relative;
+     .identity_modal,.Strategy_modal{
+       position: absolute;
        width: 480px;
-       height: 300px;
+       height: auto;
        top:30px;
        background-color: #fff;
-       left:300px;
+       //left:300px;
+       float:left;
+
        .identity_modal_header{
          width: 100%;
          padding-left: 20px;
@@ -86,6 +88,23 @@
            margin-top: 30px;
          }
        }
+       .modal-footer-identity{
+         padding: 30px;
+       }
+     }
+     .point_right{
+       width: 50px;
+       height: 100%;
+       float: left;
+       text-align: center;
+       padding-top: 16%;
+       .icon-icon_double_right{
+         font-size: 32px;
+         color: #ffffff;
+       }
+     }
+     .Strategy_modal{
+
      }
    }
 }

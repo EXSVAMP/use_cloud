@@ -7,33 +7,106 @@
          <div class="identity_modal_body">
              <div class="form-group form-group-selin form-group-identity">
                  <div class="input-group">
-                     <span class="input-group-addon inputdesc">项目管理</span>
-                     <input type="text" class="form-control" ng-model="project_name" placeholder="请输入项目名称">
+                     <span class="input-group-addon inputdesc">身份名称</span>
+                     <input type="text" class="form-control" ng-model="project_name" placeholder="请输入身份名称">
                  </div>
              </div>
              <div class="form-group form-group-selin ">
                  <div class="input-group input-group-select">
-                     <span class="input-group-addon inputdesc">项目管理</span>
+                     <span class="input-group-addon inputdesc">策略</span>
                      <ui-select ng-model="number" name="camera_page_select" theme="bootstrap" on-select="setShowNum(number)">
-                         <ui-select-match placeholder="10">{{$select.selected}}</ui-select-match>
+                         <ui-select-match placeholder="请选择策略">{{$select.selected}}</ui-select-match>
                          <ui-select-choices repeat="item in numbers">
                              <div ng-bind-html="item"></div>
                              <!-- <small ng-bind-html="item.email"></small> -->
                          </ui-select-choices>
                      </ui-select>
                  </div>
-                 <button type="button" class="select_addBtn">
+                 <button type="button" class="select_addBtn" ng-click="selectAdd()">
                      <span class="icon-icon_plus"></span>
                  </button>
              </div>
              <div class="form-group form-group-selin">
                  <div class="input-group">
-                     <span class="input-group-addon inputdesc">项目管理</span>
-                     <input type="text" class="form-control" ng-model="project_name" placeholder="请输入项目名称">
+                     <span class="input-group-addon inputdesc">简述</span>
+                     <input type="text" class="form-control" ng-model="project_name" placeholder="请输入内容">
                  </div>
              </div>
 
          </div>
+         <div class="modal-footer modal-footer-identity">
+             <div>
+                 <button type="button" class="btn btn_ok" ng-disabled="state.pointer" ng-class="{true:'no_btn_cancel'}[state.strategy]" >取消</button>
+                 <button type="button" class="btn btn_cancel" ng-disabled="state.pointer" ng-class="{true:'no_btn_ok'}[state.strategy]">保存</button>
+             </div>
+         </div>
 
      </div>
+    <div class="point_right" ng-show="state.pointer">
+        <span class="icon-icon_double_right"></span>
+    </div>
+    <div class="Strategy_modal" ng-show="state.strategy">
+        <div class="identity_modal_header">
+            <p>添加策略</p>
+            <span class="icon-icon_close_circle_o category-pop-close" ng-click="cancel_strategy()"></span>
+        </div>
+        <div class="identity_modal_body">
+            <div class="form-group form-group-selin form-group-identity">
+                <div class="input-group">
+                    <span class="input-group-addon inputdesc">身份名称</span>
+                    <input type="text" class="form-control" ng-model="project_name" placeholder="请输入身份名称">
+                </div>
+            </div>
+            <div class="form-group form-group-selin ">
+                <div class="input-group input-group-strategy">
+                    <span class="input-group-addon inputdesc ">实例类别</span>
+                    <ui-select ng-model="number" name="camera_page_select" theme="bootstrap" on-select="setShowNum(number)">
+                        <ui-select-match placeholder="请选择实例类型">{{$select.selected}}</ui-select-match>
+                        <ui-select-choices repeat="item in numbers">
+                            <div ng-bind-html="item"></div>
+                            <!-- <small ng-bind-html="item.email"></small> -->
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+
+            </div>
+            <div class="form-group form-group-selin">
+                <div class="input-group">
+                    <span class="input-group-addon inputdesc">简述</span>
+                    <input type="text" class="form-control" ng-model="project_name" placeholder="请输入内容">
+                </div>
+
+            </div>
+            <div class="form-group form-group-selin">
+                <div class="input-group">
+                    <span class="input-group-addon inputdesc">主题</span>
+                    <input type="text" class="form-control" ng-model="project_name" placeholder="请输入主题">
+                </div>
+
+            </div>
+            <div class="form-group form-group-selin">
+                <span class="permission_desc">权限</span>
+                <span class="permission_detail">
+                    <input type="checkbox" class="pub_check"/>
+                    <span class="pub_check_desc">发布</span>
+                    <label class="pub_icon">P</label>
+                     <input type="checkbox" class="sub_check"/>
+                     <span type="sub_check_desc">订阅</span>
+                </span>
+
+            </div>
+            <div class="form-group form-group-selin ">
+                <button type="button" class="select_addBtn strategy_addBtn" ng-click="selectAdd()">
+                    <span class="icon-icon_plus"></span>
+                </button>
+            </div>
+        </div>
+        <div class="modal-footer modal-footer-identity">
+            <div>
+                <button type="button" class="btn btn_ok" ng-click="cancel_strategy()">取消</button>
+                <button type="button" class="btn btn_cancel">保存</button>
+            </div>
+        </div>
+
+    </div>
 </div>
