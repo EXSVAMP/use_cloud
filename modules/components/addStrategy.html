@@ -56,11 +56,11 @@
                         <span class="input-group-addon bg-white inputdesc">权限</span>
 
                         <div class="stategy-rights">
-                            <input type="checkbox" name="topicrightssel{{$index}}" ng-click="addPS($index,'p')"/>
+                            <input type="checkbox" name="topicrightssel{{$index}}" ng-click="addPS($index,'p')" ng-checked="addTopicList[$index]['p']"/>
                             <span>发布</span>
                             <span class="strategy-topic-flag" ng-show="addTopicList[$index]['p']">P</span>
 
-                            <input type="checkbox" name="topicrightssel{{$index}}" class="margin-left-20" ng-click="addPS($index,'s')"/>
+                            <input type="checkbox" name="topicrightssel{{$index}}" class="margin-left-20" ng-click="addPS($index,'s')" ng-checked="addTopicList[$index]['s']"/>
                             <span>订阅</span>
                             <span class="strategy-topic-flag" ng-show="addTopicList[$index]['s']">S</span>
                         </div>

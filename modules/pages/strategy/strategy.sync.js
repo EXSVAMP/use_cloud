@@ -49,6 +49,16 @@ app.register.controller("strategyCtr", function (ngDialog,$scope, $http, $locati
         $scope.addstrategy = 'obj-hide'
     })
 
+    //add
+    $scope.modifyStrategy = function(idx){
+        $scope.addstrategy = 'obj-show'
+        $scope.$broadcast('addstrategy', {method:'modify',title:'编辑策略',projectId:$scope.projectId,scope:$scope,data:$scope.query_result[idx]});
+    }
+
+    $scope.$on('addstrategyclose',function(){
+        $scope.addstrategy = 'obj-hide'
+    })
+
     // console.log("<========>"+$location.path());
     $scope.number = "10";
     $scope.maxSize = 5;

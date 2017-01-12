@@ -640,7 +640,66 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
         var isValid = true;
         var invalidMsg = ''
         console.log('$scope.item', $scope.item)
+        var nameTemp = ''
+        var init = function () {
+            $scope.addTopicList = []; //{p:false,s:false,name:'',pubsub:''}
+            $scope.remainTopicToAddCount = 5;
+            $scope.addstrategy_content_topzero = "";
+        }
         if ($scope.item.method == 'add') {
+            init()
+            $scope.name = '';
+            $scope.classification = '';
+            //$scope.topic = data.topic;
+            $scope.description = '';
+
+            $timeout(function () {
+                if (angular.element('#addstrategy-content').height() >= angular.element(window).height()) {
+                    $scope.addstrategy_content_topzero = "addstrategy-content-topzero"
+                }
+            }, 100)
+
+        } else if ($scope.item.method == 'modify') {
+            init()
+            var data = $scope.item.data;
+            console.log('data', data)
+            $scope.name = data.name;
+            nameTemp = $scope.name;
+            $scope.classification = data.classification;
+            //$scope.topic = data.topic;
+            $scope.description = data.description;
+            $scope.remainTopicToAddCount = $scope.remainTopicToAddCount - data.topics.length;
+            _.forEach(data.topics, function (value) {
+                var topicItem = {p: false, s: false, pubsub: '', name: ''}
+                if (value['pubsub']) {
+                    var pubsub = value['pubsub'];
+                    if (/pubsub/.test(pubsub)) {
+                        pubsub = 'ps'
+                        topicItem['p'] = true;
+                        topicItem['s'] = true;
+                    } else if (/publish/.test(pubsub)) {
+                        pubsub = 'p'
+                        topicItem['p'] = true;
+                    } else if (/subscribe/.test(pubsub)) {
+                        pubsub = 's'
+                        topicItem['s'] = true;
+                    }
+
+                    topicItem['pubsub'] = pubsub;
+                }
+
+                topicItem['name'] = value['value'];
+                $scope.addTopicList.push(topicItem)
+            });
+
+            $timeout(function () {
+                if (angular.element('#addstrategy-content').height() >= angular.element(window).height()) {
+                    $scope.addstrategy_content_topzero = "addstrategy-content-topzero"
+                }
+            }, 100)
+
+        }
+        if ($scope.item.method == 'add' || $scope.item.method == 'modify') {
             $scope.ok = function () {
                 $scope.params = {
                     name: $scope.name,
@@ -651,11 +710,14 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
                     instance: $scope.item.projectId,
                     topic: []
                 };
-                if(!$scope.name){
+                if (!$scope.name) {
                     isValid = false;
                     invalidMsg = '策略名称不能为空'
                 }
-                var topicEmpty = function(){
+                else if ($scope.item.method == 'modify' && nameTemp == $scope.name) {
+                    delete $scope.params.name;
+                }
+                var topicEmpty = function () {
                     _.forEach($scope.addTopicList, function (value) {
                         console.log('value', value['name'])
                         if (!value['name']) {
@@ -665,7 +727,7 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
                     });
                 }
 
-                if(isValid){
+                if (isValid) {
                     topicEmpty()
                 }
 
@@ -705,58 +767,44 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
                     $scope.params.topic = JSON.stringify($scope.params.topic);
 
                     console.log("<======>", $scope.params);
+                    if ($scope.item.method == 'add') {
+                        $http.post(url + "/api/1/topic/strategy ", $scope.params).success(function (data) {
+                            if (data.code == "200") {
+                                $scope.item.scope.optipShow(1, '操作成功')
+                                $scope.item.scope.submit_search();
+                            }
+                        }).error(function () {
+                            //ngDialog.open({
+                            //    template: '<p style=\"text-align: center\">添加失败:'+data.description+'</p>',
+                            //    plain: true
+                            //});
+                            $scope.item.scope.optipShow(0, '操作失败,' + data.description)
+                        });
+                    }//end if
+                    else {
+                        $http.put(url + "/api/1/topic/strategy" + $scope.item.data.id + "/", $scope.params).success(function (data) {
+                            if (data.code == "200") {
+                                $scope.item.scope.optipShow(1, '操作成功')
+                                $scope.item.scope.submit_search();
+                            }
+                        }).error(function () {
+                            //ngDialog.open({
+                            //    template: '<p style=\"text-align: center\">添加失败:'+data.description+'</p>',
+                            //    plain: true
+                            //});
+                            $scope.item.scope.optipShow(0, '操作失败,' + data.description)
+                        });
+                    }
 
-                    $http.post(url + "/api/1/topic/strategy ", $scope.params).success(function (data) {
-                        if (data.code == "200") {
-                            $scope.item.scope.optipShow(1, '操作成功')
-                            $scope.item.scope.submit_search();
-                        }
-                    }).error(function () {
-                        //ngDialog.open({
-                        //    template: '<p style=\"text-align: center\">添加失败:'+data.description+'</p>',
-                        //    plain: true
-                        //});
-                        $scope.item.scope.optipShow(0, '操作失败,' + data.description)
-                    });
                     //$uibModalInstance.close();
                     $scope.$emit('addstrategyclose', 'close')
                 }
 
             }
-        } else if ($scope.item.method == 'modify') {
-            var data = $scope.item.data;
-            console.log('data', data)
-            $scope.name = data.name;
-            $scope.topic = data.topic;
-            $scope.description = data.description;
-            $scope.ok = function () {
-                $scope.params = {
-                    name: data.name,
-                    topic: data.topic,
-                    description: data.description
-                }
-
-                console.log("<======>", $scope.params);
-                console.log("<======>", data.id)
-                $http.put(url + "/api/1/topic/class" + data.id + "/", $scope.params).success(function (data) {
-                    if (data.code == "200") {
-                        $scope.item.scope.optipShow(1, '操作成功')
-                        $scope.item.scope.submit_search();
-                    }
-                }).error(function () {
-                    //ngDialog.open({
-                    //    template: '<p style=\"text-align: center\">添加失败:'+data.description+'</p>',
-                    //    plain: true
-                    //});
-                    $scope.item.scope.optipShow(0, '操作失败,' + data.description)
-                });
-                //$uibModalInstance.close();
-                $scope.$emit('addstrategyclose', 'close')
-            }
-        }
+        }//end if
     })
 
-    $scope.addTopicList = []; //{p:false,s:false}
+    $scope.addTopicList = []; //{p:false,s:false,name:'',pubsub:''}
     $scope.remainTopicToAddCount = 5;
     $scope.addstrategy_content_topzero = "";
     $scope.addPS = function (idx, type) {
