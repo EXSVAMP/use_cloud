@@ -576,6 +576,7 @@ app.controller('ModalStrategy',function($scope,$cookieStore, $uibModalInstance,$
 
 app.controller('addStrategyCtr',function($scope,$cookieStore, $http,baseUrl,url_junction,ngDialog){
     baseUrl = baseUrl.getUrl();
+    $scope.numbers = [10, 20, 30, 40, 50];
     $scope.item = {};
     $scope.cancel = function(){
         //console.log($scope.addTopicList[0])
@@ -589,7 +590,8 @@ app.controller('addStrategyCtr',function($scope,$cookieStore, $http,baseUrl,url_
             $scope.ok=function(){
                 $scope.params={
                     name:$scope.name,
-                    classification:$scope.classification,
+                    //classification:$scope.classification,
+                    classification:'23',
                     description:$scope.description,
                     instance:$scope.item.projectId,
                     topic: []
@@ -604,11 +606,20 @@ app.controller('addStrategyCtr',function($scope,$cookieStore, $http,baseUrl,url_
                     //}else if($scope.addTopicList[key]['s']){
                     //    pubsub = 's'
                     //}
-                    $scope.params.topic.push({name:value['name'],pubsub:value['pubsub']})
+                    var pubsub = value['pubsub'];
+                    if(/ps/.test(pubsub)){
+                        pubsub = 'pubsub'
+                    }else if(/p/.test(pubsub)){
+                        pubsub = 'publish'
+                    }else if(/s/.test(pubsub)){
+                        pubsub = 'subscribe'
+                    }
+                    console.log('pubsub',pubsub)
+                    $scope.params.topic.push({name:value['name'],pubsub:pubsub})
                 });
 
                 console.log("<======>",$scope.params);
-                $http.post(baseUrl+"/api/1/topic/class",$scope.params).success(function(data){
+                $http.post(baseUrl+"/api/1/topic/strategy ",$scope.params).success(function(data){
                     if(data.code=="200"){
                         items.scope.optipShow(1,'操作成功')
                         items.scope.submit_search();

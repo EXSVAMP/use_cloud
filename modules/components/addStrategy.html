@@ -13,12 +13,29 @@
                     <input type="text" class="form-control" placeholder="请输入策略名称" ng-model="name">
                 </div>
             </div>
-            <div class="form-group form-group-selin">
-                <div class="input-group">
-                    <span class="input-group-addon bg-white inputdesc">实例类别</span>
-                    <input type="text" class="form-control" placeholder="选择实例类型" ng-model="classification">
+            <!--<div class="form-group form-group-selin">-->
+                <!--<div class="input-group">-->
+                    <!--<span class="input-group-addon bg-white inputdesc">实例类别</span>-->
+                    <!--<input type="text" class="form-control" placeholder="选择实例类型" ng-model="classification">-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <div class="form-group form-group-selin ">
+                <div class="input-group input-group-select" style="width:auto;">
+                    <span class="input-group-addon inputdesc">实例类别</span>
+                    <ui-select ng-model="classification" style="width:331px;" name="classification" theme="bootstrap" on-select="setShowNum(classification)">
+                        <ui-select-match placeholder="选择实例类型">{{$select.selected}}</ui-select-match>
+                        <ui-select-choices repeat="item in numbers">
+                            <div ng-bind-html="item"></div>
+                            <!-- <small ng-bind-html="item.email"></small> -->
+                        </ui-select-choices>
+                    </ui-select>
                 </div>
+                <!--<button type="button" class="select_addBtn" ng-click="selectAdd()">-->
+                    <!--<span class="icon-icon_plus"></span>-->
+                <!--</button>-->
             </div>
+
             <div class="form-group form-group-selin">
                 <div class="input-group">
                     <span class="input-group-addon inputdesc">简述</span>
