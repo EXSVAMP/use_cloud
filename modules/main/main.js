@@ -562,7 +562,7 @@ app.controller('ModalCategory', function ($scope, $cookieStore, $uibModalInstanc
 
                 console.log("<======>", $scope.params);
                 console.log("<======>", data.id);
-                $http.put(url + "/api/1/topic/class" + data.id + "/", $scope.params).success(function (data) {
+                $http.put(url + "/api/1/topic/class/" + data.id + "/", $scope.params).success(function (data) {
                     if (data.code == "200") {
                         items.scope.optipShow(1, '操作成功')
                         items.scope.submit_search();
@@ -581,7 +581,7 @@ app.controller('ModalCategory', function ($scope, $cookieStore, $uibModalInstanc
     } else if ($scope.item.method == 'delete') {
         $scope.ok = function () {
             var data = items.data;
-            $http.delete(url + "/api/1/topic/class" + data.id + "/", {}).success(function (data) {
+            $http.delete(url + "/api/1/topic/class/" + data.id + "/", {}).success(function (data) {
                 if (data.code == "200") {
                     items.scope.optipShow(1, '操作成功')
                     items.scope.submit_search();
@@ -611,7 +611,7 @@ app.controller('ModalStrategy', function ($scope, $cookieStore, $uibModalInstanc
         var data = items.data;
         console.log('data', data)
         $scope.ok = function () {
-            $http.delete(baseUrl + "/api/1/topic/strategy" + data.id + "/", {}).success(function (data) {
+            $http.delete(baseUrl + "/api/1/topic/strategy/" + data.id + "/", {}).success(function (data) {
                 if (data.code == "200") {
                     items.scope.optipShow(1, '操作成功')
                     items.scope.submit_search();
@@ -834,7 +834,7 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
                         });
                     }//end if
                     else {
-                        $http.put(url + "/api/1/topic/strategy" + $scope.item.data.id + "/", $scope.params).success(function (data) {
+                        $http.put(url + "/api/1/topic/strategy/" + $scope.item.data.id + "/", $scope.params).success(function (data) {
                             if (data.code == "200") {
                                 $scope.item.scope.optipShow(1, '操作成功')
                                 $scope.item.scope.submit_search();
