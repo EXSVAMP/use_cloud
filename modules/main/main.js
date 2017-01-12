@@ -628,23 +628,78 @@ app.controller('ModalStrategy', function ($scope, $cookieStore, $uibModalInstanc
 
 app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl, url_junction, ngDialog, $timeout) {
     var url = baseUrl.getUrl();
-    $scope.numbers = [10, 20, 30, 40, 50];
+    $scope.numbers = [];
     $scope.item = {};
+    $scope.classificationTemp = ''
     $scope.cancel = function () {
         //console.log($scope.addTopicList[0])
         $scope.$emit('addstrategyclose', 'close')
     };
 
+    var getCategoryList = function(sProjectId,sSelProjectId){
+        $scope.numbers = [];
+        $http.get(url + "/api/1/topic/class" + url_junction.getQuery({
+                name: '',
+                instance: sProjectId,
+                index: 1,
+                number: 10,
+                is_page: '0'
+
+            })).success(function (data) {
+            if (data.code == 200) {
+                $scope.categoryList = data.data;
+                _.forEach($scope.categoryList, function(value) {
+                    $scope.numbers.push({name:value.name,id:value.id})
+                    if(sSelProjectId && sSelProjectId == value.id){
+                        console.log(123457689997654443)
+                        $scope.classification = {name:value.name,id:value.id}
+                        $scope.classificationTemp = value.id
+                    }
+                });
+                //$scope.bigTotalItems = data.pageinfo.total_number;
+                //$scope.total_page = data.pageinfo.total_page;
+                //$scope.currentPageTotal = $scope.query_result.length;
+
+
+            } else {
+                console.log(data)
+            }
+        }).error(function (data, state) {
+            if (state == 403) {
+                BaseUrl.redirect()
+            }
+        })
+
+        $scope.numbers.push({name:'---------',id:''})
+        //$scope.numbers.push('---------')
+
+        if(!sSelProjectId){
+            //$scope.classification = {name:'---------',id:''}
+            //$scope.classification = '---------'
+        }
+    }
+
+    $scope.setShowNum = function(category){
+        //console.log(category.name+','+category.id)
+        console.log('test',category)
+        $scope.classificationTemp = category.id;
+    }
+
     $scope.$on('addstrategy', function (q, data) {
         $scope.item = data;
         var isValid = true;
         var invalidMsg = ''
-        console.log('$scope.item', $scope.item)
         var nameTemp = ''
         var init = function () {
             $scope.addTopicList = []; //{p:false,s:false,name:'',pubsub:''}
             $scope.remainTopicToAddCount = 5;
             $scope.addstrategy_content_topzero = "";
+            if($scope.item.data) {
+                getCategoryList(data.projectId,$scope.item.data.classification)
+            }
+            else{
+                getCategoryList(data.projectId,'')
+            }
         }
         if ($scope.item.method == 'add') {
             init()
@@ -662,10 +717,9 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
         } else if ($scope.item.method == 'modify') {
             init()
             var data = $scope.item.data;
-            console.log('data', data)
             $scope.name = data.name;
             nameTemp = $scope.name;
-            $scope.classification = data.classification;
+            $scope.classificationTemp = data.classification;
             //$scope.topic = data.topic;
             $scope.description = data.description;
             $scope.remainTopicToAddCount = $scope.remainTopicToAddCount - data.topics.length;
@@ -705,7 +759,7 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
                     name: $scope.name,
                     //classification:$scope.classification,
                     //classification:'23',
-                    classification: '',
+                    classification: $scope.classificationTemp,
                     description: $scope.description,
                     instance: $scope.item.projectId,
                     topic: []
@@ -759,14 +813,12 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
                         } else if (/s/.test(pubsub)) {
                             pubsub = 'subscribe'
                         }
-                        console.log('pubsub', pubsub)
+
                         $scope.params.topic.push({name: value['name'], pubsub: pubsub})
 
                     });
 
                     $scope.params.topic = JSON.stringify($scope.params.topic);
-
-                    console.log("<======>", $scope.params);
                     if ($scope.item.method == 'add') {
                         $http.post(url + "/api/1/topic/strategy ", $scope.params).success(function (data) {
                             if (data.code == "200") {
@@ -831,9 +883,6 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
     $scope.addTopicFunc = function () {
         $scope.remainTopicToAddCount--;
         $scope.addTopicList.push({p: false, s: false, name: '', pubsub: ''})
-        console.log($scope.addTopicList)
-        console.log(angular.element('#addstrategy-content').height())
-        console.log(angular.element(window).height())
         $timeout(function () {
             if (angular.element('#addstrategy-content').height() >= angular.element(window).height()) {
                 $scope.addstrategy_content_topzero = "addstrategy-content-topzero"

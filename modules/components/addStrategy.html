@@ -24,9 +24,9 @@
                 <div class="input-group input-group-select" style="width:auto;">
                     <span class="input-group-addon inputdesc">实例类别</span>
                     <ui-select ng-model="classification" style="width:331px;" name="classification" theme="bootstrap" on-select="setShowNum(classification)">
-                        <ui-select-match placeholder="选择实例类型">{{$select.selected}}</ui-select-match>
+                        <ui-select-match placeholder="选择实例类型">{{$select.selected.name}}</ui-select-match>
                         <ui-select-choices repeat="item in numbers">
-                            <div ng-bind-html="item"></div>
+                            <div ng-bind-html="item.name"></div>
                             <!-- <small ng-bind-html="item.email"></small> -->
                         </ui-select-choices>
                     </ui-select>
