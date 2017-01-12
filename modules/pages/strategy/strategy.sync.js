@@ -123,14 +123,14 @@ app.register.controller("strategyCtr", function (ngDialog,$scope, $http, $locati
                             title: "编辑策略",
                             method: "modify",
                             scope: $scope,
-                            data: $scope.query_result[0]
+                            data: $scope.query_result[index]
                         }
                     } else if (method == "delete") {
                         return {
                             title: "删除策略",
                             method: "delete",
                             scope: $scope,
-                            data: $scope.query_result[0]
+                            data: $scope.query_result[index]
                         }
                     }
                 }
