@@ -419,6 +419,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
         $scope.$emit('addidentityclose', 'close')
     };
 
+
     $scope.selectAdd = function () {
         $scope.state.pointer = true;
         $scope.state.strategy = true;
@@ -427,6 +428,33 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
     $scope.cancel_strategy = function () {
         $scope.state.pointer = false;
         $scope.state.strategy = false;
+    }
+
+    $scope.selectAdd=function(){
+     $scope.state.pointer=true;
+     $scope.state.strategy=true;
+      // $(".identity_modal").css("left","0px")
+        $(".identity_warp").width(1010)
+        
+    }
+   $scope.cancel_strategy=function(){
+       $scope.state.pointer=false;
+       $scope.state.strategy=false;
+       // $(".identity_modal").css("left","480px")
+       $(".identity_warp").width(480)
+   }
+
+
+    $scope.addTopicList = []; //{p:false,s:false}
+    $scope.remainTopicToAddCount = 4;
+    $scope.addTopicFunc = function(){
+        $scope.remainTopicToAddCount--;
+        $scope.addTopicList.push({p:false,s:false,name:'',pubsub:''})
+        console.log($scope.addTopicList)
+    }
+    $scope.delTopicFunc =function(idx){
+        $scope.remainTopicToAddCount++;
+        _.pullAt($scope.addTopicList, [idx]);
     }
 
 
