@@ -42,7 +42,7 @@ app.register.controller("strategyCtr", function (ngDialog,$scope, $http, $locati
     //add
     $scope.addStrategy = function(){
         $scope.addstrategy = 'obj-show'
-        $scope.$broadcast('addstrategy', {method:'add',title:'添加策略',projectId:$scope.projectId});
+        $scope.$broadcast('addstrategy', {method:'add',title:'添加策略',projectId:$scope.projectId,scope:$scope});
     }
 
     $scope.$on('addstrategyclose',function(){
@@ -55,7 +55,7 @@ app.register.controller("strategyCtr", function (ngDialog,$scope, $http, $locati
     $scope.bigCurrentPage = 1;
     $scope.numbers = [10, 20, 30, 40, 50];
     $scope.bigCurrentPage = 1;
-    $scope.query_result = [{name: 'test', topic: 'test2', description: "test3", id: '123'}]
+    $scope.query_result = []
     var BaseUrl = baseUrl.getUrl();
 
     $scope.setPage = function (pageNo) {

@@ -1,3 +1,145 @@
-<div>
-    123
+
+<div class="category">
+    <script  type="text/ng-template"  id="myModalregulation.html" >
+        <div class="modal-header relative">
+            <p>{{item.title}}</p>
+            <span class="icon-icon_close_circle_o category-pop-close" ng-click="cancel()"></span>
+        </div>
+        <div ng-show="item.method=='add' || item.method=='modify'">
+            <div class="modal-body">
+                <div class="form-group form-group-selin form-group-category">
+                    <div class="input-group">
+                        <span class="input-group-addon bg-white inputdesc">类别名称</span>
+                        <input type="text" class="form-control" placeholder="请输入类别名称" ng-model="name">
+                    </div>
+                </div>
+                <div class="form-group form-group-selin" ng-show="item.method=='add'">
+                    <div class="input-group">
+                        <span class="input-group-addon bg-white inputdesc">主题</span>
+                        <input type="text" class="form-control" placeholder="请输入主题" ng-model="topic">
+                    </div>
+                </div>
+
+                <div class="form-group form-group-selin" ng-show="item.method=='modify'">
+                    <div class="input-group">
+                        <span class="input-group-addon bg-white inputdesc">主题</span>
+                        <div type="text" class="form-control readonly" ng-bind="topic"></div>
+                    </div>
+                </div>
+                <div class="form-group form-group-selin margin-bottom-30">
+                    <div class="input-group">
+                        <span class="input-group-addon bg-white inputdesc">简述</span>
+                        <input type="text" class="form-control" placeholder="请输入内容" ng-model="description">
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer modal-footer-category">
+                <div>
+                    <button type="button" class="btn btn_ok" ng-click="cancel()">取消</button>
+                    <button type="button" class="btn btn_cancel" ng-click="ok()">保存</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div ng-show="item.method == 'delete'">
+            <div class="modal-body">
+                <div class="warn_delete">
+                    <span class="icon-icon_warn"></span>
+                    <div class='delete_desc'>
+                        <p>确定要删除这个规则吗</p>
+                        <p>注意：删除以后不可恢复！</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer modal-footer-project">
+                <div>
+                    <button type="button" class="btn btn_delete" ng-click="ok()">删除</button>
+                    <button type="button" class="btn btn_cancel " ng-click="cancel()">取消</button>
+                </div>
+            </div>
+        </div>
+
+    </script>
+    <div class="main-top-bar">
+        <p>规则管理/规则列表</p>
+    </div>
+    <div class="main-content clear-padding-top">
+        <!--<link rel="import" href="/modules/partial/common/project_tab.html?__inline"/>-->
+        <div class="form-search">
+            <input class="category_name" placeholder="请输入规则名称" ng-model="regulation_name"/>
+            <button type="button" class="searchBtn" type="button" ng-click="searchBtn()">搜索</button>
+            <!--<button type="button" class="addBtn" ng-click="open('md-add','add',$index)">-->
+            <button type="button" class="addBtn" ng-click="addStrategy()">
+                <span class="icon-icon_plus"></span>
+                <span class="addBtn_desc">添加规则</span>
+            </button>
+        </div>
+        <table class="table table-bordered table-content">
+            <thead>
+            <tr>
+                <th>规则名称</th>
+                <th>主题</th>
+                <th>创建时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody  ng-show="query_result.length>0">
+            <tr>
+                <td>1</td>
+                <td>123</td>
+                <td>上层仓储策略上层仓储策略</td>
+                <td>2016-01-01 17:17:17</td>
+                <td class="op-btns">
+                    <span class="icon-icon_edit edit-icon margin-right-10" ng-click="open('md-add','modify',$index)"></span>
+                    <!--<span class="icon-icon_eye watch-icon"></span>-->
+                    <span class="icon-icon_delete delete-icon margin-left-10" ng-click="open('md-add','delete',$index)"></span>
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+        <div class="no_content" ng-show="query_result.length==0">
+            <p><span class="icon-no_search"></span></p>
+            <p>找不到你需要的内容，请重新搜索</p>
+        </div>
+        <table class="table table-pagination" ng-show="query_result.length!=0">
+            <thead>
+            <tr>
+                <th class="pagination-items-per-page">
+                    <!-- <span>每页显示数量</span>
+                    <ui-select ng-model="number2" theme="bootstrap" on-select="setShowNum(number2)">
+                        <ui-select-match placeholder="10">{{$select.selected}}</ui-select-match>
+                        <ui-select-choices repeat="item in numbers">
+                            <div ng-bind-html="item"></div>
+                        </ui-select-choices>
+                    </ui-select> -->
+                    <div class="pagination-content">
+                        <span class="pagination-tip">每页显示数量</span>
+                        <ui-select ng-model="number" name="camera_page_select" theme="bootstrap" on-select="setShowNum(number)">
+                            <ui-select-match placeholder="10">{{$select.selected}}</ui-select-match>
+                            <ui-select-choices repeat="item in numbers">
+                                <div ng-bind-html="item"></div>
+                                <!-- <small ng-bind-html="item.email"></small> -->
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </th>
+                <th>
+                    <uib-pagination items-per-page="number" total-items="bigTotalItems" ng-change="changePage()" ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm" boundary-link-numbers="true" num-pages="numPages" previous-text="上一页" next-text="下一页"></uib-pagination>
+                    <div class="pagination-detail">
+                        <span>共{{total_page}}页</span>
+                        <span>跳至<input type="text" name="camera_page" ng-model="index_sel"/>页</span>
+                        <span><button  name="camera_submmit" ng-click="setPage()">确定</button></span>
+                    </div>
+                </th>
+
+            </tr>
+            </thead>
+
+        </table>
+    </div>
+    <optip ng-class="optip"></optip>
+    <addstrategy ng-class="addstrategy" class="addstrategy-wrap"></addstrategy>
 </div>

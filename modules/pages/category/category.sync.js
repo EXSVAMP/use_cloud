@@ -41,7 +41,8 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
     $scope.bigCurrentPage = 1;
     $scope.numbers = [10, 20, 30, 40, 50];
     $scope.bigCurrentPage = 1;
-    $scope.query_result = [{name: 'test', topic: 'test2', description: "test3", id: '123'}]
+    $scope.query_result = []
+    $scope.category_nameTemp = ''
     var BaseUrl = baseUrl.getUrl();
 
     $scope.setPage = function (pageNo) {
@@ -55,8 +56,8 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
 
     $scope.submit_search = function () {
         $http.get(BaseUrl + "/api/1/topic/class" + url_junction.getQuery({
-                name: $scope.category_name,
-                instance:$scope.projectId,
+                name: $scope.category_nameTemp,
+                instance: $scope.projectId,
                 index: $scope.bigCurrentPage,
                 number: $scope.number,
                 is_page: '1'
@@ -64,7 +65,6 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
             })).success(function (data) {
             if (data.code == 200) {
                 $scope.query_result = data.data;
-                $scope.query_result = [{name: 'test', topic: 'test2', description: "test3", id: '123'}]
                 $scope.bigTotalItems = data.pageinfo.total_number;
                 $scope.total_page = data.pageinfo.total_page;
                 $scope.currentPageTotal = $scope.query_result.length;
@@ -89,6 +89,11 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
         $scope.submit_search();
     }
 
+    $scope.searchBtn = function () {
+        $scope.bigCurrentPage = 1;
+        $scope.category_nameTemp = $scope.category_name;
+        $scope.submit_search()
+    }
 
     $scope.open = function (size, method, index) {
         var modalInstance = $uibModal.open({
@@ -98,6 +103,7 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
             size: size,
             resolve: {
                 items: function () {
+                    console.log('$scope.query_result', $scope.query_result)
                     if (method == "add") {
                         return {
                             title: "添加硬件类别",
@@ -109,14 +115,14 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
                             title: "编辑硬件类别",
                             method: "modify",
                             scope: $scope,
-                            data: $scope.query_result[0]
+                            data: $scope.query_result[index]
                         }
                     } else if (method == "delete") {
                         return {
                             title: "删除硬件类别",
                             method: "delete",
                             scope: $scope,
-                            data: $scope.query_result[0]
+                            data: $scope.query_result[index]
                         }
                     }
                 }
@@ -132,9 +138,14 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
 
     }
 
-    $scope.watch = function(idx){
+    $scope.watch = function (idx) {
         $scope.categoryMain = false;
         $scope.categoryWatch = true;
+    };
+
+    $scope.return = function () {
+        $scope.categoryMain = true;
+        $scope.categoryWatch = false;
     };
 
 
