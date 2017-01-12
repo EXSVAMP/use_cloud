@@ -1,4 +1,5 @@
 <div ng-controller="coverCtr" class="cover_identity">
+   <div class="identity_warp">
      <div class="identity_modal">
          <div class="identity_modal_header">
                 <p>{{item.title}}</p>
@@ -77,12 +78,12 @@
                 </div>
 
             </div>
-            <div class="form-group form-group-selin">
+            <div class="form-group form-group-selin relative">
                 <div class="input-group">
-                    <span class="input-group-addon inputdesc">主题</span>
-                    <input type="text" class="form-control" ng-model="project_name" placeholder="请输入主题">
+                    <span class="input-group-addon bg-white inputdesc">主题</span>
+                    <input type="text" class="form-control" placeholder="请输入主题" ng-model="addTopicList[$index]['name']" >
                 </div>
-
+                <div class="addTopicFlag"></div>
             </div>
             <div class="form-group form-group-selin">
                 <span class="permission_desc">权限</span>
@@ -95,11 +96,40 @@
                 </span>
 
             </div>
-            <div class="form-group form-group-selin ">
-                <button type="button" class="select_addBtn strategy_addBtn" ng-click="selectAdd()">
-                    <span class="icon-icon_plus"></span>
-                </button>
+            <div ng-repeat="item2 in addTopicList">
+                <div class="form-group form-group-selin relative">
+                    <div class="input-group">
+                        <span class="input-group-addon bg-white inputdesc">主题</span>
+                        <input type="text" class="form-control" placeholder="请输入主题" ng-model="addTopicList[$index]['name']" >
+                    </div>
+                    <div class="addTopicFlag"></div>
+                </div>
+              <div class="form-group form-group-selin">
+                <span class="permission_desc">权限</span>
+                <span class="permission_detail">
+                    <input type="checkbox" class="pub_check"/>
+                    <span class="pub_check_desc">发布</span>
+                    <label class="pub_icon">P</label>
+                     <input type="checkbox" class="sub_check"/>
+                     <span type="sub_check_desc">订阅</span>
+                </span>
+
             </div>
+                <div class="form-group form-group-selin">
+                    <div class="delTopic" ng-click="delTopicFunc($index)">
+                        <div class="delTopicIcon"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group form-group-selin relative margin-top-20">
+                <fieldset class="addTopic" ng-click="addTopicFunc()"  ng-disabled="remainTopicToAddCount==0">
+                    <div class="icon-icon_plus addTopicIcon"></div>
+                </fieldset>
+                <span class="remainTopicToAdd margin-left-10">（还可添加{{remainTopicToAddCount}}个）</span>
+                <div class="addTopicFlag"></div>
+            </div>
+
         </div>
         <div class="modal-footer modal-footer-identity">
             <div>
@@ -109,4 +139,5 @@
         </div>
 
     </div>
+   </div>
 </div>

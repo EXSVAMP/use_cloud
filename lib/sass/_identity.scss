@@ -65,14 +65,32 @@
      z-index: 10000;
      background: rgba(0, 0, 0, 0.4);
      height: 100%;
-     .identity_modal,.Strategy_modal{
+     .identity_modal{
        position: relative;
        width: 480px;
        height: auto;
-       top:30px;
+       //top:30px;
+       background-color: #fff;
+       //left:480px;
+       float:left;
+       //top: 50%;
+       //left: 50%;
+       //margin-left: -240px;
+     }
+     .Strategy_modal{
+       position: relative;
+       width: 480px;
+       height: auto;
+       //top:30px;
        background-color: #fff;
        //left:300px;
        float:left;
+       //top: 50%;
+       //left: 50%;
+       //margin-left: -240px;
+     }
+     .identity_modal,.Strategy_modal{
+
 
        .identity_modal_header{
          width: 100%;
@@ -107,6 +125,19 @@
 
      }
    }
+  .identity_warp{
+    position: relative;
+    //min-width: 1050px;
+    width: 480px;
+    height: auto;
+    overflow: hidden;
+    //top: 20%;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%,-50%);
+    -moz-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+  }
 }
 
 
