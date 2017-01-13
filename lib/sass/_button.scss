@@ -22,3 +22,51 @@ a:hover{
 .btn_unactive{
   background-color: #bbbbbb;
 }
+
+.btn-normal{
+  padding:0 20px;
+  height:40px;
+  line-height: 40px;
+  font-size:14px;
+  display: inline-block;
+  min-width:100px;
+  border-radius: 4px;
+  text-align: center;
+  .btn-icon{
+    margin-right:5px;
+  }
+}
+.btn-blue-bg{
+  background-color: #00A0E9;
+  border:1px solid #00A0E9;
+  left:-10px;
+  bottom:-10px;
+  color: #ffffff;
+}
+
+.btn-blue-border{
+  background-color: #ffffff;
+  border:1px solid #00A0E9;
+  left:-10px;
+  bottom:-10px;
+  color: #00A0E9;
+}
+
+.font-red{
+  color:#FF6B6B!important;
+}
+
+.btn-area-center{
+  text-align: center;
+  margin:20px 0 20px 0;
+  a:not(:last-child){
+    margin-right:30px;
+  }
+}
+
+.btn-operation{
+  color: #00A0E9;
+  &:not(:first-child){
+    margin-left:10px;
+  }
+}

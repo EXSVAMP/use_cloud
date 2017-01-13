@@ -1,0 +1,118 @@
+.main-area {
+  .main-content{
+    background-color: #FFFFFF;
+    margin-top:20px;
+    overflow: hidden;
+    padding:0;
+    .main-title{
+      text-align: left;
+      display: block;
+      margin:0 20px;
+      line-height:50px;
+      font-size:12px;
+      color:#888888;
+      margin:0 20px;
+      border-bottom:1px solid #EEEEEE;
+    }
+    .main-item{
+      position: relative;
+      overflow: hidden;
+      float: left;
+      background-color: #fff;
+      border-radius: 4px;
+      &:not(:first-child){
+        margin-left:20px;
+      }
+      .item-title{
+        line-height:50px;
+        font-size:18px;
+        margin:0 20px;
+        border-bottom:1px solid #EEEEEE;
+      }
+      .icon-bg{
+        position: absolute;
+        left:-10px;
+        bottom:-20px;
+        font-size:160px;
+        color:#D8D8D8;
+      }
+      .item-content{
+        position: relative;
+        min-height:180px;
+        .btn-area-right{
+          position: absolute;
+          right:20px;
+          bottom:20px;
+        }
+        .item-text{
+          position: absolute;
+          top:20px;
+          left:160px;
+        }
+      }
+    }
+    .search-area{
+      text-align: center;
+    }
+    .table-area{
+      margin:20px;
+    }
+  }
+}
+
+.item-content{
+  text-align: center;
+  .form-field-set{
+    display: inline-block;
+    width:800px;
+    text-align: left;
+    margin-top: 20px;
+  }
+}
+.form-field-set{
+  line-height: 40px;
+  font-size:14px;
+  .form-row{
+    position: relative;
+    overflow: hidden;
+    margin-bottom:5px;
+    background-color: #fff;
+    label{
+      display: inline-block;
+      float: left;
+      width:11%;
+      height:100%;
+      text-align: right;
+      border:1px solid #DDDDDD;
+      border-right:0;
+      padding-right:10px;
+    }
+    textarea{
+      float: left;
+      border:1px solid #DDDDDD;
+      border-radius: 0;
+      height:100%;
+      width:89%;
+      line-height: 20px;
+      padding:10px;
+      outline: 0;
+    }
+    input{
+      float: left;
+      border:1px solid #DDDDDD;
+      border-radius: 0;
+      width:89%;
+      height: 42px;
+      line-height: 40px;
+      padding:0 10px;
+    }
+  }
+}
+
+.flex-area{
+  display: flex;
+  justify-content: center;
+  >*{
+    flex-grow: 1;
+  }
+}
