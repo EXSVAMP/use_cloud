@@ -126,6 +126,7 @@
 .categoryWatchContent{
   clear: both;
   height: 470px;
+  overflow: auto;
   border: 1px solid #ddd;
   padding: 20px;
   font-size: 14px;

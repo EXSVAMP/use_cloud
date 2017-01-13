@@ -65,7 +65,7 @@
     <div class="main-top-bar">
         <p>规则管理/规则列表</p>
     </div>
-    <div class="main-content clear-padding-top">
+    <div class="main-content">
         <!--<link rel="import" href="/modules/partial/common/project_tab.html?__inline"/>-->
         <div class="form-search">
             <input class="category_name" placeholder="请输入规则名称" ng-model="regulation_name"/>
@@ -85,14 +85,14 @@
                 <th>操作</th>
             </tr>
             </thead>
-            <tbody  ng-show="query_result.length>0">
+            <tbody  ng-show="query_result.length==0">
             <tr>
                 <td>1</td>
                 <td>123</td>
                 <td>上层仓储策略上层仓储策略</td>
                 <td>2016-01-01 17:17:17</td>
                 <td class="op-btns">
-                    <span class="icon-icon_edit edit-icon margin-right-10" ng-click="open('md-add','modify',$index)"></span>
+                    <span class="icon-icon_edit edit-icon margin-right-10"  ng-click="modifyStrategy()"></span>
                     <!--<span class="icon-icon_eye watch-icon"></span>-->
                     <span class="icon-icon_delete delete-icon margin-left-10" ng-click="open('md-add','delete',$index)"></span>
                 </td>
@@ -141,5 +141,5 @@
         </table>
     </div>
     <optip ng-class="optip"></optip>
-    <addstrategy ng-class="addstrategy" class="addstrategy-wrap"></addstrategy>
+    <addregulation ng-class="addstrategy" class="addstrategy-wrap"></addregulation>
 </div>

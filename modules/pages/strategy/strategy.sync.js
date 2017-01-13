@@ -49,7 +49,7 @@ app.register.controller("strategyCtr", function (ngDialog, $scope, $http, $locat
         $scope.addstrategy = 'obj-hide'
     })
 
-    //add
+    //modify
     $scope.modifyStrategy = function (idx) {
         $scope.addstrategy = 'obj-show'
         $scope.$broadcast('addstrategy', {

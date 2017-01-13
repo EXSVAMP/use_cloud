@@ -42,10 +42,26 @@ app.register.controller("regulationCtr", function (ngDialog,$scope, $http, $loca
     //add
     $scope.addStrategy = function(){
         $scope.addstrategy = 'obj-show'
-        $scope.$broadcast('addstrategy', {method:'add',title:'添加策略',projectId:$scope.projectId});
+        $scope.$broadcast('addstrategy', {method:'add',title:'添加规则',projectId:$scope.projectId});
     }
 
     $scope.$on('addstrategyclose',function(){
+        $scope.addstrategy = 'obj-hide'
+    })
+
+    //modify
+    $scope.modifyStrategy = function (idx) {
+        $scope.addstrategy = 'obj-show'
+        $scope.$broadcast('addstrategy', {
+            method: 'modify',
+            title: '编辑规则',
+            projectId: $scope.projectId,
+            scope: $scope,
+            data: $scope.query_result[idx]
+        });
+    }
+
+    $scope.$on('addstrategyclose', function () {
         $scope.addstrategy = 'obj-hide'
     })
 
@@ -56,6 +72,7 @@ app.register.controller("regulationCtr", function (ngDialog,$scope, $http, $loca
     $scope.numbers = [10, 20, 30, 40, 50];
     $scope.bigCurrentPage = 1;
     $scope.query_result = []
+    $scope.regulation_nameTmp = ''
     var BaseUrl = baseUrl.getUrl();
 
     $scope.setPage = function (pageNo) {
@@ -69,7 +86,7 @@ app.register.controller("regulationCtr", function (ngDialog,$scope, $http, $loca
 
     $scope.submit_search = function () {
         $http.get(BaseUrl + "/api/1/rule/" + url_junction.getQuery({
-                name: $scope.strategy_name,
+                name: $scope.regulation_nameTmp,
                 index: $scope.bigCurrentPage,
                 number: $scope.number,
                 is_page: '1',
@@ -103,34 +120,39 @@ app.register.controller("regulationCtr", function (ngDialog,$scope, $http, $loca
         $scope.submit_search();
     }
 
+    $scope.searchBtn = function () {
+        $scope.bigCurrentPage = 1;
+        $scope.strategy_nameTemp = $scope.strategy_name;
+        $scope.submit_search()
+    }
 
     $scope.open = function (size, method, index) {
         var modalInstance = $uibModal.open({
             animation: $scope.animationsEnabled,
-            controller: 'ModalStrategy',
-            templateUrl: "myModalstrategy.html",
+            controller: 'ModalRegulation',
+            templateUrl: "myModalregulation.html",
             size: size,
             resolve: {
                 items: function () {
                     if (method == "add") {
                         return {
-                            title: "添加策略",
+                            title: "添加规则",
                             method: "add",
                             scope: $scope
                         }
                     } else if (method == "modify") {
                         return {
-                            title: "编辑策略",
+                            title: "编辑规则",
                             method: "modify",
                             scope: $scope,
-                            data: $scope.query_result[0]
+                            data: $scope.query_result[index]
                         }
                     } else if (method == "delete") {
                         return {
-                            title: "删除策略",
+                            title: "删除规则",
                             method: "delete",
                             scope: $scope,
-                            data: $scope.query_result[0]
+                            data: $scope.query_result[index]
                         }
                     }
                 }

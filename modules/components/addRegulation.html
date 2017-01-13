@@ -1,0 +1,96 @@
+<div ng-controller="addRegulationCtr" class="addstrategy-modal">
+    <!--<div class="addstrategy-overlay"></div>-->
+    <div class="addstrategy-content" id="addstrategy-content" ng-class="addstrategy_content_topzero">
+
+        <div class="addstrategy-content-header relative">
+            <p>{{item.title}}</p>
+            <span class="icon-icon_close_circle_o category-pop-close" ng-click="cancel()"></span>
+        </div>
+        <div class="addstrategy-content-cont">
+            <div class="form-group form-group-selin form-group-category">
+                <div class="input-group">
+                    <span class="input-group-addon bg-white inputdesc">策略名称</span>
+                    <input type="text" class="form-control" placeholder="请输入策略名称" ng-model="name">
+                </div>
+            </div>
+            <!--<div class="form-group form-group-selin">-->
+                <!--<div class="input-group">-->
+                    <!--<span class="input-group-addon bg-white inputdesc">实例类别</span>-->
+                    <!--<input type="text" class="form-control" placeholder="选择实例类型" ng-model="classification">-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <div class="form-group form-group-selin ">
+                <div class="input-group input-group-select" style="width:auto;">
+                    <span class="input-group-addon inputdesc">实例类别</span>
+                    <ui-select ng-model="classification" style="width:331px;" name="classification" theme="bootstrap" on-select="setShowNum(classification)">
+                        <ui-select-match placeholder="选择实例类型">{{$select.selected.name}}</ui-select-match>
+                        <ui-select-choices repeat="item in numbers">
+                            <div ng-bind-html="item.name"></div>
+                            <!-- <small ng-bind-html="item.email"></small> -->
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+                <!--<button type="button" class="select_addBtn" ng-click="selectAdd()">-->
+                    <!--<span class="icon-icon_plus"></span>-->
+                <!--</button>-->
+            </div>
+
+            <div class="form-group form-group-selin">
+                <div class="input-group">
+                    <span class="input-group-addon inputdesc">简述</span>
+                    <input type="text" class="form-control" placeholder="请输入内容" ng-model="description">
+                </div>
+            </div>
+            <div class="addTopicListWrap">
+                <div  ng-repeat="item2 in addTopicList">
+                <div class="form-group form-group-selin relative">
+                    <div class="input-group">
+                        <span class="input-group-addon  inputdesc">主题</span>
+                        <input type="text" class="form-control" placeholder="请输入主题" ng-model="addTopicList[$index]['name']" >
+                    </div>
+                    <div class="addTopicFlag"></div>
+                </div>
+                <div class="form-group form-group-selin">
+                    <div class="input-group">
+                        <span class="input-group-addon bg-white inputdesc">权限</span>
+
+                        <div class="stategy-rights">
+                            <input type="checkbox" name="topicrightssel{{$index}}" ng-click="addPS($index,'p')" ng-checked="addTopicList[$index]['p']"/>
+                            <span>发布</span>
+                            <span class="strategy-topic-flag" ng-show="addTopicList[$index]['p']">P</span>
+
+                            <input type="checkbox" name="topicrightssel{{$index}}" class="margin-left-20" ng-click="addPS($index,'s')" ng-checked="addTopicList[$index]['s']"/>
+                            <span>订阅</span>
+                            <span class="strategy-topic-flag" ng-show="addTopicList[$index]['s']">S</span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-group form-group-selin">
+                    <div class="delTopic" ng-click="delTopicFunc($index)">
+                        <div class="delTopicIcon"></div>
+                    </div>
+                </div>
+                    </div>
+            </div>
+
+            <div class="form-group form-group-selin relative margin-top-20">
+                <fieldset class="addTopic" ng-click="addTopicFunc()"  ng-disabled="remainTopicToAddCount==0">
+                    <div class="icon-icon_plus addTopicIcon"></div>
+                </fieldset>
+                <span class="remainTopicToAdd margin-left-10">（还可添加{{remainTopicToAddCount}}个）</span>
+                <div class="addTopicFlag"></div>
+            </div>
+
+            <div class="addstrategy-modal-footer">
+                <div>
+                    <button type="button" class="btn btn_ok" ng-click="cancel()">取消</button>
+                    <button type="button" class="btn btn_cancel" ng-click="ok()">保存</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
