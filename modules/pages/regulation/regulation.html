@@ -1,6 +1,5 @@
-
 <div class="category">
-    <script  type="text/ng-template"  id="myModalregulation.html" >
+    <script type="text/ng-template" id="myModalregulation.html">
         <div class="modal-header relative">
             <p>{{item.title}}</p>
             <span class="icon-icon_close_circle_o category-pop-close" ng-click="cancel()"></span>
@@ -23,6 +22,7 @@
                 <div class="form-group form-group-selin" ng-show="item.method=='modify'">
                     <div class="input-group">
                         <span class="input-group-addon bg-white inputdesc">主题</span>
+
                         <div type="text" class="form-control readonly" ng-bind="topic"></div>
                     </div>
                 </div>
@@ -47,8 +47,10 @@
             <div class="modal-body">
                 <div class="warn_delete">
                     <span class="icon-icon_warn"></span>
+
                     <div class='delete_desc'>
                         <p>确定要删除这个规则吗</p>
+
                         <p>注意：删除以后不可恢复！</p>
                     </div>
                 </div>
@@ -65,7 +67,7 @@
     <div class="main-top-bar">
         <p>规则管理/规则列表</p>
     </div>
-    <div class="main-content">
+    <div class="main-content" ng-show="!regulationDetail">
         <!--<link rel="import" href="/modules/partial/common/project_tab.html?__inline"/>-->
         <div class="form-search">
             <input class="category_name" placeholder="请输入规则名称" ng-model="regulation_name"/>
@@ -85,16 +87,16 @@
                 <th>操作</th>
             </tr>
             </thead>
-            <tbody  ng-show="query_result.length==0">
-            <tr>
-                <td>1</td>
-                <td>123</td>
-                <td>上层仓储策略上层仓储策略</td>
-                <td>2016-01-01 17:17:17</td>
+            <tbody ng-show="query_result.length>0">
+            <tr ng-repeat="item in query_result">
+                <td class="detail-btn" ng-click="regulationDetailFunc($index)">{{item.name}}</td>
+                <td>{{item.topic}}</td>
+                <td>{{item.created_at}}</td>
                 <td class="op-btns">
-                    <span class="icon-icon_edit edit-icon margin-right-10"  ng-click="modifyStrategy()"></span>
+                    <span class="icon-icon_edit edit-icon margin-right-10" ng-click="modifyStrategy($index)"></span>
                     <!--<span class="icon-icon_eye watch-icon"></span>-->
-                    <span class="icon-icon_delete delete-icon margin-left-10" ng-click="open('md-add','delete',$index)"></span>
+                    <span class="icon-icon_delete delete-icon margin-left-10"
+                          ng-click="open('md-add','delete',$index)"></span>
                 </td>
 
             </tr>
@@ -102,6 +104,7 @@
         </table>
         <div class="no_content" ng-show="query_result.length==0">
             <p><span class="icon-no_search"></span></p>
+
             <p>找不到你需要的内容，请重新搜索</p>
         </div>
         <table class="table table-pagination" ng-show="query_result.length!=0">
@@ -117,7 +120,8 @@
                     </ui-select> -->
                     <div class="pagination-content">
                         <span class="pagination-tip">每页显示数量</span>
-                        <ui-select ng-model="number" name="camera_page_select" theme="bootstrap" on-select="setShowNum(number)">
+                        <ui-select ng-model="number" name="camera_page_select" theme="bootstrap"
+                                   on-select="setShowNum(number)">
                             <ui-select-match placeholder="10">{{$select.selected}}</ui-select-match>
                             <ui-select-choices repeat="item in numbers">
                                 <div ng-bind-html="item"></div>
@@ -127,11 +131,14 @@
                     </div>
                 </th>
                 <th>
-                    <uib-pagination items-per-page="number" total-items="bigTotalItems" ng-change="changePage()" ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm" boundary-link-numbers="true" num-pages="numPages" previous-text="上一页" next-text="下一页"></uib-pagination>
+                    <uib-pagination items-per-page="number" total-items="bigTotalItems" ng-change="changePage()"
+                                    ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm"
+                                    boundary-link-numbers="true" num-pages="numPages" previous-text="上一页"
+                                    next-text="下一页"></uib-pagination>
                     <div class="pagination-detail">
                         <span>共{{total_page}}页</span>
                         <span>跳至<input type="text" name="camera_page" ng-model="index_sel"/>页</span>
-                        <span><button  name="camera_submmit" ng-click="setPage()">确定</button></span>
+                        <span><button name="camera_submmit" ng-click="setPage()">确定</button></span>
                     </div>
                 </th>
 
@@ -139,6 +146,119 @@
             </thead>
 
         </table>
+    </div>
+    <div class="main-content height-auto" ng-show="regulationDetail">
+        <div class="form-search">
+            <div class="form-group form-group-selin border-light relative clear-padding-left margin-auto height-auto clear-padding-right"
+                 style="width:41.6%;float: none;">
+                <!--<div class="input-group" style="display:inline-table;">-->
+                    <!--<span class="input-group-addon bg-white inputdesc">主题</span>-->
+                    <!--<input type="text" class="form-control" placeholder="请输入主题" ng-model="watchTopic">-->
+                <!--</div>-->
+                <button type="button" class="searchBtn margin-bottom-10" type="button" ng-click="modifyStrategy(detailIdx)"
+                        style="border-radius: 4px;width: 134px;float: right;">
+                   <span class="icon-icon_edit padding-right-5"></span>规格编辑
+                </button>
+                <span class="categoryWatchTip" style="bottom: 10px;">规则查看</span>
+            </div>
+
+        </div>
+        <div class="margin-bottom-20 margin-auto" style="width:41.6%;">
+            <div class="ul-bordered width-full">
+                <ul class="regulation-detail-item relative">
+                    <li class="regulation-detail-key">
+                        规则名称
+                    </li>
+                    <li>
+                        12345
+                    </li>
+                </ul>
+                <ul class="regulation-detail-item relative">
+                    <li class="regulation-detail-key">
+                        物接入实例
+                    </li>
+                    <li>
+                        123
+                    </li>
+                </ul>
+                <ul class="regulation-detail-item relative">
+                    <li class="regulation-detail-key">
+                        主题
+                    </li>
+                    <li>
+                        12345
+                    </li>
+                </ul>
+            </div>
+
+            <div class="table-bordered width-full margin-top-10">
+                <ul class="regulation-detail-item relative">
+                    <li class="regulation-detail-key">
+                        存储类型
+                    </li>
+                    <li>
+                        RabitMQ
+                    </li>
+                </ul>
+                <ul class="regulation-detail-item relative">
+                    <li class="regulation-detail-key">
+                        exchange
+                    </li>
+                    <li>
+                        123
+                    </li>
+                </ul>
+                <ul class="regulation-detail-item relative">
+                    <li class="regulation-detail-key">
+                       queue
+                    </li>
+                    <li>
+                        12345
+                    </li>
+                </ul>
+                <ul class="regulation-detail-item relative">
+                    <li class="regulation-detail-key">
+                        持久化
+                    </li>
+                    <li>
+                        12345
+                    </li>
+                </ul>
+
+
+                <ul class="regulation-detail-item relative">
+                    <li class="regulation-detail-key">
+                        api
+                    </li>
+                    <li>
+                        123
+                    </li>
+                </ul>
+                <ul class="regulation-detail-item relative">
+                    <li class="regulation-detail-key">
+                        调用方式
+                    </li>
+                    <li>
+                        12345
+                    </li>
+                </ul>
+                <ul class="regulation-detail-item relative">
+                    <li class="regulation-detail-key">
+                        请求头
+                    </li>
+                    <li>
+                        12345
+                    </li>
+                </ul>
+
+            </div>
+
+        </div>
+        <div class="modal-footer modal-footer-category">
+            <div>
+                <button type="button" class="btn btn_ok" ng-click="return()">返回</button>
+            </div>
+        </div>
     </div>
     <optip ng-class="optip"></optip>
     <addregulation ng-class="addstrategy" class="addstrategy-wrap"></addregulation>
