@@ -301,7 +301,21 @@
     border: solid 1px #E66060;
   }
 }
-
+.btn_show,.btn_reset{
+  width: 70px;
+  height: 24px;
+  line-height: 24px!important;
+  padding: 0px!important;
+}
+.btn_reset{
+  margin-left:15px;
+}
+.show_reset{
+  position: relative;
+  top: -33px;
+  z-index: 100;
+  left: 100px;
+}
 .btn_cancel {
   background-color: #00a0e9;
   color: #ffffff;

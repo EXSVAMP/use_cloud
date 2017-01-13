@@ -469,6 +469,144 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
                 description:""
 
             }
+
+          //下拉框
+            $scope.strategy_list=[];
+            $scope.params.strategyId=-1;
+            $scope.class_list=[];
+            $scope.params.classId=-1;
+
+            $scope.get_strategyList=function(){
+                $http.get(baseUrl + "/api/1/topic/strategy?instance="+instance).success(function (data) {
+                    if (data.code == 200) {
+                        $scope.strategy_list = data.data;
+                        $scope.strategy_list.push({id: '-1', name: '-------------'});
+                    }
+                })
+            }
+          $scope.get_classList=function(){
+              $http.get(baseUrl + "/api/1/topic/class?instance="+instance).success(function (data) {
+                  if (data.code == 200) {
+                      $scope.class_list = data.data;
+                      $scope.class_list.push({id: '-1', name: '-------------'});
+                  }
+              })
+          }
+
+
+            $scope.get_strategyList();
+            $scope.get_classList();
+
+            //选择策略
+            $scope.select_strategy=function(strategyId){
+                $scope.params.strategyId=strategyId;
+                console.log("<===策略ID===>"+strategyId);
+            }
+            //选择实例
+            $scope.select_class=function(classId){
+                $scope.params.classId=classId;
+                console.log("<===实例ID===>"+classId);
+            }
+
+
+           //添加项目操作
+            if(data.method=='add'){
+
+
+                //保存
+                $scope.ok=function(){
+                    var query_url = url_junction.getDict({
+                        name:$scope.params.identity_name,
+                        instance:instance ,
+                        strategy:$scope.params.strategyId,
+                        description:$scope.params.description,
+
+                    });
+                    $http.post(baseUrl+"/api/1/topic/identity",query_url).success(function(data){
+                        if(data.code==200){
+                            $scope.item.scope.submit_search();
+                            $scope.cancel();
+                        };
+                    }).error(function(){
+                        alert("error")
+                    });
+
+                }
+
+            }
+                $scope.ok_strategy=function(){
+                    var query_url={
+                        name:$scope.params.strategy_name,
+                        classification:$scope.params.classId,
+                        description:$scope.params.strategy_desc,
+                        instance:instance,
+                        topic:[]
+
+                    }
+
+                        _.forEach($scope.addTopicList, function (value) {
+
+                            var pubsub = value['pubsub'];
+                            if (/ps/.test(pubsub)) {
+                                pubsub = 'pubsub'
+                            } else if (/p/.test(pubsub)) {
+                                pubsub = 'publish'
+                            } else if (/s/.test(pubsub)) {
+                                pubsub = 'subscribe'
+                            }
+
+                            query_url.topic.push({name: value['name'], pubsub: pubsub})
+
+                        });
+
+                    query_url.topic = JSON.stringify(query_url.topic);
+                    $http.post(baseUrl + "/api/1/topic/strategy ", query_url).success(function (data) {
+                                if (data.code == "200") {
+                                    $scope.params.strategyId=data.data.id;
+                                    $scope.get_strategyList();
+                                    $scope.cancel_strategy();
+
+                                }
+                            })
+
+
+
+
+                }
+
+
+
+            if(data.method=="edit"){
+                $scope.identity_id=data.item.id;
+                $scope.params.identity_name=data.item.name;
+                $scope.params.strategyId=data.item.strategy;
+                $scope.params.description=data.item.description;
+
+                $scope.show_reset=true;
+                $scope.show_secrect=function(){
+                    $scope.params.secret_key=data.item.secret_key;
+                    $scope.show_reset=false;
+                }
+                $scope.reset_secrect=function(id){
+                    $http.put(baseUrl+"/api/1/topic/identity/reset/"+id+"/").success(function(data){
+                            if(data.code==200){
+                                $scope.params.secret_key=data.data.secret_key;
+                                $scope.show_reset=false;
+                            }
+                    })
+
+                }
+                $scope.ok=function(){
+                    alert("123")
+                }
+
+                console.log($scope.params);
+            }
+
+
+
+
+
         }
         if(data.method=="delete"){
             $scope.state.delete=true;
@@ -479,10 +617,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
 
         if(data.method=="edit"){
             $scope.state.secret=true;
-            $scope.params.identity_name=data.item.name;
-            $scope.params.strategyId=data.item.strategy;
-            $scope.params.description=data.item.description;
-            $scope.params.secret_key=data.item.secret_key;
+
 
 
 
@@ -492,40 +627,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
         $scope.item = data;
     })
 
-    //选择策略
-    $scope.select_strategy=function(strategyId){
-        $scope.params.strategyId=strategyId;
-        console.log("<===策略ID===>"+strategyId);
-    }
 
-    $scope.strategy_list=[];
-    $scope.params.strategyId=-1;
-    $http.get(baseUrl + "/api/1/topic/strategy").success(function (data) {
-        if (data.code == 200) {
-            $scope.strategy_list = data.data;
-            $scope.strategy_list.push({id: '-1', name: '-------------'});
-        }
-    })
-
-    //保存
-    $scope.ok=function(){
-        var query_url = url_junction.getDict({
-            name:$scope.params.identity_name,
-            instance:instance ,
-            strategy:$scope.params.strategyId,
-            description:$scope.params.description,
-
-        });
-        $http.post(baseUrl+"/api/1/topic/identity",query_url).success(function(data){
-            if(data.code==200){
-                $scope.item.scope.submit_search();
-                $scope.cancel();
-            };
-        }).error(function(){
-            alert("error")
-        });
-
-    }
 
     //删除
     $scope.delete=function(id){
@@ -545,20 +647,19 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
         $scope.$emit('addidentityclose','close')
     };
 
-    $scope.selectAdd = function () {
-        $scope.state.pointer = true;
-        $scope.state.strategy = true;
+    // $scope.point_add_strategy=function(){
+    //    $scope.params.strategy_name="123444555";
+    // }
 
-    }
-    $scope.cancel_strategy = function () {
-        $scope.state.pointer = false;
-        $scope.state.strategy = false;
-    }
-
+    //选择添加策略
     $scope.selectAdd = function () {
         $scope.state.pointer = true;
         $scope.state.strategy = true;
         $(".identity_warp").width(1010)
+        // $scope.point_add_strategy();
+        $scope.addTopicList=[];
+        $scope.addTopicList.push({p: false, s: false, name: '', pubsub: ''});
+        $scope.remainTopicToAddCount = 4;
 
     }
 
@@ -571,7 +672,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
 
 
 
-    $scope.addTopicList = []; //{p:false,s:false}
+    $scope.addTopicList = [{p:false,s:false,pubsub:'',name:''}]; //{p:false,s:false}
     $scope.remainTopicToAddCount = 4;
     $scope.addTopicFunc = function () {
         $scope.remainTopicToAddCount--;
@@ -582,7 +683,17 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
         $scope.remainTopicToAddCount++;
         _.pullAt($scope.addTopicList, [idx]);
     }
+    $scope.addPS = function (idx, type) {
+        $scope.addTopicList[idx][type] = !$scope.addTopicList[idx][type];
+        var reg = new RegExp(type)
+        if (reg.test($scope.addTopicList[idx]['pubsub'])) {
+            $scope.addTopicList[idx]['pubsub'] = $scope.addTopicList[idx]['pubsub'].replace(type, '')
+        } else {
+            $scope.addTopicList[idx]['pubsub'] += type
+        }
 
+        console.log($scope.addTopicList[idx]['pubsub'])
+    }
 
 })
 
