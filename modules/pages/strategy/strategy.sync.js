@@ -1,5 +1,5 @@
 var app = angular.module('RDash');
-app.register.controller("strategyCtr", function (ngDialog,$scope, $http, $location, $uibModal, $interval, $cookieStore, baseUrl, $rootScope, utils, PageHandle, $stateParams, $timeout, url_junction) {
+app.register.controller("strategyCtr", function (ngDialog, $scope, $http, $location, $uibModal, $interval, $cookieStore, baseUrl, $rootScope, utils, PageHandle, $stateParams, $timeout, url_junction) {
     //console.log("主题2222项目管理控制台");
     //console.log('id',$stateParams.projectId)
     //console.log('name',$stateParams.projectName)
@@ -40,12 +40,28 @@ app.register.controller("strategyCtr", function (ngDialog,$scope, $http, $locati
     }
 
     //add
-    $scope.addStrategy = function(){
+    $scope.addStrategy = function () {
         $scope.addstrategy = 'obj-show'
-        $scope.$broadcast('addstrategy', {method:'add',title:'添加策略',projectId:$scope.projectId});
+        $scope.$broadcast('addstrategy', {method: 'add', title: '添加策略', projectId: $scope.projectId, scope: $scope});
     }
 
-    $scope.$on('addstrategyclose',function(){
+    $scope.$on('addstrategyclose', function () {
+        $scope.addstrategy = 'obj-hide'
+    })
+
+    //modify
+    $scope.modifyStrategy = function (idx) {
+        $scope.addstrategy = 'obj-show'
+        $scope.$broadcast('addstrategy', {
+            method: 'modify',
+            title: '编辑策略',
+            projectId: $scope.projectId,
+            scope: $scope,
+            data: $scope.query_result[idx]
+        });
+    }
+
+    $scope.$on('addstrategyclose', function () {
         $scope.addstrategy = 'obj-hide'
     })
 
@@ -55,7 +71,8 @@ app.register.controller("strategyCtr", function (ngDialog,$scope, $http, $locati
     $scope.bigCurrentPage = 1;
     $scope.numbers = [10, 20, 30, 40, 50];
     $scope.bigCurrentPage = 1;
-    $scope.query_result = [{name: 'test', topic: 'test2', description: "test3", id: '123'}]
+    $scope.query_result = []
+    $scope.strategy_nameTemp = ''
     var BaseUrl = baseUrl.getUrl();
 
     $scope.setPage = function (pageNo) {
@@ -69,7 +86,7 @@ app.register.controller("strategyCtr", function (ngDialog,$scope, $http, $locati
 
     $scope.submit_search = function () {
         $http.get(BaseUrl + "/api/1/topic/strategy" + url_junction.getQuery({
-                name: $scope.strategy_name,
+                name: $scope.strategy_nameTemp,
                 index: $scope.bigCurrentPage,
                 number: $scope.number,
                 is_page: '1',
@@ -103,6 +120,11 @@ app.register.controller("strategyCtr", function (ngDialog,$scope, $http, $locati
         $scope.submit_search();
     }
 
+    $scope.searchBtn = function () {
+        $scope.bigCurrentPage = 1;
+        $scope.strategy_nameTemp = $scope.strategy_name;
+        $scope.submit_search()
+    }
 
     $scope.open = function (size, method, index) {
         var modalInstance = $uibModal.open({
@@ -123,14 +145,14 @@ app.register.controller("strategyCtr", function (ngDialog,$scope, $http, $locati
                             title: "编辑策略",
                             method: "modify",
                             scope: $scope,
-                            data: $scope.query_result[0]
+                            data: $scope.query_result[index]
                         }
                     } else if (method == "delete") {
                         return {
                             title: "删除策略",
                             method: "delete",
                             scope: $scope,
-                            data: $scope.query_result[0]
+                            data: $scope.query_result[index]
                         }
                     }
                 }

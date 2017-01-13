@@ -1,4 +1,4 @@
-angular.module("RDash",['ui.bootstrap','ui.router','ngCookies','ngDialog','cgBusy','truncate','ui.select','ngSanitize','angular-loading-bar','ngAnimate']);
+angular.module("RDash", ['ui.bootstrap', 'ui.router', 'ngCookies', 'ngDialog', 'cgBusy', 'truncate', 'ui.select', 'ngSanitize', 'angular-loading-bar', 'ngAnimate']);
 require('router');
 require('interceptor');
 require('common/constant');
@@ -6,7 +6,7 @@ require('common/service/utils');
 require('components/opTip');
 require('components/cover');
 require('components/addStrategy');
-
+require('components/addRegulation');
 
 
 /**
@@ -15,38 +15,63 @@ require('components/addStrategy');
 var app = angular.module('RDash');
 
 
-app.config(function($httpProvider){
+app.config(function ($httpProvider) {
     $httpProvider.defaults.xsrfCookieName = 'csrftoken';
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 });
 
-app.service("baseUrl",function(constant){
-    var url=constant.url;
+app.service("baseUrl", function (constant, ngDialog) {
+    var url = constant.url;
     return {
-        getUrl:function(){
+        getUrl: function () {
             return url;
+        },
+        ngDialog: function (sAlert) {
+            ngDialog.open({
+                template: '<p style=\"text-align: center\">' + sAlert + '</p>',
+                plain: true
+            });
+        },
+        dupInObjArr: function (key, objArr) {
+            var isDup = 0;
+            //key = 'name'
+            //var test= [{name:'test',s:'pb'},{name:'test2',s:'pb8'},{name:'test',s:'pb7'}]
+            var temp = []
+
+            _.forEach(objArr, function (value) {
+                if (_.find(temp, function (o) {
+                        return o == value[key];
+                    })) {
+                    isDup = 1;
+                    return isDup;
+                } else
+                    temp.push(value[key])
+            });
+            console.log(isDup)
+            return isDup;
+
         }
     }
-}).service("url_junction", function(){
+}).service("url_junction", function () {
     return {
-        getQuery:function(dic){
+        getQuery: function (dic) {
             var query_url = '';
-            for(var i in dic){
-                if(dic[i] && dic[i]!='-1'){
-                    if(query_url==""){
-                        query_url+="?"+i+"="+dic[i]
-                    }else{
-                        query_url+="&"+i+"="+dic[i]
+            for (var i in dic) {
+                if (dic[i] && dic[i] != '-1') {
+                    if (query_url == "") {
+                        query_url += "?" + i + "=" + dic[i]
+                    } else {
+                        query_url += "&" + i + "=" + dic[i]
                     }
                 }
             }
             return query_url
         },
-        getDict:function(dic){
+        getDict: function (dic) {
             var ret_dic = {};
-            for(var i in dic){
-                if(dic[i] && dic[i]!='-1'){
+            for (var i in dic) {
+                if (dic[i] && dic[i] != '-1') {
                     ret_dic[i] = dic[i];
                 }
             }
@@ -54,19 +79,19 @@ app.service("baseUrl",function(constant){
         }
     }
 });
-app.factory('PageHandle',function(ngDialog){
-    return{
-        setPageInput: function(sPageInput,iMaxPage){
+app.factory('PageHandle', function (ngDialog) {
+    return {
+        setPageInput: function (sPageInput, iMaxPage) {
             var isNum = /^\d+$/.test(sPageInput);
-            if(!isNum){
+            if (!isNum) {
                 ngDialog.open({
                     template: '<p style=\"text-align: center\">输入页码不正确</p>',
                     plain: true
                 });
                 return false;
-            }else{
+            } else {
                 sPageInput = parseInt(sPageInput);
-                if(sPageInput == 0 || sPageInput > iMaxPage){
+                if (sPageInput == 0 || sPageInput > iMaxPage) {
                     ngDialog.open({
                         template: '<p style=\"text-align: center\">输入页码不正确</p>',
                         plain: true
@@ -79,60 +104,76 @@ app.factory('PageHandle',function(ngDialog){
         }
     }
 });
-app.filter("time_format",function(){
-    return function(input){
+app.filter("time_format", function () {
+    return function (input) {
 
-        if(input!=undefined){
-            input=input.replace("T"," ");
+        if (input != undefined) {
+            input = input.replace("T", " ");
         }
         return input;
     }
 });
-app.factory('HttpInterceptor', ['$q','$injector',HttpInterceptor]);
+app.filter("pubsub", function () {
+    return function (input) {
+
+        if (input == 'pubsub') {
+            input = 'sp';
+        } else if (input == 'publish') {
+            input = 'p';
+        } else if (input == 'subscribe') {
+            input = 's';
+        } else {
+            input = '';
+        }
+        return input;
+    }
+});
+app.factory('HttpInterceptor', ['$q', '$injector', HttpInterceptor]);
 function HttpInterceptor($q, $injector) {
     return {
-        request: function(config){
+        request: function (config) {
             return config;
         },
-        requestError: function(err){
+        requestError: function (err) {
             return $q.reject(err);
         },
-        response: function(res){
+        response: function (res) {
             var ngDialog;
-            if(!ngDialog){
+            if (!ngDialog) {
                 ngDialog = $injector.get("ngDialog")
             }
-            if(res.data.code){
-                if(res.data.code!='200'){
+            if (res.data.code) {
+                if (res.data.code != '200') {
                     ngDialog.open({
                         template: '<p style=\"text-align: center\">错误信息：' + res.data.message + '</p>',
                         plain: true
                     });
-                };
+                }
+                ;
 
             }
             return res;
         },
-        responseError: function(err){
+        responseError: function (err) {
             var ngDialog;
-            if(!ngDialog){
+            if (!ngDialog) {
                 ngDialog = $injector.get("ngDialog")
             }
-            if(-1 === err.status) {
+            if (-1 === err.status) {
                 // 远程服务器无响应
                 // ngDialog.open({
                 //     template:'<p style=\"text-align: center\">远程服务器无响应</p>',
                 //     plain:true
                 // });
-            } else if(500 === err.status) {
+            } else if (500 === err.status) {
                 // 处理各类自定义错误
                 ngDialog.open({
-                    template:'<p style=\"text-align: center\">内部服务器错误</p>',
-                    plain:true
+                    template: '<p style=\"text-align: center\">内部服务器错误</p>',
+                    plain: true
                 });
-            } else if(501 === err.status) {
+            } else if (501 === err.status) {
                 // ...
-            } else if(403 === err.status) {
+            } else if (403 === err.status) {
                 // window.location.href = "/login.html"
             }
             return $q.reject(err);
@@ -141,21 +182,21 @@ function HttpInterceptor($q, $injector) {
 }
 
 // 添加对应的 Interceptors
-app.config(['$httpProvider', function($httpProvider){
+app.config(['$httpProvider', function ($httpProvider) {
     $httpProvider.interceptors.push(HttpInterceptor);
 }]);
 
-app.controller("MasterCtrl",function($scope, $cookieStore, $http, baseUrl, ngDialog, $rootScope,cfpLoadingBar ){
+app.controller("MasterCtrl", function ($scope, $cookieStore, $http, baseUrl, ngDialog, $rootScope, cfpLoadingBar) {
 
     var baseUrl = baseUrl.getUrl();
     cfpLoadingBar.start();
     cfpLoadingBar.complete();
-    $rootScope.alert_pop = function(alert_info){
+    $rootScope.alert_pop = function (alert_info) {
         $rootScope.alert_info = alert_info;
         ngDialog.open({
-            template:"alert.html",
+            template: "alert.html",
             //className:'ngDialog-theme-default',
-            preCloseCallback: function() {
+            preCloseCallback: function () {
 
             }
         })
@@ -164,49 +205,48 @@ app.controller("MasterCtrl",function($scope, $cookieStore, $http, baseUrl, ngDia
 })
 
 
+app.controller("headerCtrl", function ($scope, $cookieStore, $http, $uibModal, baseUrl, ngDialog, $rootScope) {
 
-app.controller("headerCtrl",function($scope, $cookieStore, $http, $uibModal, baseUrl, ngDialog, $rootScope){
-
-    $scope.state={
-        manage:false,
-        register:true,
-        login:true,
-        user_name:false
-
-    }
-    var user_token=sessionStorage.getItem("user_token");
-    if(user_token){
-        var username=sessionStorage.getItem("loginName");
-        var password=sessionStorage.getItem("password");
-        $scope.state.manage=true;
-        $scope.username=username;
-        $scope.state.register=false;
-        $scope.state.login=false;
-        $scope.state.user_name=true;
+    $scope.state = {
+        manage: false,
+        register: true,
+        login: true,
+        user_name: false
 
     }
+    var user_token = sessionStorage.getItem("user_token");
+    if (user_token) {
+        var username = sessionStorage.getItem("loginName");
+        var password = sessionStorage.getItem("password");
+        $scope.state.manage = true;
+        $scope.username = username;
+        $scope.state.register = false;
+        $scope.state.login = false;
+        $scope.state.user_name = true;
 
-    $scope.quit=function(){
+    }
+
+    $scope.quit = function () {
         sessionStorage.removeItem("user_token");
-        $scope.state.user_name=false;
-        window.location.href="/index.html";
+        $scope.state.user_name = false;
+        window.location.href = "/index.html";
 
     };
 
-    $scope.nav_state={
-        first:true,
-        second:false,
-        third:false,
-        fourth:false,
-        fifth:false
+    $scope.nav_state = {
+        first: true,
+        second: false,
+        third: false,
+        fourth: false,
+        fifth: false
 
     }
-    $scope.toggle=function(state){
-        for(i in $scope.nav_state){
-            if(i==state){
-                $scope.nav_state[i]=true;
-            }else{
-                $scope.nav_state[i]=false
+    $scope.toggle = function (state) {
+        for (i in $scope.nav_state) {
+            if (i == state) {
+                $scope.nav_state[i] = true;
+            } else {
+                $scope.nav_state[i] = false
             }
         }
     }
@@ -214,163 +254,162 @@ app.controller("headerCtrl",function($scope, $cookieStore, $http, $uibModal, bas
 })
 
 
-app.controller('headerManageCtrl',function($scope, $cookieStore, $http, $uibModal, baseUrl, ngDialog, $rootScope){
-    var username=sessionStorage.getItem("loginName");
-    if(username){
-        $scope.user_name=username;
-    };
+app.controller('headerManageCtrl', function ($scope, $cookieStore, $http, $uibModal, baseUrl, ngDialog, $rootScope) {
+    var username = sessionStorage.getItem("loginName");
+    if (username) {
+        $scope.user_name = username;
+    }
+    ;
 
-    $scope.open=function(size, method){
-        var modalInstance=$uibModal.open({
+    $scope.open = function (size, method) {
+        var modalInstance = $uibModal.open({
             animation: $scope.animationsEnabled,
             controller: 'ModalHeader',
             templateUrl: "myModalContent.html",
             size: size,
-            resolve:{
-                items:function(){
-                    if(method=="quit"){
+            resolve: {
+                items: function () {
+                    if (method == "quit") {
                         return {
-                            title:"退出IOT云",
-                            method:"quit",
-                            scope:$scope
+                            title: "退出IOT云",
+                            method: "quit",
+                            scope: $scope
                         }
                     }
                 }
             }
         });
-        modalInstance.result.then(function(selectedItem) {
+        modalInstance.result.then(function (selectedItem) {
             $scope.selected = selectedItem;
-        }, function(){});
+        }, function () {
+        });
     }
 
 })
 
-app.controller('ModalHeader',function($scope,$cookieStore, $uibModalInstance,$http,items,baseUrl,url_junction,ngDialog){
+app.controller('ModalHeader', function ($scope, $cookieStore, $uibModalInstance, $http, items, baseUrl, url_junction, ngDialog) {
     baseUrl = baseUrl.getUrl();
     $scope.item = items;
-    $scope.cancel = function(){
+    $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
     };
-    if($scope.item.method=='quit'){
-        $scope.ok=function(){
-            $http.get(baseUrl+"/api/1/user/logout").success(function(data){
-                if(data.code=="200"){
+    if ($scope.item.method == 'quit') {
+        $scope.ok = function () {
+            $http.get(baseUrl + "/api/1/user/logout").success(function (data) {
+                if (data.code == "200") {
                     sessionStorage.removeItem("user_token");
                     window.location.href = "/index.html"
                 }
-            }).error(function(){
+            }).error(function () {
                 ngDialog.open({
-                    template: '<p style=\"text-align: center\">退出出错:'+data.description+'</p>',
+                    template: '<p style=\"text-align: center\">退出出错:' + data.description + '</p>',
                     plain: true
                 });
             });
             $uibModalInstance.close();
         }
-    } 
-    
-    
+    }
+
+
 })
 
 
-app.controller("sideBarCtrl",function($scope, $cookieStore, $http, $uibModal,$location, baseUrl, ngDialog, $rootScope){
+app.controller("sideBarCtrl", function ($scope, $cookieStore, $http, $uibModal, $location, baseUrl, ngDialog, $rootScope) {
     console.log("<=====管理控制台首页sidebar=====>")
-    console.log("<==地址===>"+$location.path());
-    var username=sessionStorage.getItem("loginName");
-    if(username){
-       $scope.user_name=username;
+    console.log("<==地址===>" + $location.path());
+    var username = sessionStorage.getItem("loginName");
+    if (username) {
+        $scope.user_name = username;
     }
-    if($location.path()==""){
+    if ($location.path() == "") {
         console.log("<====地址为空===>");
     }
-    $scope.status={
-        "subject":false,
-         "object":false,
-         'work_order':false
+    $scope.status = {
+        "subject": false,
+        "object": false,
+        'work_order': false
     }
-    $scope.toggle=function(name){
-        if(name){
-            $scope.status[name]=!$scope.status[name];
+    $scope.toggle = function (name) {
+        if (name) {
+            $scope.status[name] = !$scope.status[name];
         }
 
     }
 })
 
 
-app.controller('ModalProject',function($scope,$cookieStore, $uibModalInstance,$http,items,baseUrl,url_junction,ngDialog){
+app.controller('ModalProject', function ($scope, $cookieStore, $uibModalInstance, $http, items, baseUrl, url_junction, ngDialog) {
     baseUrl = baseUrl.getUrl();
     $scope.item = items;
-    $scope.cancel = function(){
+    $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
     };
-    $scope.state={
-        add:false,
-        delete:false
+    $scope.state = {
+        add: false,
+        delete: false
     }
     // console.log("<==项目名称====>"+$scope.project_name);
-    if($scope.item.method=='add'){
-        $scope.state.add=true;
-        $scope.state.delete=false;
-        $scope.ok=function(){
-            $scope.params={
-                name:$scope.project_name
+    if ($scope.item.method == 'add') {
+        $scope.state.add = true;
+        $scope.state.delete = false;
+        $scope.ok = function () {
+            $scope.params = {
+                name: $scope.project_name
             }
             // console.log("<==项目名称====>"+$scope.project_name);
-            $http.post(baseUrl+"/api/1/topic/instance",$scope.params).success(function(data){
-                if(data.code=="200"){
+            $http.post(baseUrl + "/api/1/topic/instance", $scope.params).success(function (data) {
+                if (data.code == "200") {
                     items.scope.submit_search();
                 }
-            }).error(function(){
+            }).error(function () {
                 ngDialog.open({
-                    template: '<p style=\"text-align: center\">添加失败:'+data.description+'</p>',
+                    template: '<p style=\"text-align: center\">添加失败:' + data.description + '</p>',
                     plain: true
                 });
             });
             $uibModalInstance.close();
         }
     }
+
 
     if($scope.item.method=='delete'){
         $scope.state.add=false;
         $scope.state.delete=true;
         $scope.ok=function(){
             $scope.pk=items.id;
-            $http.delete(baseUrl+"/api/1/topic/instance"+$scope.pk+"/").success(function(data){
+            $http.delete(baseUrl+"/api/1/topic/instance/"+$scope.pk+"/").success(function(data){
                 if(data.code=="200"){
+
                     items.scope.submit_search();
                 }
 
-            }).error(function(){
+            }).error(function () {
                 alert("有点故障！")
             });
             $uibModalInstance.close();
         }
 
 
-
     }
-
-
-
-
 
 
 })
 
-app.controller('projectTabCtr',function($scope,$cookieStore, $http,baseUrl,url_junction,ngDialog,$location){
-        //baseUrl = baseUrl.getUrl();
-        //$scope.item = items;
-        //console.log(10)
+app.controller('projectTabCtr', function ($scope, $cookieStore, $http, baseUrl, url_junction, ngDialog, $location) {
+    //baseUrl = baseUrl.getUrl();
+    //$scope.item = items;
+    //console.log(10)
     $scope.item = {
-        id:'',
-        name:'',
+        id: '',
+        name: '',
         category: false,
         identity: false,
         strategy: false
     }
-    $scope.$on('to-child', function(d,data) {
+    $scope.$on('to-child', function (d, data) {
 
-        console.log("projectId",data);
-       $scope.item.id = data.id;
+        console.log("projectId", data);
+        $scope.item.id = data.id;
         $scope.item.name = data.name;
         $scope.item[data.tabName] = true;
 
@@ -380,16 +419,16 @@ app.controller('projectTabCtr',function($scope,$cookieStore, $http,baseUrl,url_j
 
     $scope.$emit('to-pare', 'ok');
 
-    $scope.go = function(tab){
-        $location.path('/'+tab).search({projectId:$scope.item.id,projectName:$scope.item.name});
+    $scope.go = function (tab) {
+        $location.path('/' + tab).search({projectId: $scope.item.id, projectName: $scope.item.name});
     }
 
 
 })
 
-app.controller('opTipCtr',function($scope,$cookieStore, $http,baseUrl,url_junction,ngDialog){
+app.controller('opTipCtr', function ($scope, $cookieStore, $http, baseUrl, url_junction, ngDialog) {
 
-    $scope.$on('optip', function(d,data) {
+    $scope.$on('optip', function (d, data) {
 
         $scope.flag = data.flag;
         $scope.optipText = data.msg;
@@ -397,47 +436,142 @@ app.controller('opTipCtr',function($scope,$cookieStore, $http,baseUrl,url_juncti
     });
 })
 
-app.controller('coverCtr',function($scope,$cookieStore, $http,baseUrl,url_junction,ngDialog){
+
+app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_junction, ngDialog) {
     baseUrl = baseUrl.getUrl();
     $scope.item = {};
     $scope.numbers = [10, 20, 30, 40, 50];
-    $scope.$on("identityState",function(event,data){
-        console.log("<===广播数据==>"+data);
-        $scope.item = data;;
-    })
-
     $scope.state={
         pointer:false,
-        strategy:false
+        strategy:false,
+        secret:false,
+        undelete:false,
+        delete:false
+    };
+    $scope.params={};
+    var instance="";
+    $scope.$on("identityState",function(event,data){
+        console.log(data);
+        instance=data.projectId;
+        if(data.method=='add'||data.method=='edit'){
+            $scope.state.undelete=true;
+            $scope.state.delete=false;
+            $scope.params={
+                identity_name:"",
+                strategyId:"",
+                description:""
+
+            }
+        }
+        if(data.method=="delete"){
+            $scope.state.delete=true;
+            $scope.state.undelete=false;
+            $scope.identity_id=data.item.id;
+
+        }
+
+        if(data.method=="edit"){
+            $scope.state.secret=true;
+            $scope.params.identity_name=data.item.name;
+            $scope.params.strategyId=data.item.strategy;
+            $scope.params.description=data.item.description;
+            $scope.params.secret_key=data.item.secret_key;
+
+
+
+        }else{
+            $scope.state.secret=false;
+        }
+        $scope.item = data;
+    })
+
+    //选择策略
+    $scope.select_strategy=function(strategyId){
+        $scope.params.strategyId=strategyId;
+        console.log("<===策略ID===>"+strategyId);
+    }
+
+    $scope.strategy_list=[];
+    $scope.params.strategyId=-1;
+    $http.get(baseUrl + "/api/1/topic/strategy").success(function (data) {
+        if (data.code == 200) {
+            $scope.strategy_list = data.data;
+            $scope.strategy_list.push({id: '-1', name: '-------------'});
+        }
+    })
+
+    //保存
+    $scope.ok=function(){
+        var query_url = url_junction.getDict({
+            name:$scope.params.identity_name,
+            instance:instance ,
+            strategy:$scope.params.strategyId,
+            description:$scope.params.description,
+
+        });
+        $http.post(baseUrl+"/api/1/topic/identity",query_url).success(function(data){
+            if(data.code==200){
+                $scope.item.scope.submit_search();
+                $scope.cancel();
+            };
+        }).error(function(){
+            alert("error")
+        });
+
+    }
+
+    //删除
+    $scope.delete=function(id){
+        $http.delete(baseUrl+"/api/1/topic/identity/"+id+"/").success(function(data){
+            if(data.code=="200"){
+                $scope.item.scope.submit_search();
+                $scope.cancel();
+            }
+
+        }).error(function(){
+            alert("有点故障！")
+        });
+
+
     }
     $scope.cancel = function(){
-        $scope.state.pointer=false;
-        $scope.state.strategy=false;
         $scope.$emit('addidentityclose','close')
     };
 
-    $scope.selectAdd=function(){
-     $scope.state.pointer=true;
-     $scope.state.strategy=true;
-      // $(".identity_modal").css("left","0px")
-        $(".identity_warp").width(1010)
-        
+    $scope.selectAdd = function () {
+        $scope.state.pointer = true;
+        $scope.state.strategy = true;
+
     }
+    $scope.cancel_strategy = function () {
+        $scope.state.pointer = false;
+        $scope.state.strategy = false;
+    }
+
+    $scope.selectAdd = function () {
+        $scope.state.pointer = true;
+        $scope.state.strategy = true;
+        $(".identity_warp").width(1010)
+
+    }
+
+
    $scope.cancel_strategy=function(){
        $scope.state.pointer=false;
        $scope.state.strategy=false;
-       // $(".identity_modal").css("left","480px")
        $(".identity_warp").width(480)
    }
 
+
+
     $scope.addTopicList = []; //{p:false,s:false}
     $scope.remainTopicToAddCount = 4;
-    $scope.addTopicFunc = function(){
+    $scope.addTopicFunc = function () {
         $scope.remainTopicToAddCount--;
-        $scope.addTopicList.push({p:false,s:false,name:'',pubsub:''})
+        $scope.addTopicList.push({p: false, s: false, name: '', pubsub: ''})
         console.log($scope.addTopicList)
     }
-    $scope.delTopicFunc =function(idx){
+    $scope.delTopicFunc = function (idx) {
         $scope.remainTopicToAddCount++;
         _.pullAt($scope.addTopicList, [idx]);
     }
@@ -446,208 +580,30 @@ app.controller('coverCtr',function($scope,$cookieStore, $http,baseUrl,url_juncti
 })
 
 
-
-app.controller('ModalCategory',function($scope,$cookieStore, $uibModalInstance,$http,items,baseUrl,url_junction,ngDialog){
-    baseUrl = baseUrl.getUrl();
+app.controller('ModalCategory', function ($scope, $cookieStore, $uibModalInstance, $http, items, baseUrl, url_junction, ngDialog) {
+    var url = baseUrl.getUrl();
     $scope.item = items;
-    $scope.cancel = function(){
+    $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
     };
     // console.log("<==项目名称====>"+$scope.project_name);
-    if($scope.item.method=='add'){
-        $scope.ok=function(){
-            $scope.params={
-                name:$scope.name,
-                topic:$scope.topic,
-                description:$scope.description,
-                instance:items.scope.projectId
-            }
-
-            console.log("<======>",$scope.params);
-            $http.post(baseUrl+"/api/1/topic/class",$scope.params).success(function(data){
-                if(data.code=="200"){
-                    items.scope.optipShow(1,'操作成功')
-                    items.scope.submit_search();
-                }
-            }).error(function(){
-                //ngDialog.open({
-                //    template: '<p style=\"text-align: center\">添加失败:'+data.description+'</p>',
-                //    plain: true
-                //});
-                items.scope.optipShow(0,'操作失败,'+data.description)
-            });
-            $uibModalInstance.close();
-        }
-    }else if($scope.item.method=='modify') {
-        var data = items.data;
-        console.log('data',data)
-        $scope.name = data.name;
-        $scope.topic = data.topic;
-        $scope.description = data.description;
+    if ($scope.item.method == 'add') {
         $scope.ok = function () {
-            $scope.params = {
-                name: data.name,
-                topic: data.topic,
-                description: data.description
+            var isValid = true;
+            if (!$scope.name) {
+                isValid = false;
+                baseUrl.ngDialog('请填写类别名称')
             }
-
-            console.log("<======>", $scope.params);
-            $http.put(baseUrl + "/api/1/topic/class{" + data.id + "}/", $scope.params).success(function (data) {
-                if (data.code == "200") {
-                    items.scope.optipShow(1, '操作成功')
-                    items.scope.submit_search();
-                }
-            }).error(function () {
-                //ngDialog.open({
-                //    template: '<p style=\"text-align: center\">添加失败:'+data.description+'</p>',
-                //    plain: true
-                //});
-                items.scope.optipShow(0, '操作失败,' + data.description)
-            });
-            $uibModalInstance.close();
-        }
-    }
-
-
-})
-
-app.controller('ModalStrategy',function($scope,$cookieStore, $uibModalInstance,$http,items,baseUrl,url_junction,ngDialog){
-    baseUrl = baseUrl.getUrl();
-    $scope.item = items;
-    $scope.cancel = function(){
-        $uibModalInstance.dismiss('cancel');
-    };
-    if($scope.item.method=='add'){
-        $scope.ok=function(){
-            $scope.params={
-                name:$scope.name,
-                topic:$scope.topic,
-                description:$scope.description,
-                instance:items.scope.projectId
-            }
-
-            console.log("<======>",$scope.params);
-            $http.post(baseUrl+"/api/1/topic/class",$scope.params).success(function(data){
-                if(data.code=="200"){
-                    items.scope.optipShow(1,'操作成功')
-                    items.scope.submit_search();
-                }
-            }).error(function(){
-                //ngDialog.open({
-                //    template: '<p style=\"text-align: center\">添加失败:'+data.description+'</p>',
-                //    plain: true
-                //});
-                items.scope.optipShow(0,'操作失败,'+data.description)
-            });
-            $uibModalInstance.close();
-        }
-    }else if($scope.item.method=='modify') {
-        var data = items.data;
-        console.log('data',data)
-        $scope.name = data.name;
-        $scope.topic = data.topic;
-        $scope.description = data.description;
-        $scope.ok = function () {
-            $scope.params = {
-                name: data.name,
-                topic: data.topic,
-                description: data.description
-            }
-
-            console.log("<======>", $scope.params);
-            $http.put(baseUrl + "/api/1/topic/class{" + data.id + "}/", $scope.params).success(function (data) {
-                if (data.code == "200") {
-                    items.scope.optipShow(1, '操作成功')
-                    items.scope.submit_search();
-                }
-            }).error(function () {
-                //ngDialog.open({
-                //    template: '<p style=\"text-align: center\">添加失败:'+data.description+'</p>',
-                //    plain: true
-                //});
-                items.scope.optipShow(0, '操作失败,' + data.description)
-            });
-            $uibModalInstance.close();
-        }
-    }
-
-
-})
-
-app.controller('addStrategyCtr',function($scope,$cookieStore, $http,baseUrl,url_junction,ngDialog){
-    baseUrl = baseUrl.getUrl();
-    $scope.numbers = [10, 20, 30, 40, 50];
-    $scope.item = {};
-    $scope.cancel = function(){
-        //console.log($scope.addTopicList[0])
-        $scope.$emit('addstrategyclose','close')
-    };
-
-    $scope.$on('addstrategy',function(q,data){
-        $scope.item = data;
-        console.log('$scope.item',$scope.item)
-        if($scope.item.method=='add'){
-            $scope.ok=function(){
-                $scope.params={
-                    name:$scope.name,
-                    //classification:$scope.classification,
-                    classification:'23',
-                    description:$scope.description,
-                    instance:$scope.item.projectId,
-                    topic: []
-                };
-                _.forEach($scope.addTopicList, function(value) {
-                    //console.log(value.name);
-                    //var pubsub = ''
-                    //if($scope.addTopicList[key]['p'] && $scope.addTopicList[key]['s']){
-                    //    pubsub = 'ps'
-                    //}else if($scope.addTopicList[key]['p']){
-                    //    pubsub = 'p'
-                    //}else if($scope.addTopicList[key]['s']){
-                    //    pubsub = 's'
-                    //}
-                    var pubsub = value['pubsub'];
-                    if(/ps/.test(pubsub)){
-                        pubsub = 'pubsub'
-                    }else if(/p/.test(pubsub)){
-                        pubsub = 'publish'
-                    }else if(/s/.test(pubsub)){
-                        pubsub = 'subscribe'
-                    }
-                    console.log('pubsub',pubsub)
-                    $scope.params.topic.push({name:value['name'],pubsub:pubsub})
-                });
-
-                console.log("<======>",$scope.params);
-                $http.post(baseUrl+"/api/1/topic/strategy ",$scope.params).success(function(data){
-                    if(data.code=="200"){
-                        items.scope.optipShow(1,'操作成功')
-                        items.scope.submit_search();
-                    }
-                }).error(function(){
-                    //ngDialog.open({
-                    //    template: '<p style=\"text-align: center\">添加失败:'+data.description+'</p>',
-                    //    plain: true
-                    //});
-                    items.scope.optipShow(0,'操作失败,'+data.description)
-                });
-                $uibModalInstance.close();
-            }
-        }else if($scope.item.method=='modify') {
-            var data = items.data;
-            console.log('data', data)
-            $scope.name = data.name;
-            $scope.topic = data.topic;
-            $scope.description = data.description;
-            $scope.ok = function () {
+            if (isValid) {
                 $scope.params = {
-                    name: data.name,
-                    topic: data.topic,
-                    description: data.description
+                    name: $scope.name,
+                    topic: $scope.topic,
+                    description: $scope.description,
+                    instance: items.scope.projectId
                 }
 
                 console.log("<======>", $scope.params);
-                $http.put(baseUrl + "/api/1/topic/class{" + data.id + "}/", $scope.params).success(function (data) {
+                $http.post(url + "/api/1/topic/class", $scope.params).success(function (data) {
                     if (data.code == "200") {
                         items.scope.optipShow(1, '操作成功')
                         items.scope.submit_search();
@@ -660,13 +616,335 @@ app.controller('addStrategyCtr',function($scope,$cookieStore, $http,baseUrl,url_
                     items.scope.optipShow(0, '操作失败,' + data.description)
                 });
                 $uibModalInstance.close();
+
             }
         }
+    } else if ($scope.item.method == 'modify') {
+        var data = items.data;
+        console.log('data', data)
+        $scope.name = data.name;
+        $scope.topic = data.topic;
+        $scope.description = data.description;
+
+        var cateName = $scope.name;
+        $scope.ok = function () {
+            var isValid = true;
+            if (!$scope.name) {
+                isValid = false;
+                baseUrl.ngDialog('请填写类别名称')
+            }
+            if (isValid) {
+                $scope.params = {
+                    name: cateName,
+                    //topic: $scope.topic,
+                    description: $scope.description
+                }
+
+                if (cateName == $scope.name) {
+                    cateName = '';
+                    delete $scope.params.name;
+                }
+
+                console.log("<======>", $scope.params);
+                console.log("<======>", data.id);
+                $http.put(url + "/api/1/topic/class/" + data.id + "/", $scope.params).success(function (data) {
+                    if (data.code == "200") {
+                        items.scope.optipShow(1, '操作成功')
+                        items.scope.submit_search();
+                    }
+                }).error(function () {
+                    //ngDialog.open({
+                    //    template: '<p style=\"text-align: center\">添加失败:'+data.description+'</p>',
+                    //    plain: true
+                    //});
+                    items.scope.optipShow(0, '操作失败,' + data.description)
+                });
+                $uibModalInstance.close();
+            }//end ok
+        }
+
+    } else if ($scope.item.method == 'delete') {
+        $scope.ok = function () {
+            var data = items.data;
+            $http.delete(url + "/api/1/topic/class/" + data.id + "/", {}).success(function (data) {
+                if (data.code == "200") {
+                    items.scope.optipShow(1, '操作成功')
+                    items.scope.submit_search();
+                }
+            }).error(function () {
+                //ngDialog.open({
+                //    template: '<p style=\"text-align: center\">添加失败:'+data.description+'</p>',
+                //    plain: true
+                //});
+                items.scope.optipShow(0, '操作失败,' + data.description)
+            });
+            $uibModalInstance.close();
+
+        }
+    }
+
+
+})
+
+app.controller('ModalStrategy', function ($scope, $cookieStore, $uibModalInstance, $http, items, baseUrl, url_junction, ngDialog) {
+    baseUrl = baseUrl.getUrl();
+    $scope.item = items;
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+    if ($scope.item.method == 'delete') {
+        var data = items.data;
+        console.log('data', data)
+        $scope.ok = function () {
+            $http.delete(baseUrl + "/api/1/topic/strategy/" + data.id + "/", {}).success(function (data) {
+                if (data.code == "200") {
+                    items.scope.optipShow(1, '操作成功')
+                    items.scope.submit_search();
+                }
+            }).error(function () {
+                items.scope.optipShow(0, '操作失败,' + data.description)
+            });
+            $uibModalInstance.close();
+        }
+    }
+
+
+})
+
+app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl, url_junction, ngDialog, $timeout) {
+    var url = baseUrl.getUrl();
+    $scope.numbers = [];
+    $scope.item = {};
+    $scope.classificationTemp = ''
+    $scope.cancel = function () {
+        //console.log($scope.addTopicList[0])
+        $scope.$emit('addstrategyclose', 'close')
+    };
+
+    var getCategoryList = function(sProjectId,sSelProjectId){
+        $scope.numbers = [];
+        $http.get(url + "/api/1/topic/class" + url_junction.getQuery({
+                name: '',
+                instance: sProjectId,
+                index: 1,
+                number: 10,
+                is_page: '0'
+
+            })).success(function (data) {
+            if (data.code == 200) {
+                $scope.categoryList = data.data;
+                _.forEach($scope.categoryList, function(value) {
+                    $scope.numbers.push({name:value.name,id:value.id})
+                    if(sSelProjectId && sSelProjectId == value.id){
+                        console.log(123457689997654443)
+                        $scope.classification = {name:value.name,id:value.id}
+                        $scope.classificationTemp = value.id
+                    }
+                });
+                //$scope.bigTotalItems = data.pageinfo.total_number;
+                //$scope.total_page = data.pageinfo.total_page;
+                //$scope.currentPageTotal = $scope.query_result.length;
+
+
+            } else {
+                console.log(data)
+            }
+        }).error(function (data, state) {
+            if (state == 403) {
+                BaseUrl.redirect()
+            }
+        })
+
+        $scope.numbers.push({name:'---------',id:''})
+        //$scope.numbers.push('---------')
+
+        if(!sSelProjectId){
+            //$scope.classification = {name:'---------',id:''}
+            //$scope.classification = '---------'
+        }
+    }
+
+    $scope.setShowNum = function(category){
+        //console.log(category.name+','+category.id)
+        console.log('test',category)
+        $scope.classificationTemp = category.id;
+    }
+
+    $scope.$on('addstrategy', function (q, data) {
+        $scope.item = data;
+        var isValid = true;
+        var invalidMsg = ''
+        var nameTemp = ''
+        var init = function () {
+            $scope.addTopicList = []; //{p:false,s:false,name:'',pubsub:''}
+            $scope.remainTopicToAddCount = 5;
+            $scope.addstrategy_content_topzero = "";
+            if($scope.item.data) {
+                getCategoryList(data.projectId,$scope.item.data.classification)
+            }
+            else{
+                getCategoryList(data.projectId,'')
+            }
+        }
+        if ($scope.item.method == 'add') {
+            init()
+            $scope.name = '';
+            $scope.classification = '';
+            //$scope.topic = data.topic;
+            $scope.description = '';
+
+            $timeout(function () {
+                if (angular.element('#addstrategy-content').height() >= angular.element(window).height()) {
+                    $scope.addstrategy_content_topzero = "addstrategy-content-topzero"
+                }
+            }, 100)
+
+        } else if ($scope.item.method == 'modify') {
+            init()
+            var data = $scope.item.data;
+            $scope.name = data.name;
+            nameTemp = $scope.name;
+            $scope.classificationTemp = data.classification;
+            //$scope.topic = data.topic;
+            $scope.description = data.description;
+            $scope.remainTopicToAddCount = $scope.remainTopicToAddCount - data.topics.length;
+            _.forEach(data.topics, function (value) {
+                var topicItem = {p: false, s: false, pubsub: '', name: ''}
+                if (value['pubsub']) {
+                    var pubsub = value['pubsub'];
+                    if (/pubsub/.test(pubsub)) {
+                        pubsub = 'ps'
+                        topicItem['p'] = true;
+                        topicItem['s'] = true;
+                    } else if (/publish/.test(pubsub)) {
+                        pubsub = 'p'
+                        topicItem['p'] = true;
+                    } else if (/subscribe/.test(pubsub)) {
+                        pubsub = 's'
+                        topicItem['s'] = true;
+                    }
+
+                    topicItem['pubsub'] = pubsub;
+                }
+
+                topicItem['name'] = value['value'];
+                $scope.addTopicList.push(topicItem)
+            });
+
+            $timeout(function () {
+                if (angular.element('#addstrategy-content').height() >= angular.element(window).height()) {
+                    $scope.addstrategy_content_topzero = "addstrategy-content-topzero"
+                }
+            }, 100)
+
+        }
+        if ($scope.item.method == 'add' || $scope.item.method == 'modify') {
+            $scope.ok = function () {
+                $scope.params = {
+                    name: $scope.name,
+                    //classification:$scope.classification,
+                    //classification:'23',
+                    classification: $scope.classificationTemp,
+                    description: $scope.description,
+                    instance: $scope.item.projectId,
+                    topic: []
+                };
+                if (!$scope.name) {
+                    isValid = false;
+                    invalidMsg = '策略名称不能为空'
+                }
+                else if ($scope.item.method == 'modify' && nameTemp == $scope.name) {
+                    delete $scope.params.name;
+                }
+                var topicEmpty = function () {
+                    _.forEach($scope.addTopicList, function (value) {
+                        console.log('value', value['name'])
+                        if (!value['name']) {
+                            isValid = false;
+                            invalidMsg = '主题不能为空'
+                        }
+                    });
+                }
+
+                if (isValid) {
+                    topicEmpty()
+                }
+
+                if (isValid && baseUrl.dupInObjArr('name', $scope.addTopicList)) {
+                    isValid = false;
+                    invalidMsg = '主题不能重复'
+                }
+
+                if (!isValid) {
+                    baseUrl.ngDialog(invalidMsg)
+                }
+
+                if (isValid) {
+                    _.forEach($scope.addTopicList, function (value) {
+                        //console.log(value.name);
+                        //var pubsub = ''
+                        //if($scope.addTopicList[key]['p'] && $scope.addTopicList[key]['s']){
+                        //    pubsub = 'ps'
+                        //}else if($scope.addTopicList[key]['p']){
+                        //    pubsub = 'p'
+                        //}else if($scope.addTopicList[key]['s']){
+                        //    pubsub = 's'
+                        //}
+                        var pubsub = value['pubsub'];
+                        if (/ps/.test(pubsub)) {
+                            pubsub = 'pubsub'
+                        } else if (/p/.test(pubsub)) {
+                            pubsub = 'publish'
+                        } else if (/s/.test(pubsub)) {
+                            pubsub = 'subscribe'
+                        }
+
+                        $scope.params.topic.push({name: value['name'], pubsub: pubsub})
+
+                    });
+
+                    $scope.params.topic = JSON.stringify($scope.params.topic);
+                    if ($scope.item.method == 'add') {
+                        $http.post(url + "/api/1/topic/strategy ", $scope.params).success(function (data) {
+                            if (data.code == "200") {
+                                $scope.item.scope.optipShow(1, '操作成功')
+                                $scope.item.scope.submit_search();
+                            }
+                        }).error(function () {
+                            //ngDialog.open({
+                            //    template: '<p style=\"text-align: center\">添加失败:'+data.description+'</p>',
+                            //    plain: true
+                            //});
+                            $scope.item.scope.optipShow(0, '操作失败,' + data.description)
+                        });
+                    }//end if
+                    else {
+                        $http.put(url + "/api/1/topic/strategy/" + $scope.item.data.id + "/", $scope.params).success(function (data) {
+                            if (data.code == "200") {
+                                $scope.item.scope.optipShow(1, '操作成功')
+                                $scope.item.scope.submit_search();
+                            }
+                        }).error(function () {
+                            //ngDialog.open({
+                            //    template: '<p style=\"text-align: center\">添加失败:'+data.description+'</p>',
+                            //    plain: true
+                            //});
+                            $scope.item.scope.optipShow(0, '操作失败,' + data.description)
+                        });
+                    }
+
+                    //$uibModalInstance.close();
+                    $scope.$emit('addstrategyclose', 'close')
+                }
+
+            }
+        }//end if
     })
 
-    $scope.addTopicList = []; //{p:false,s:false}
+    $scope.addTopicList = []; //{p:false,s:false,name:'',pubsub:''}
     $scope.remainTopicToAddCount = 5;
-    $scope.addPS = function(idx,type){
+    $scope.addstrategy_content_topzero = "";
+    $scope.addPS = function (idx, type) {
         $scope.addTopicList[idx][type] = !$scope.addTopicList[idx][type];
         //if(type == 'p' && /p/.test($scope.addTopicList[idex]['pubsub'])){
         //    $scope.addTopicList[idex]['pubsub'] = $scope.addTopicList[idex]['pubsub'].replace('p','')
@@ -679,28 +957,292 @@ app.controller('addStrategyCtr',function($scope,$cookieStore, $http,baseUrl,url_
         //}
 
         var reg = new RegExp(type)
-        if(reg.test($scope.addTopicList[idx]['pubsub'])){
-            $scope.addTopicList[idx]['pubsub'] = $scope.addTopicList[idx]['pubsub'].replace(type,'')
-        }else{
+        if (reg.test($scope.addTopicList[idx]['pubsub'])) {
+            $scope.addTopicList[idx]['pubsub'] = $scope.addTopicList[idx]['pubsub'].replace(type, '')
+        } else {
             $scope.addTopicList[idx]['pubsub'] += type
         }
 
         console.log($scope.addTopicList[idx]['pubsub'])
     }
-    $scope.addTopicFunc = function(){
+    $scope.addTopicFunc = function () {
         $scope.remainTopicToAddCount--;
-        $scope.addTopicList.push({p:false,s:false,name:'',pubsub:''})
-        console.log($scope.addTopicList)
+        $scope.addTopicList.push({p: false, s: false, name: '', pubsub: ''})
+        $timeout(function () {
+            if (angular.element('#addstrategy-content').height() >= angular.element(window).height()) {
+                $scope.addstrategy_content_topzero = "addstrategy-content-topzero"
+            }
+        }, 100)
+
     }
-    $scope.delTopicFunc =function(idx){
+    $scope.delTopicFunc = function (idx) {
         $scope.remainTopicToAddCount++;
         _.pullAt($scope.addTopicList, [idx]);
+        $timeout(function () {
+            if (angular.element('#addstrategy-content').height() < angular.element(window).height()) {
+                $scope.addstrategy_content_topzero = ""
+            }
+        }, 100)
     }
-    $scope.setModel = function(idx){
-        return 'topic'+idx;
+    $scope.setModel = function (idx) {
+        return 'topic' + idx;
     }
 
 
+})
+
+app.controller('ModalRegulation', function ($scope, $cookieStore, $uibModalInstance, $http, items, baseUrl, url_junction, ngDialog) {
+    baseUrl = baseUrl.getUrl();
+    $scope.item = items;
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+    if ($scope.item.method == 'delete') {
+        var data = items.data;
+        console.log('data', data)
+        $scope.ok = function () {
+            $http.delete(baseUrl + "/api/1/rule/" + data.id + "/", {}).success(function (data) {
+                if (data.code == "200") {
+                    items.scope.optipShow(1, '操作成功')
+                    items.scope.submit_search();
+                }
+            }).error(function () {
+                items.scope.optipShow(0, '操作失败,' + data.description)
+            });
+            $uibModalInstance.close();
+        }
+    }
+
+
+})
+
+app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUrl, url_junction, ngDialog, $timeout) {
+    var url = baseUrl.getUrl();
+    $scope.numbers = [];
+    $scope.item = {};
+    $scope.classificationTemp = ''
+    $scope.cancel = function () {
+        //console.log($scope.addTopicList[0])
+        $scope.$emit('addstrategyclose', 'close')
+    };
+
+    $scope.$on('addstrategy', function (q, data) {
+        $scope.item = data;
+        var isValid = true;
+        var invalidMsg = ''
+        var nameTemp = ''
+        var init = function () {
+            $scope.addTopicList = []; //{p:false,s:false,name:'',pubsub:''}
+            $scope.remainTopicToAddCount = 5;
+            $scope.addstrategy_content_topzero = "";
+            //if($scope.item.data) {
+            //    getCategoryList(data.projectId,$scope.item.data.classification)
+            //}
+            //else{
+            //    getCategoryList(data.projectId,'')
+            //}
+        }
+        if ($scope.item.method == 'add') {
+            init()
+            $scope.name = '';
+            $scope.classification = '';
+            //$scope.topic = data.topic;
+            $scope.description = '';
+
+            $timeout(function () {
+                if (angular.element('#addstrategy-content').height() >= angular.element(window).height()) {
+                    $scope.addstrategy_content_topzero = "addstrategy-content-topzero"
+                }
+            }, 100)
+
+        } else if ($scope.item.method == 'modify') {
+            init()
+            var data = $scope.item.data;
+            $scope.name = data.name;
+            nameTemp = $scope.name;
+            $scope.classificationTemp = data.classification;
+            //$scope.topic = data.topic;
+            $scope.description = data.description;
+            $scope.remainTopicToAddCount = $scope.remainTopicToAddCount - data.topics.length;
+            _.forEach(data.topics, function (value) {
+                var topicItem = {p: false, s: false, pubsub: '', name: ''}
+                if (value['pubsub']) {
+                    var pubsub = value['pubsub'];
+                    if (/pubsub/.test(pubsub)) {
+                        pubsub = 'ps'
+                        topicItem['p'] = true;
+                        topicItem['s'] = true;
+                    } else if (/publish/.test(pubsub)) {
+                        pubsub = 'p'
+                        topicItem['p'] = true;
+                    } else if (/subscribe/.test(pubsub)) {
+                        pubsub = 's'
+                        topicItem['s'] = true;
+                    }
+
+                    topicItem['pubsub'] = pubsub;
+                }
+
+                topicItem['name'] = value['value'];
+                $scope.addTopicList.push(topicItem)
+            });
+
+            $timeout(function () {
+                if (angular.element('#addstrategy-content').height() >= angular.element(window).height()) {
+                    $scope.addstrategy_content_topzero = "addstrategy-content-topzero"
+                }
+            }, 100)
+
+        }
+        if ($scope.item.method == 'add' || $scope.item.method == 'modify') {
+            $scope.ok = function () {
+                $scope.params = {
+                    name: $scope.name,
+                    //classification:$scope.classification,
+                    //classification:'23',
+                    classification: $scope.classificationTemp,
+                    description: $scope.description,
+                    instance: $scope.item.projectId,
+                    topic: []
+                };
+                if (!$scope.name) {
+                    isValid = false;
+                    invalidMsg = '策略名称不能为空'
+                }
+                else if ($scope.item.method == 'modify' && nameTemp == $scope.name) {
+                    delete $scope.params.name;
+                }
+                var topicEmpty = function () {
+                    _.forEach($scope.addTopicList, function (value) {
+                        console.log('value', value['name'])
+                        if (!value['name']) {
+                            isValid = false;
+                            invalidMsg = '主题不能为空'
+                        }
+                    });
+                }
+
+                if (isValid) {
+                    topicEmpty()
+                }
+
+                if (isValid && baseUrl.dupInObjArr('name', $scope.addTopicList)) {
+                    isValid = false;
+                    invalidMsg = '主题不能重复'
+                }
+
+                if (!isValid) {
+                    baseUrl.ngDialog(invalidMsg)
+                }
+
+                if (isValid) {
+                    _.forEach($scope.addTopicList, function (value) {
+                        //console.log(value.name);
+                        //var pubsub = ''
+                        //if($scope.addTopicList[key]['p'] && $scope.addTopicList[key]['s']){
+                        //    pubsub = 'ps'
+                        //}else if($scope.addTopicList[key]['p']){
+                        //    pubsub = 'p'
+                        //}else if($scope.addTopicList[key]['s']){
+                        //    pubsub = 's'
+                        //}
+                        var pubsub = value['pubsub'];
+                        if (/ps/.test(pubsub)) {
+                            pubsub = 'pubsub'
+                        } else if (/p/.test(pubsub)) {
+                            pubsub = 'publish'
+                        } else if (/s/.test(pubsub)) {
+                            pubsub = 'subscribe'
+                        }
+
+                        $scope.params.topic.push({name: value['name'], pubsub: pubsub})
+
+                    });
+
+                    $scope.params.topic = JSON.stringify($scope.params.topic);
+                    if ($scope.item.method == 'add') {
+                        $http.post(url + "/api/1/topic/strategy ", $scope.params).success(function (data) {
+                            if (data.code == "200") {
+                                $scope.item.scope.optipShow(1, '操作成功')
+                                $scope.item.scope.submit_search();
+                            }
+                        }).error(function () {
+                            //ngDialog.open({
+                            //    template: '<p style=\"text-align: center\">添加失败:'+data.description+'</p>',
+                            //    plain: true
+                            //});
+                            $scope.item.scope.optipShow(0, '操作失败,' + data.description)
+                        });
+                    }//end if
+                    else {
+                        $http.put(url + "/api/1/topic/strategy/" + $scope.item.data.id + "/", $scope.params).success(function (data) {
+                            if (data.code == "200") {
+                                $scope.item.scope.optipShow(1, '操作成功')
+                                $scope.item.scope.submit_search();
+                            }
+                        }).error(function () {
+                            //ngDialog.open({
+                            //    template: '<p style=\"text-align: center\">添加失败:'+data.description+'</p>',
+                            //    plain: true
+                            //});
+                            $scope.item.scope.optipShow(0, '操作失败,' + data.description)
+                        });
+                    }
+
+                    //$uibModalInstance.close();
+                    $scope.$emit('addstrategyclose', 'close')
+                }
+
+            }
+        }//end if
+    })
+
+    $scope.addTopicList = []; //{p:false,s:false,name:'',pubsub:''}
+    $scope.remainTopicToAddCount = 5;
+    $scope.addstrategy_content_topzero = "";
+    $scope.addPS = function (idx, type) {
+        $scope.addTopicList[idx][type] = !$scope.addTopicList[idx][type];
+        //if(type == 'p' && /p/.test($scope.addTopicList[idex]['pubsub'])){
+        //    $scope.addTopicList[idex]['pubsub'] = $scope.addTopicList[idex]['pubsub'].replace('p','')
+        //}else if(type == 'p'){
+        //    $scope.addTopicList[idex]['pubsub'] += 'p'
+        //}else if(type == 's' && /s/.test($scope.addTopicList[idex]['pubsub'])){
+        //    $scope.addTopicList[idex]['pubsub'] = $scope.addTopicList[idex]['pubsub'].replace('s','')
+        //}else if(type == 'p'){
+        //    $scope.addTopicList[idex]['pubsub'] += 's'
+        //}
+
+        var reg = new RegExp(type)
+        if (reg.test($scope.addTopicList[idx]['pubsub'])) {
+            $scope.addTopicList[idx]['pubsub'] = $scope.addTopicList[idx]['pubsub'].replace(type, '')
+        } else {
+            $scope.addTopicList[idx]['pubsub'] += type
+        }
+
+        console.log($scope.addTopicList[idx]['pubsub'])
+    }
+    $scope.addTopicFunc = function () {
+        $scope.remainTopicToAddCount--;
+        $scope.addTopicList.push({p: false, s: false, name: '', pubsub: ''})
+        $timeout(function () {
+            if (angular.element('#addstrategy-content').height() >= angular.element(window).height()) {
+                $scope.addstrategy_content_topzero = "addstrategy-content-topzero"
+            }
+        }, 100)
+
+    }
+    $scope.delTopicFunc = function (idx) {
+        $scope.remainTopicToAddCount++;
+        _.pullAt($scope.addTopicList, [idx]);
+        $timeout(function () {
+            if (angular.element('#addstrategy-content').height() < angular.element(window).height()) {
+                $scope.addstrategy_content_topzero = ""
+            }
+        }, 100)
+    }
+    $scope.setModel = function (idx) {
+        return 'topic' + idx;
+    }
 
 
 })

@@ -53,6 +53,16 @@
     }
     .table-content{
       margin-top: 30px;
+      .edit-icon{
+        color:#45b6b0;
+        margin-right: 24px;
+        cursor: pointer;
+      }
+      .delete-icon{
+        color:#ff6b6b;
+        cursor: pointer;
+      }
+
     }
   }
    .cover_identity{
