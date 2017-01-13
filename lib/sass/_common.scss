@@ -178,6 +178,8 @@
     .ui-select-bootstrap>.ui-select-choices{
       left:90px;
       width: 261px;
+      max-height: 130px;
+      overflow: auto;
     }
   }
   .input-group-select{
@@ -538,7 +540,22 @@ table.table-pagination{
   //height: 100%;
 }
 
-
+.warn_delete{
+  text-align: center;
+  margin-top:46px;
+  margin-bottom: 41px;
+  .icon-icon_warn{
+    font-size: 48px;
+    color: #ff6b6b;
+  }
+  .delete_desc{
+    display: inline-block;
+    margin-left: 16px;
+    p{
+      text-align: left;
+    }
+  }
+}
 
 
 

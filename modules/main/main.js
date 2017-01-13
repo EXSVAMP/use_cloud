@@ -334,7 +334,7 @@ app.controller('ModalProject',function($scope,$cookieStore, $uibModalInstance,$h
         $scope.state.delete=true;
         $scope.ok=function(){
             $scope.pk=items.id;
-            $http.delete(baseUrl+"/api/1/topic/instance"+$scope.pk+"/").success(function(data){
+            $http.delete(baseUrl+"/api/1/topic/instance/"+$scope.pk+"/").success(function(data){
                 if(data.code=="200"){
                     items.scope.submit_search();
                 }
@@ -397,36 +397,123 @@ app.controller('opTipCtr',function($scope,$cookieStore, $http,baseUrl,url_juncti
     });
 })
 
-app.controller('coverCtr',function($scope,$cookieStore, $http,baseUrl,url_junction,ngDialog){
+app.controller('coverCtr',function($scope,$cookieStore, $http,baseUrl,$location,url_junction,ngDialog){
     baseUrl = baseUrl.getUrl();
     $scope.item = {};
     $scope.numbers = [10, 20, 30, 40, 50];
-    $scope.$on("identityState",function(event,data){
-        console.log("<===广播数据==>"+data);
-        $scope.item = data;;
-    })
-
     $scope.state={
         pointer:false,
-        strategy:false
+        strategy:false,
+        secret:false,
+        undelete:false,
+        delete:false
+    };
+    $scope.params={};
+    var instance="";
+
+
+    $scope.$on("identityState",function(event,data){
+        console.log(data);
+        instance=data.projectId;
+        if(data.method=='add'||data.method=='edit'){
+            $scope.state.undelete=true;
+            $scope.state.delete=false;
+            $scope.params={
+                identity_name:"",
+                strategyId:"",
+                description:""
+
+            }
+        }
+        if(data.method=="delete"){
+            $scope.state.delete=true;
+            $scope.state.undelete=false;
+            $scope.identity_id=data.item.id;
+
+        }
+
+        if(data.method=="edit"){
+            $scope.state.secret=true;
+            $scope.params.identity_name=data.item.name;
+            $scope.params.strategyId=data.item.strategy;
+            $scope.params.description=data.item.description;
+            $scope.params.secret_key=data.item.secret_key;
+
+
+
+        }else{
+            $scope.state.secret=false;
+        }
+        $scope.item = data;
+    })
+
+
+    //选择策略
+    $scope.select_strategy=function(strategyId){
+        $scope.params.strategyId=strategyId;
+        console.log("<===策略ID===>"+strategyId);
     }
+    $scope.strategy_list=[];
+    $scope.params.strategyId=-1;
+    $http.get(baseUrl + "/api/1/topic/strategy").success(function (data) {
+        if (data.code == 200) {
+            $scope.strategy_list = data.data;
+            $scope.strategy_list.push({id: '-1', name: '-------------'});
+        }
+    })
+
+
+     //保存
+    $scope.ok=function(){
+        var query_url = url_junction.getDict({
+            name:$scope.params.identity_name,
+            instance:instance ,
+            strategy:$scope.params.strategyId,
+            description:$scope.params.description,
+
+        });
+        $http.post(baseUrl+"/api/1/topic/identity",query_url).success(function(data){
+            if(data.code==200){
+                $scope.item.scope.submit_search();
+                $scope.cancel();
+            };
+        }).error(function(){
+            alert("error")
+        });
+
+    }
+
+    //删除
+    $scope.delete=function(id){
+        $http.delete(baseUrl+"/api/1/topic/identity/"+id+"/").success(function(data){
+            if(data.code=="200"){
+                $scope.item.scope.submit_search();
+                $scope.cancel();
+            }
+
+        }).error(function(){
+            alert("有点故障！")
+        });
+
+
+    }
+
+
+
+
     $scope.cancel = function(){
-        $scope.state.pointer=false;
-        $scope.state.strategy=false;
         $scope.$emit('addidentityclose','close')
     };
 
     $scope.selectAdd=function(){
      $scope.state.pointer=true;
      $scope.state.strategy=true;
-      // $(".identity_modal").css("left","0px")
         $(".identity_warp").width(1010)
         
     }
    $scope.cancel_strategy=function(){
        $scope.state.pointer=false;
        $scope.state.strategy=false;
-       // $(".identity_modal").css("left","480px")
        $(".identity_warp").width(480)
    }
 
