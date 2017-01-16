@@ -581,23 +581,50 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
                 $scope.params.identity_name=data.item.name;
                 $scope.params.strategyId=data.item.strategy;
                 $scope.params.description=data.item.description;
+                var temp_secret=data.item.secret_key;
+                $scope.edit={
+                    showBtn:true,
+                    hideBtn:false,
+                    resetBtn:true
+                }
 
-                $scope.show_reset=true;
+                // $scope.show_reset=true;
                 $scope.show_secrect=function(){
-                    $scope.params.secret_key=data.item.secret_key;
-                    $scope.show_reset=false;
+                    $scope.params.secret_key=temp_secret;
+                    $scope.edit.showBtn=false;
+                    $scope.edit.hideBtn=true;
+                }
+                $scope.hide_secrect=function(){
+                    $scope.edit.showBtn=true;
+                    $scope.edit.hideBtn=false;
+                    $scope.params.secret_key="";
+
                 }
                 $scope.reset_secrect=function(id){
                     $http.put(baseUrl+"/api/1/topic/identity/reset/"+id+"/").success(function(data){
                             if(data.code==200){
-                                $scope.params.secret_key=data.data.secret_key;
-                                $scope.show_reset=false;
+                                if($scope.edit.hideBtn){
+                                    $scope.params.secret_key=data.data.secret_key;
+                                    // $scope.show_reset=false;
+                                    temp_secret=data.data.secret_key;
+                                }
+
                             }
                     })
 
                 }
                 $scope.ok=function(){
-                    alert("123")
+                    var query_url = url_junction.getDict({
+                        strategy:$scope.params.strategyId,
+                        description:$scope.params.description,
+
+                    });
+                    $http.put(baseUrl+"/api/1/topic/identity/"+$scope.identity_id+"/",query_url).success(function(data){
+                         if(data.code==200){
+                             $scope.item.scope.submit_search();
+                             $scope.cancel();
+                         }
+                    })
                 }
 
                 console.log($scope.params);
