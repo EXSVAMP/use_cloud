@@ -239,7 +239,7 @@
     border: solid 1px #ccc;
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
-
+    word-break: break-word;
     .subtite_desc{
       width: 90px;
       max-width: 90px;
@@ -256,12 +256,18 @@
     }
     .fixed_sub{
       float:left;
-      display: inline-block;
+      display: table;
       height: 40px;
-      line-height: 40px;
+      //line-height: 40px;
       padding:0px;
       //border-top: solid 1px #ccc;
       //border-bottom: solid 1px #ccc;
+      max-width: 110px;
+      word-break: break-all;
+      span{
+        display: table-cell;
+        vertical-align: middle;
+      }
 
     }
   }
