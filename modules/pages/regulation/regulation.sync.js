@@ -6,16 +6,20 @@ app.register.controller("regulationCtr", function (ngDialog,$scope, $http, $loca
 
     $scope.optip = 'obj-hide'
     $scope.addstrategy = 'obj-hide'
-    $scope.optipHide = function () {
+    $scope.optipHide = function (func) {
         $timeout(function () {
+            if(func){
+                func()
+            }
             $scope.optip = 'obj-hide'
         }, 1000)
     }
 
-    $scope.optipShow = function (iFlag, message) {
+    $scope.optipShow = function (iFlag, message,func) {
         $scope.$broadcast('optip', {flag: iFlag, msg: message});
         $scope.optip = 'obj-show'
-        $scope.optipHide()
+        $scope.optipHide(func)
+
     }
 
     //add
@@ -56,13 +60,17 @@ app.register.controller("regulationCtr", function (ngDialog,$scope, $http, $loca
                 $scope.detail_name = data.name;
                 $scope.detail_instance = data.instance;
                 $scope.detail_topic = data.topic;
+                $scope.detail_actuator = data.actuator;
 
             } else {
                 console.log(data)
             }
         }).error(function (data, state) {
             if (state == 403) {
-                BaseUrl.redirect()
+                //BaseUrl.redirect()
+                $scope.optipShow(0,"没有权限",function(){
+                    window.location.href = baseUrl.getServerUrl()+'/login.html'
+                })
             }
         })
     }
@@ -112,7 +120,10 @@ app.register.controller("regulationCtr", function (ngDialog,$scope, $http, $loca
             }
         }).error(function (data, state) {
             if (state == 403) {
-                BaseUrl.redirect()
+                //BaseUrl.redirect()
+                $scope.optipShow(0,"没有权限",function(){
+                    window.location.href = baseUrl.getServerUrl()+'/login.html'
+                })
             }
         })
 
