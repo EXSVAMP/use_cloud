@@ -23,7 +23,7 @@ app.register.controller("projectCtr", function ($scope, $http, $location, $uibMo
     };
 
     $scope.submit_search = function () {
-        $http.get(BaseUrl + "/api/1/topic/instance" + url_junction.getQuery({
+        $http.get(BaseUrl + "/api/1/topic/instance/" + url_junction.getQuery({
                 name:$scope.project_name,
                 index: $scope.bigCurrentPage,
                 number: $scope.number,

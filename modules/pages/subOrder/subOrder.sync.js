@@ -32,6 +32,7 @@ app.register.controller("subOrderCtr", function ($scope, $http, $location, $uibM
     $scope.submit = function(){
         if($scope.viewState==1){
             var params = $scope.fieldSet;
+            params.order_type='topic';
             $http.post(baseUrl.getUrl() + "/api/1/work_order",params).success(function (data) {
                 if (data.code == 200) {
                     $scope.step(0);
@@ -39,6 +40,7 @@ app.register.controller("subOrderCtr", function ($scope, $http, $location, $uibM
             });
         }else if($scope.viewState==2){
             var params = $scope.fieldSet;
+            params.order_type='rule';
             $http.post(baseUrl.getUrl() + "/api/1/work_order",params).success(function (data) {
                 if (data.code == 200) {
                     $scope.step(0);
