@@ -21,11 +21,19 @@ app.config(function ($httpProvider) {
 
 });
 
-app.service("baseUrl", function (constant, ngDialog) {
+app.service("baseUrl", function (constant, ngDialog,$location) {
     var url = constant.url;
     return {
         getUrl: function () {
             return url;
+        },
+        getServerUrl: function () {
+            //return 'http://' + $location.host() + ':' + $location.port() + "/";
+            if ((typeof $location.port()) === 'number') {
+                return 'http://' + $location.host() + ':' + $location.port() + "/";
+            } else {
+                return 'http://' + $location.host() + "/";
+            }
         },
         ngDialog: function (sAlert) {
             ngDialog.open({
@@ -53,9 +61,21 @@ app.service("baseUrl", function (constant, ngDialog) {
 
         },
         checkUrl: function(input){
-            var reg = new RegExp("^[a-z]+://(?P<host>[^/:]+)(?P<port>:[0-9]+)?(?P<path>\/.*)?$");
+            var str = input;
+            //在JavaScript中，正则表达式只能使用"/"开头和结束，不能使用双引号
+            var Expression=/http(s)?:////([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+            var objExp=new RegExp(Expression);
+            if(str.indexOf("localhost")){
+                str = str.replace("localhost","127.0.0.1");
+            }
+            if(objExp.test(str)==true){
+                //alert("你输入的URL有效");
+                return true;
+            }else{
+                //alert('你输入的URL无效');
+                return false;
+            }
 
-            return reg.test(input);
 
         }
 
@@ -135,6 +155,19 @@ app.filter("pubsub", function () {
         return input;
     }
 });
+
+app.filter("booleanToString", function () {
+    return function (input) {
+
+        if (input) {
+            input = '是';
+        } else{
+            input = '否';
+        }
+        return input;
+    }
+});
+
 app.factory('HttpInterceptor', ['$q', '$injector', HttpInterceptor]);
 function HttpInterceptor($q, $injector) {
     return {
@@ -831,6 +864,7 @@ app.controller('ModalStrategy', function ($scope, $cookieStore, $uibModalInstanc
 
 app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl, url_junction, ngDialog, $timeout) {
     var url = baseUrl.getUrl();
+
     $scope.numbers = [];
     $scope.item = {};
     $scope.classificationTemp = ''
@@ -1142,6 +1176,7 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
     $scope.rule_typeArr = [{id:'Rabbitmq',name:'Rabbitmq'},{id:'Api',name:'Api'}];
     $scope.methodArr = [{id:'GET',name:'GET'},{id:'POST',name:'POST'},{id:'PUT',name:'PUT'},{id:'DELETE',name:'DELETE'},{id:'OPTION',name:'OPTION'}];
     $scope.item = {};
+    $scope.instance = ''
     $scope.instanceTemp = ''
     $scope.instanceTempName = ''
     $scope.cancel = function () {
@@ -1251,33 +1286,19 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
             var data = $scope.item.data;
             $scope.name = data.name;
             nameTemp = $scope.name;
-            $scope.classificationTemp = data.classification;
-            //$scope.topic = data.topic;
-            $scope.description = data.description;
-            $scope.remainTopicToAddCount = $scope.remainTopicToAddCount - data.topics.length;
-            _.forEach(data.topics, function (value) {
-                var topicItem = {p: false, s: false, pubsub: '', name: ''}
-                if (value['pubsub']) {
-                    var pubsub = value['pubsub'];
-                    if (/pubsub/.test(pubsub)) {
-                        pubsub = 'ps'
-                        topicItem['p'] = true;
-                        topicItem['s'] = true;
-                    } else if (/publish/.test(pubsub)) {
-                        pubsub = 'p'
-                        topicItem['p'] = true;
-                    } else if (/subscribe/.test(pubsub)) {
-                        pubsub = 's'
-                        topicItem['s'] = true;
-                    }
-
-                    topicItem['pubsub'] = pubsub;
+            //$scope.instanceTemp = data.instance;
+            $scope.topicName = data.topic;
+            //$scope.description = data.description;
+            $scope.remainTopicToAddCount = $scope.remainTopicToAddCount - data.actuator.length;
+            _.forEach(data.actuator, function (value) {
+                //{exchange:'',queue:'',persist:true,rule_type:{id:'Rabbitmq',name:'Rabbitmq'}},{"api":"","method":{id:'GET',name:'GET'},"header":"","rule_type":{id:'Api',name:'Api'}}
+                var topicItem = value;
+                topicItem['rule_type'] = {id:value['rule_type'],name:value['rule_type']};
+                if(value['rule_type'] == 'Api'){
+                    topicItem['method'] = {id:value['method'],name:value['method']};
                 }
-
-                topicItem['name'] = value['value'];
                 $scope.addTopicList.push(topicItem)
             });
-
             $timeout(function () {
                 if (angular.element('#addstrategy-content').height() >= angular.element(window).height()) {
                     $scope.addstrategy_content_topzero = "addstrategy-content-topzero"
@@ -1291,36 +1312,42 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
                     name: $scope.name,
                     //classification:$scope.classification,
                     //classification:'23',
-                    instacne: $scope.instanceTemp,
+                    instance: $scope.instanceTemp,
+                    //topicName: $scope.topicName,
                     topic: $scope.topicName,
                     actuator: []
                 };
                 console.log('name',$scope.name)
-                if ($scope.name == '' || $scope.name == null) {
+                if ($scope.name == '' || $scope.name == null || typeof($scope.name) == 'undefined') {
                     isValid = false;
                     invalidMsg = '规则名称不能为空'
                 }
                 else if ($scope.item.method == 'modify' && nameTemp == $scope.name) {
                     delete $scope.params.name;
                 }
-                //var topicEmpty = function () {
-                //    _.forEach($scope.addTopicList, function (value) {
-                //        console.log('value', value['name'])
-                //        if (!value['name']) {
-                //            isValid = false;
-                //            invalidMsg = '主题不能为空'
-                //        }
-                //    });
-                //}
-                //
-                //if (isValid) {
-                //    topicEmpty()
-                //}
 
                 //if (isValid && baseUrl.dupInObjArr('name', $scope.addTopicList)) {
                 //    isValid = false;
                 //    invalidMsg = '主题不能重复'
                 //}
+
+                if (isValid && !$scope.instanceTemp) {
+                    isValid = false;
+                    invalidMsg = '请选择物接入实例'
+                }
+
+                var actuatorCheck = function () {
+                    _.forEach($scope.addTopicList, function (value) {
+                        if(value['api'] && !baseUrl.checkUrl(value['api'])){
+                            isValid = false;
+                            invalidMsg = '请输入正确的api';
+                        }
+                    });
+                }
+
+                if (isValid) {
+                    actuatorCheck()
+                }
 
                 if (!isValid) {
                     baseUrl.ngDialog(invalidMsg)
@@ -1353,6 +1380,9 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
                                 $scope.item.scope.optipShow(1, '操作成功')
                                 $scope.item.scope.submit_search();
                             }
+                            //}else{
+                            //    $scope.item.scope.optipShow(0, '操作失败,' + data.message)
+                            //}
                         }).error(function () {
                             //ngDialog.open({
                             //    template: '<p style=\"text-align: center\">添加失败:'+data.description+'</p>',
@@ -1362,7 +1392,7 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
                         });
                     }//end if
                     else if ($scope.item.method == 'modify') {
-                        $http.put(url + "/api/1/topic/strategy/" + $scope.item.data.id + "/", $scope.params).success(function (data) {
+                        $http.put(url + "/api/1/rule/" + $scope.item.data.id + "/", $scope.params).success(function (data) {
                             if (data.code == "200") {
                                 $scope.item.scope.optipShow(1, '操作成功')
                                 $scope.item.scope.submit_search();
@@ -1389,12 +1419,13 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
     $scope.addstrategy_content_topzero = "";
     //选择存储类型
     $scope.setRuleType = function(rule_type,idx){
-       // addTopicList[idx]['rule_type'] = rule_type.id;
+
         if(rule_type.id == 'Rabbitmq'){
             $scope.addTopicList[idx] = {exchange:'cn.useonline.iotcloud.'+$scope.username,queue:'',persist:true,rule_type:{id:'Rabbitmq',name:'Rabbitmq'}};
         }else if(rule_type.id == 'Api'){
             $scope.addTopicList[idx] = {"api":"","method":{id:'GET',name:'GET'},"header":"","rule_type":{id:'Api',name:'Api'}};
         }
+
     }
 
     //选择调用方式
@@ -1406,6 +1437,7 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
         $scope.addTopicList[idx][type] = !$scope.addTopicList[idx][type];
     }
     $scope.addTopicFunc = function () {
+        if($scope.instanceTemp){
         $scope.remainTopicToAddCount--;
         $scope.addTopicList.push({exchange:'cn.useonline.iotcloud.'+$scope.username,queue:'',persist:true,rule_type:{id:'Rabbitmq',name:'Rabbitmq'}})
         $timeout(function () {
@@ -1413,6 +1445,9 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
                 $scope.addstrategy_content_topzero = "addstrategy-content-topzero"
             }
         }, 100)
+        }else{
+            baseUrl.ngDialog('请先选择物接入实例')
+        }
 
     }
     $scope.delTopicFunc = function (idx) {
