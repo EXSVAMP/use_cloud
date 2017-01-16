@@ -78,6 +78,17 @@ app.service("baseUrl", function (constant, ngDialog,$location) {
             }
 
 
+        },
+        checkTopic: function(input){ //英文 数字 ＃ ＊ 字数限制10
+            input = _.trim(input)
+            var res = {err:0,msg:''}
+            if(input && input.length > 10){
+                res = {err:1,msg:'主题输入最长为10'}
+            }
+            if(!(/^[a-zA-Z0-9#*/]+$/.test(input))){
+                res = {err:1,msg:'主题限输入英文数字#＊/'}
+            }
+            return res;
         }
 
     }
@@ -746,6 +757,13 @@ app.controller('ModalCategory', function ($scope, $cookieStore, $uibModalInstanc
                 isValid = false;
                 baseUrl.ngDialog('请填写类别名称')
             }
+            if(isValid){
+                var checkTopicRes = baseUrl.checkTopic($scope.topic);
+                if(checkTopicRes.res == 1){
+                    isValid = false;
+                    baseUrl.ngDialog(checkTopicRes.msg)
+                }
+            }
             if (isValid) {
                 $scope.params = {
                     name: $scope.name,
@@ -755,7 +773,7 @@ app.controller('ModalCategory', function ($scope, $cookieStore, $uibModalInstanc
                 }
 
                 console.log("<======>", $scope.params);
-                $http.post(url + "/api/1/topic/class", $scope.params).success(function (data) {
+                $http.post(url + "/api/1/topic/class/", $scope.params).success(function (data) {
                     if (data.code == "200") {
                         items.scope.optipShow(1, '操作成功')
                         items.scope.submit_search();
@@ -784,6 +802,13 @@ app.controller('ModalCategory', function ($scope, $cookieStore, $uibModalInstanc
             if (!$scope.name) {
                 isValid = false;
                 baseUrl.ngDialog('请填写类别名称')
+            }
+            if(isValid){
+                var checkTopicRes = baseUrl.checkTopic($scope.topic);
+                if(checkTopicRes.res == 1){
+                    isValid = false;
+                    baseUrl.ngDialog(checkTopicRes.msg)
+                }
             }
             if (isValid) {
                 $scope.params = {

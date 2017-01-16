@@ -1,5 +1,5 @@
 var app = angular.module('RDash');
-app.register.controller("regulationCtr", function (ngDialog,$scope, $http, $location, $uibModal, $interval, $cookieStore, baseUrl, $rootScope, utils, PageHandle, $stateParams, $timeout, url_junction) {
+app.register.controller("regulationCtr", function (ngDialog, $scope, $http, $location, $uibModal, $interval, $cookieStore, baseUrl, $rootScope, utils, PageHandle, $stateParams, $timeout, url_junction) {
 
     var urlData = $location.search()
     console.log('urlData', urlData)
@@ -8,14 +8,14 @@ app.register.controller("regulationCtr", function (ngDialog,$scope, $http, $loca
     $scope.addstrategy = 'obj-hide'
     $scope.optipHide = function (func) {
         $timeout(function () {
-            if(func){
+            if (func) {
                 func()
             }
             $scope.optip = 'obj-hide'
         }, 1000)
     }
 
-    $scope.optipShow = function (iFlag, message,func) {
+    $scope.optipShow = function (iFlag, message, func) {
         $scope.$broadcast('optip', {flag: iFlag, msg: message});
         $scope.optip = 'obj-show'
         $scope.optipHide(func)
@@ -23,12 +23,12 @@ app.register.controller("regulationCtr", function (ngDialog,$scope, $http, $loca
     }
 
     //add
-    $scope.addStrategy = function(){
+    $scope.addStrategy = function () {
         $scope.addstrategy = 'obj-show'
-        $scope.$broadcast('addstrategy', {method:'add',title:'添加规则',projectId:$scope.projectId,scope: $scope});
+        $scope.$broadcast('addstrategy', {method: 'add', title: '添加规则', projectId: $scope.projectId, scope: $scope});
     }
 
-    $scope.$on('addstrategyclose',function(){
+    $scope.$on('addstrategyclose', function () {
         $scope.addstrategy = 'obj-hide'
     })
 
@@ -51,10 +51,10 @@ app.register.controller("regulationCtr", function (ngDialog,$scope, $http, $loca
     //regulationDetail
     $scope.regulationDetail = false;
     $scope.detailIdx = 0
-    $scope.regulationDetailFunc = function(idx){
+    $scope.regulationDetailFunc = function (idx) {
         $scope.regulationDetail = true;
         $scope.detailIdx = idx;
-        $http.get(BaseUrl + "/api/1/rule/"+$scope.query_result[idx].id+'/').success(function (data) {
+        $http.get(BaseUrl + "/api/1/rule/" + $scope.query_result[idx].id + '/').success(function (data) {
             if (data.code == 200) {
                 var data = data.data;
                 $scope.detail_name = data.name;
@@ -68,15 +68,15 @@ app.register.controller("regulationCtr", function (ngDialog,$scope, $http, $loca
         }).error(function (data, state) {
             if (state == 403) {
                 //BaseUrl.redirect()
-                $scope.optipShow(0,"没有权限",function(){
-                    window.location.href = baseUrl.getServerUrl()+'/login.html'
+                $scope.optipShow(0, "没有权限", function () {
+                    window.location.href = baseUrl.getServerUrl() + '/login.html'
                 })
             }
         })
     }
 
     //return
-    $scope.return = function(){
+    $scope.return = function () {
         $scope.regulationDetail = false;
     }
 
@@ -121,8 +121,8 @@ app.register.controller("regulationCtr", function (ngDialog,$scope, $http, $loca
         }).error(function (data, state) {
             if (state == 403) {
                 //BaseUrl.redirect()
-                $scope.optipShow(0,"没有权限",function(){
-                    window.location.href = baseUrl.getServerUrl()+'/login.html'
+                $scope.optipShow(0, "没有权限", function () {
+                    window.location.href = baseUrl.getServerUrl() + '/login.html'
                 })
             }
         })
@@ -139,7 +139,7 @@ app.register.controller("regulationCtr", function (ngDialog,$scope, $http, $loca
 
     $scope.searchBtn = function () {
         $scope.bigCurrentPage = 1;
-        $scope.strategy_nameTemp = $scope.strategy_name;
+        $scope.regulation_nameTmp = $scope.regulation_name;
         $scope.submit_search()
     }
 

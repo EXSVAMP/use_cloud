@@ -52,5 +52,8 @@ Icon
 # Bower components
 /src/components
 
+# page
+/page/index2.html
+
 .idea
 update.sh
