@@ -502,9 +502,21 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
     };
     $scope.params={};
     var instance="";
+    var select_topicTemp="";
     $scope.$on("identityState",function(event,data){
         console.log(data);
         instance=data.projectId;
+        $http.get(baseUrl + "/api/1/topic/instance?pk="+instance).success(function(data){
+            if(data.code==200){
+                select_topicTemp=data.data.topic;
+                $scope.subtite_desc=select_topicTemp;
+                console.log("<===获取项目详情=>")
+                console.log(data);
+            }
+
+
+        })
+
         if(data.method=='add'||data.method=='edit'){
             $scope.state.undelete=true;
             $scope.state.delete=false;

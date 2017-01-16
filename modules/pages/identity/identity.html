@@ -29,8 +29,8 @@
                       <td>{{item.name}}</td>
                       <td>{{item.strategy}}</td>
                       <td>{{item.secret_key}}</td>
-                      <td>{{item.description}}</td>
-                      <td>{{item.created_at}}</td>
+                      <td>{{item.description }}</td>
+                      <td>{{item.created_at|characters:10 :true}}</td>
                       <td>
                           <span class="icon-icon_edit edit-icon" ng-click="open('edit',item)"></span>
                           <span class="icon-icon_delete delete-icon" ng-click="open('delete',item)"></span>
