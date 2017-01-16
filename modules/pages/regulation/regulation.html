@@ -170,7 +170,7 @@
                         规则名称
                     </li>
                     <li>
-                        12345
+                        {{detail_name}}
                     </li>
                 </ul>
                 <ul class="regulation-detail-item relative">
@@ -178,7 +178,7 @@
                         物接入实例
                     </li>
                     <li>
-                        123
+                        {{detail_instance}}
                     </li>
                 </ul>
                 <ul class="regulation-detail-item relative">
@@ -186,68 +186,68 @@
                         主题
                     </li>
                     <li>
-                        12345
+                        {{detail_topic}}
                     </li>
                 </ul>
             </div>
 
-            <div class="table-bordered width-full margin-top-10">
+            <div class="table-bordered width-full margin-top-10" ng-repeat="item in detail_actuator">
                 <ul class="regulation-detail-item relative">
                     <li class="regulation-detail-key">
                         存储类型
                     </li>
                     <li>
-                        RabitMQ
+                        {{item.rule_type}}
                     </li>
                 </ul>
-                <ul class="regulation-detail-item relative">
+                <ul class="regulation-detail-item relative" ng-show="item.rule_type == 'Rabbitmq'">
                     <li class="regulation-detail-key">
                         exchange
                     </li>
                     <li>
-                        123
+                        {{item.exchange}}
                     </li>
                 </ul>
-                <ul class="regulation-detail-item relative">
+                <ul class="regulation-detail-item relative" ng-show="item.rule_type == 'Rabbitmq'">
                     <li class="regulation-detail-key">
                        queue
                     </li>
                     <li>
-                        12345
+                        {{item.queue}}
                     </li>
                 </ul>
-                <ul class="regulation-detail-item relative">
+                <ul class="regulation-detail-item relative" ng-show="item.rule_type == 'Rabbitmq'">
                     <li class="regulation-detail-key">
                         持久化
                     </li>
                     <li>
-                        12345
+                        {{item.persist | booleanToString}}
                     </li>
                 </ul>
 
 
-                <ul class="regulation-detail-item relative">
-                    <li class="regulation-detail-key">
-                        api
-                    </li>
-                    <li>
-                        123
+                        <ul class="regulation-detail-item relative" ng-show="item.rule_type == 'Api'">
+                            <li class="regulation-detail-key">
+                                api
+                            </li>
+                            <li>
+                                {{item.rule_type}}
+                            </li>
+                        </ul>
+                        <ul class="regulation-detail-item relative" ng-show="item.rule_type == 'Api'">
+                            <li class="regulation-detail-key">
+                                调用方式
+                            </li>
+                            <li>
+                                {{item.method}}
                     </li>
                 </ul>
-                <ul class="regulation-detail-item relative">
-                    <li class="regulation-detail-key">
-                        调用方式
-                    </li>
-                    <li>
-                        12345
-                    </li>
-                </ul>
-                <ul class="regulation-detail-item relative">
+                <ul class="regulation-detail-item relative" ng-show="item.rule_type == 'Api'">
                     <li class="regulation-detail-key">
                         请求头
                     </li>
                     <li>
-                        12345
+                        {{item.header}}
                     </li>
                 </ul>
 
