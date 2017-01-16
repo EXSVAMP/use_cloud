@@ -49,7 +49,22 @@ app.register.controller("regulationCtr", function (ngDialog,$scope, $http, $loca
     $scope.detailIdx = 0
     $scope.regulationDetailFunc = function(idx){
         $scope.regulationDetail = true;
-        $scope.detailIdx = idx
+        $scope.detailIdx = idx;
+        $http.get(BaseUrl + "/api/1/rule/"+$scope.query_result[idx].id+'/').success(function (data) {
+            if (data.code == 200) {
+                var data = data.data;
+                $scope.detail_name = data.name;
+                $scope.detail_instance = data.instance;
+                $scope.detail_topic = data.topic;
+
+            } else {
+                console.log(data)
+            }
+        }).error(function (data, state) {
+            if (state == 403) {
+                BaseUrl.redirect()
+            }
+        })
     }
 
     //return
