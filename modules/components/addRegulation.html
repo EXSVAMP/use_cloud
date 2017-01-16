@@ -9,21 +9,16 @@
         <div class="addstrategy-content-cont">
             <div class="form-group form-group-selin form-group-category">
                 <div class="input-group">
-                    <span class="input-group-addon bg-white inputdesc">策略名称</span>
-                    <input type="text" class="form-control" placeholder="请输入策略名称" ng-model="name">
+                    <span class="input-group-addon bg-white inputdesc">规则名称</span>
+                    <input type="text" class="form-control" placeholder="请输入规则名称" ng-model="name">
                 </div>
             </div>
-            <!--<div class="form-group form-group-selin">-->
-                <!--<div class="input-group">-->
-                    <!--<span class="input-group-addon bg-white inputdesc">实例类别</span>-->
-                    <!--<input type="text" class="form-control" placeholder="选择实例类型" ng-model="classification">-->
-                <!--</div>-->
-            <!--</div>-->
 
             <div class="form-group form-group-selin ">
                 <div class="input-group input-group-select" style="width:auto;">
-                    <span class="input-group-addon inputdesc">实例类别</span>
-                    <ui-select ng-model="classification" style="width:331px;" name="classification" theme="bootstrap" on-select="setShowNum(classification)">
+                    <span class="input-group-addon inputdesc">物接入实例</span>
+                    <ui-select ng-model="instance" style="width:331px;" name="instance" theme="bootstrap"
+                               on-select="setShowNum(instance)">
                         <ui-select-match placeholder="选择实例类型">{{$select.selected.name}}</ui-select-match>
                         <ui-select-choices repeat="item in numbers">
                             <div ng-bind-html="item.name"></div>
@@ -32,54 +27,110 @@
                     </ui-select>
                 </div>
                 <!--<button type="button" class="select_addBtn" ng-click="selectAdd()">-->
-                    <!--<span class="icon-icon_plus"></span>-->
+                <!--<span class="icon-icon_plus"></span>-->
                 <!--</button>-->
             </div>
 
             <div class="form-group form-group-selin">
                 <div class="input-group">
-                    <span class="input-group-addon inputdesc">简述</span>
-                    <input type="text" class="form-control" placeholder="请输入内容" ng-model="description">
+                    <span class="input-group-addon inputdesc">主题</span>
+                    <input type="text" class="form-control" placeholder="请输入主题" ng-model="topicName">
                 </div>
             </div>
             <div class="addTopicListWrap">
-                <div  ng-repeat="item2 in addTopicList">
-                <div class="form-group form-group-selin relative">
-                    <div class="input-group">
-                        <span class="input-group-addon  inputdesc">主题</span>
-                        <input type="text" class="form-control" placeholder="请输入主题" ng-model="addTopicList[$index]['name']" >
+                <div ng-repeat="item2 in addTopicList">
+                    <div class="form-group form-group-selin relative">
+                        <div class="input-group">
+                            <span class="input-group-addon inputdesc">存储类型</span>
+                            <ui-select ng-model="addTopicList[$index]['rule_type']" style="width:331px;"
+                                       name="rule_type" theme="bootstrap"
+                                       on-select="setRuleType(addTopicList[$index]['rule_type'],$index)">
+                                <ui-select-match placeholder="选择存储类型">{{$select.selected.name}}</ui-select-match>
+                                <ui-select-choices repeat="item in rule_typeArr">
+                                    <div ng-bind-html="item.name"></div>
+                                    <!-- <small ng-bind-html="item.email"></small> -->
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="addTopicFlag"></div>
                     </div>
-                    <div class="addTopicFlag"></div>
-                </div>
-                <div class="form-group form-group-selin">
-                    <div class="input-group">
-                        <span class="input-group-addon bg-white inputdesc">权限</span>
+                    <div class="form-group form-group-selin"
+                         ng-show="addTopicList[$index]['rule_type'].id == 'Rabbitmq'">
+                        <div class="input-group">
+                            <span class="input-group-addon bg-white inputdesc">exchange</span>
 
-                        <div class="stategy-rights">
-                            <input type="checkbox" name="topicrightssel{{$index}}" ng-click="addPS($index,'p')" ng-checked="addTopicList[$index]['p']"/>
-                            <span>发布</span>
-                            <span class="strategy-topic-flag" ng-show="addTopicList[$index]['p']">P</span>
+                            <!--<div type="text" class="form-control readonly"-->
+                                 <!--ng-bind="addTopicList[$index]['exchange']"></div>-->
+                            <div type="text" class="form-control readonly">{{regulationShow}}</div>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-selin"
+                         ng-show="addTopicList[$index]['rule_type'].id == 'Rabbitmq'">
+                        <div class="input-group">
+                            <span class="input-group-addon inputdesc">queue</span>
+                            <input type="text" class="form-control" placeholder="请输入队列名"
+                                   ng-model="addTopicList[$index]['queue']">
+                        </div>
+                    </div>
+                    <div class="form-group form-group-selin"
+                         ng-show="addTopicList[$index]['rule_type'].id == 'Rabbitmq'">
+                        <div class="input-group">
+                            <span class="input-group-addon bg-white inputdesc">持久化</span>
 
-                            <input type="checkbox" name="topicrightssel{{$index}}" class="margin-left-20" ng-click="addPS($index,'s')" ng-checked="addTopicList[$index]['s']"/>
-                            <span>订阅</span>
-                            <span class="strategy-topic-flag" ng-show="addTopicList[$index]['s']">S</span>
+                            <div class="stategy-rights">
+                                <input type="checkbox" name="topicrightssel{{$index}}"
+                                       ng-click="addPersist($index,'persist')"
+                                       ng-checked="addTopicList[$index]['persist']"/>
+                                <span>是</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group form-group-selin" ng-show="addTopicList[$index]['rule_type'].id == 'Api'">
+                        <div class="input-group">
+                            <span class="input-group-addon inputdesc">api</span>
+                            <input type="text" class="form-control" placeholder="http://www.g.com/aa/bb"
+                                   ng-model="addTopicList[$index]['api']">
                         </div>
                     </div>
 
-                </div>
-                <div class="form-group form-group-selin">
-                    <div class="delTopic" ng-click="delTopicFunc($index)">
-                        <div class="delTopicIcon"></div>
+                    <div class="form-group form-group-selin" ng-show="addTopicList[$index]['rule_type'].id == 'Api'">
+                        <div class="input-group">
+                            <span class="input-group-addon inputdesc">调用方式</span>
+                            <ui-select ng-model="addTopicList[$index]['method']" style="width:331px;" name="method" theme="bootstrap"
+                                       on-select="setMethod(addTopicList[$index]['method'],$index)">
+                                <ui-select-match placeholder="选择调用方式">{{$select.selected.name}}</ui-select-match>
+                                <ui-select-choices repeat="item in methodArr">
+                                    <div ng-bind-html="item.name"></div>
+                                    <!-- <small ng-bind-html="item.email"></small> -->
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-selin" ng-show="addTopicList[$index]['rule_type'].id == 'Api'">
+                        <div class="input-group">
+                            <span class="input-group-addon inputdesc">请求头</span>
+                            <input type="text" class="form-control" placeholder="请输入内容"
+                                   ng-model="addTopicList[$index]['header']">
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-selin">
+                        <div class="delTopic" ng-click="delTopicFunc($index)">
+                            <div class="delTopicIcon"></div>
+                        </div>
                     </div>
                 </div>
-                    </div>
             </div>
 
             <div class="form-group form-group-selin relative margin-top-20">
-                <fieldset class="addTopic" ng-click="addTopicFunc()"  ng-disabled="remainTopicToAddCount==0">
+                <fieldset class="addTopic" ng-click="addTopicFunc()" ng-disabled="remainTopicToAddCount==0">
                     <div class="icon-icon_plus addTopicIcon"></div>
                 </fieldset>
                 <span class="remainTopicToAdd margin-left-10">（还可添加{{remainTopicToAddCount}}个）</span>
+
                 <div class="addTopicFlag"></div>
             </div>
 

@@ -1,29 +1,8 @@
 var app = angular.module('RDash');
 app.register.controller("regulationCtr", function (ngDialog,$scope, $http, $location, $uibModal, $interval, $cookieStore, baseUrl, $rootScope, utils, PageHandle, $stateParams, $timeout, url_junction) {
-    //console.log("主题2222项目管理控制台");
-    //console.log('id',$stateParams.projectId)
-    //console.log('name',$stateParams.projectName)
-
-    //$scope.projectName = $stateParams.projectName;
-    //$scope.projectId = $stateParams.projectId;
-
-    //ngDialog.open({
-    //    template: '<p style=\"text-align: center\">添加失败</p>',
-    //    plain: true
-    //});
 
     var urlData = $location.search()
     console.log('urlData', urlData)
-    //$scope.projectName = urlData.projectName;
-   // $scope.projectId = urlData.projectId;
-
-    //console.log('id', $scope.projectId)
-    //console.log('name', $scope.projectName)
-
-    //$scope.$on('to-pare', function (d, data) {
-    //    console.log(data);
-    //    $scope.$broadcast('to-child', {id: $scope.projectId, name: $scope.projectName, tabName: 'strategy'});
-    //});
 
     $scope.optip = 'obj-hide'
     $scope.addstrategy = 'obj-hide'
@@ -42,7 +21,7 @@ app.register.controller("regulationCtr", function (ngDialog,$scope, $http, $loca
     //add
     $scope.addStrategy = function(){
         $scope.addstrategy = 'obj-show'
-        $scope.$broadcast('addstrategy', {method:'add',title:'添加规则',projectId:$scope.projectId});
+        $scope.$broadcast('addstrategy', {method:'add',title:'添加规则',projectId:$scope.projectId,scope: $scope});
     }
 
     $scope.$on('addstrategyclose',function(){
@@ -64,6 +43,34 @@ app.register.controller("regulationCtr", function (ngDialog,$scope, $http, $loca
     $scope.$on('addstrategyclose', function () {
         $scope.addstrategy = 'obj-hide'
     })
+
+    //regulationDetail
+    $scope.regulationDetail = false;
+    $scope.detailIdx = 0
+    $scope.regulationDetailFunc = function(idx){
+        $scope.regulationDetail = true;
+        $scope.detailIdx = idx;
+        $http.get(BaseUrl + "/api/1/rule/"+$scope.query_result[idx].id+'/').success(function (data) {
+            if (data.code == 200) {
+                var data = data.data;
+                $scope.detail_name = data.name;
+                $scope.detail_instance = data.instance;
+                $scope.detail_topic = data.topic;
+
+            } else {
+                console.log(data)
+            }
+        }).error(function (data, state) {
+            if (state == 403) {
+                BaseUrl.redirect()
+            }
+        })
+    }
+
+    //return
+    $scope.return = function(){
+        $scope.regulationDetail = false;
+    }
 
     // console.log("<========>"+$location.path());
     $scope.number = "10";
@@ -89,8 +96,7 @@ app.register.controller("regulationCtr", function (ngDialog,$scope, $http, $loca
                 name: $scope.regulation_nameTmp,
                 index: $scope.bigCurrentPage,
                 number: $scope.number,
-                is_page: '1',
-                instance: $scope.projectId
+                //descent:
 
             })).success(function (data) {
             if (data.code == 200) {

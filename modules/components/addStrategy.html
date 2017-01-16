@@ -22,7 +22,7 @@
 
             <div class="form-group form-group-selin ">
                 <div class="input-group input-group-select" style="width:auto;">
-                    <span class="input-group-addon inputdesc">实例类别</span>
+                    <span class="input-group-addon bg-white inputdesc">实例类别</span>
                     <ui-select ng-model="classification" style="width:331px;" name="classification" theme="bootstrap" on-select="setShowNum(classification)">
                         <ui-select-match placeholder="选择实例类型">{{$select.selected.name}}</ui-select-match>
                         <ui-select-choices repeat="item in numbers">
@@ -38,7 +38,7 @@
 
             <div class="form-group form-group-selin">
                 <div class="input-group">
-                    <span class="input-group-addon inputdesc">简述</span>
+                    <span class="input-group-addon bg-white inputdesc">简述</span>
                     <input type="text" class="form-control" placeholder="请输入内容" ng-model="description">
                 </div>
             </div>
@@ -46,7 +46,7 @@
                 <div  ng-repeat="item2 in addTopicList">
                 <div class="form-group form-group-selin relative">
                     <div class="input-group">
-                        <span class="input-group-addon  inputdesc">主题</span>
+                        <span class="input-group-addon  bg-white inputdesc">主题</span>
                         <input type="text" class="form-control" placeholder="请输入主题" ng-model="addTopicList[$index]['name']" >
                     </div>
                     <div class="addTopicFlag"></div>
