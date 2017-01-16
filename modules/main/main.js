@@ -941,7 +941,6 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
                 _.forEach($scope.categoryList, function(value) {
                     $scope.numbers.push({name:value.name,id:value.id})
                     if(sSelProjectId && sSelProjectId == value.id){
-                        console.log(123457689997654443)
                         $scope.classification = {name:value.name,id:value.id}
                         $scope.classificationTemp = value.id
                     }
@@ -1062,11 +1061,21 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
                     delete $scope.params.name;
                 }
                 var topicEmpty = function () {
+                    var isTopicInvalid = true;
                     _.forEach($scope.addTopicList, function (value) {
                         console.log('value', value['name'])
-                        if (!value['name']) {
+                        if (isTopicInvalid && !value['name']) {
                             isValid = false;
                             invalidMsg = '主题不能为空'
+                            isTopicInvalid = false
+                        }
+                        if(isTopicInvalid && value['name']){
+                            var checkTopicRes = baseUrl.checkTopic(value['name']);
+                            if(checkTopicRes.err == 1){
+                                isValid = false;
+                                invalidMsg = checkTopicRes.msg
+                                isTopicInvalid = false
+                            }
                         }
                     });
                 }
@@ -1387,6 +1396,14 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
                 if (isValid && !$scope.instanceTemp) {
                     isValid = false;
                     invalidMsg = '请选择物接入实例'
+                }
+
+                if(isValid && $scope.topicName){
+                    var checkTopicRes = baseUrl.checkTopic($scope.topicName);
+                    if(checkTopicRes.err == 1){
+                        isValid = false;
+                        invalidMsg = checkTopicRes.msg
+                    }
                 }
 
                 var actuatorCheck = function () {
