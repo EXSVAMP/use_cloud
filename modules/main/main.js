@@ -508,10 +508,10 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
         instance=data.projectId;
         $http.get(baseUrl + "/api/1/topic/instance?pk="+instance).success(function(data){
             if(data.code==200){
-                select_topicTemp=data.data.topic;
+                select_topicTemp=data.data[0].topic;
                 $scope.subtite_desc=select_topicTemp;
-                console.log("<===获取项目详情=>")
-                console.log(data);
+                // console.log("<===获取项目详情=>")
+                // console.log(data);
             }
 
 
@@ -562,7 +562,13 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
             //选择实例
             $scope.select_class=function(classId){
                 $scope.params.classId=classId;
+
                 console.log("<===实例ID===>"+classId);
+                $http.get(baseUrl + "/api/1/topic/class/"+classId+"/").success(function(data){
+                    select_topicTemp=data.data.instance.topic;
+                    $scope.subtite_desc=select_topicTemp;
+                })
+
             }
 
 
@@ -579,7 +585,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
                         description:$scope.params.description,
 
                     });
-                    $http.post(baseUrl+"/api/1/topic/identity",query_url).success(function(data){
+                    $http.post(baseUrl+"/api/1/topic/identity/",query_url).success(function(data){
                         if(data.code==200){
                             $scope.item.scope.submit_search();
                             $scope.cancel();
@@ -617,7 +623,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
                         });
 
                     query_url.topic = JSON.stringify(query_url.topic);
-                    $http.post(baseUrl + "/api/1/topic/strategy ", query_url).success(function (data) {
+                    $http.post(baseUrl + "/api/1/topic/strategy/", query_url).success(function (data) {
                                 if (data.code == "200") {
                                     $scope.params.strategyId=data.data.id;
                                     $scope.get_strategyList();
