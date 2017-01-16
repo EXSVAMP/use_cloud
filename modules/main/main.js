@@ -786,7 +786,7 @@ app.controller('ModalCategory', function ($scope, $cookieStore, $uibModalInstanc
             }
             if(isValid){
                 var checkTopicRes = baseUrl.checkTopic($scope.topic);
-                if(checkTopicRes.res == 1){
+                if(checkTopicRes.err == 1){
                     isValid = false;
                     baseUrl.ngDialog(checkTopicRes.msg)
                 }
@@ -832,7 +832,7 @@ app.controller('ModalCategory', function ($scope, $cookieStore, $uibModalInstanc
             }
             if(isValid){
                 var checkTopicRes = baseUrl.checkTopic($scope.topic);
-                if(checkTopicRes.res == 1){
+                if(checkTopicRes.err == 1){
                     isValid = false;
                     baseUrl.ngDialog(checkTopicRes.msg)
                 }
