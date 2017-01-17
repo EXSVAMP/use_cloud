@@ -1,0 +1,266 @@
+ul,li{
+  list-style-type: none;
+}
+.project_tab {
+  height: 50px;
+  border-bottom: 1px solid #ddd;
+  background: #fff;
+  list-style-type: none;
+  li {
+    list-style-type: none;
+    float: left;
+    width: 80px;
+    height: 50px;
+    &.project_name-pare {
+      width: 100px;
+    }
+    .project_name {
+      color: #333;
+      border-bottom: 1px solid #333;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      font-size: 14px;
+      text-align: center;
+      line-height: 50px;
+    }
+    a {
+      color: #888;
+      font-size: 14px;
+      text-align: center;
+      line-height: 50px;
+      border-bottom: 2px solid transparent;
+      &:hover {
+        color: #00a0e9;
+        border-bottom: 2px solid #00a0e9;
+      }
+    }
+    a.active {
+      color: #00a0e9;
+      border-bottom: 2px solid #00a0e9;
+    }
+  }
+}
+
+.a-pare {
+  position: relative;
+  a {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+}
+
+//margin padding
+$list: 5 10 12 15 20 25 30 35 40 45 50;
+$poslist: top right bottom left;
+@each $i in $list {
+  @each $j in $poslist {
+    .margin-#{$j}-#{$i} {
+      margin-#{$j}: #{$i}px !important;
+    }
+    .padding-#{$j}-#{$i} {
+      padding-#{$j}: #{$i}px !important;
+    }
+
+  }
+
+  .padding-#{$i} {
+    padding-#{$i}: #{$i}px !important;
+  }
+
+}
+
+@each $i in $poslist {
+  .clear-padding-#{$i} {
+    padding-#{$i}: 0 !important;
+  }
+
+  .clear-margin-#{$i} {
+    margin-#{$i}: 0 !important;
+  }
+
+}
+
+.custom-modal {
+  z-index: 1050;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.custom-modal-op-tip {
+  width: 237px;
+  height: 95px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -168.5px;
+  margin-top: -47.5px;
+  background: #0c0f16;
+  border-radius: 4px;
+  opacity: 0.7;
+}
+
+.custom-modal-op-cont {
+  text-align: center;
+}
+
+.op-tip-icon, .op-tip-icon-error {
+  margin-top: 30px;
+  color: #85d335;
+  font-size: 32px;
+  display: inline-block;
+}
+
+.op-tip-icon-error {
+  color: #ff6b6b;
+}
+
+.op-tip-text {
+  font-size: 20px;
+  color: #fff;
+  margin-left: 10px;
+  position: relative;
+  top: -5px;
+}
+
+.obj-show {
+  display: block !important;
+}
+
+.obj-hide {
+  display: none !important;
+}
+
+.relative {
+  position: relative;
+}
+
+.form-group-selin .input-group .readonly {
+  width: 331px;
+  height: 40px;
+  background-color: #eee;
+  text-align: start;
+  line-height: 28px;
+}
+
+.category-pop-close {
+  font-size: 24px;
+  color: #ddd;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.height-auto {
+  height: auto;
+  overflow: hidden;
+}
+
+.border-light {
+  border-bottom: 1px solid #ddd;
+}
+
+.margin-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-start {
+  text-align: start;
+}
+
+.width-auto-center{
+  width: auto !important;
+  transform: translateX(-50%) !important;
+  margin-left: 0 !important;
+}
+
+.height-auto-center{
+  height: auto !important;
+  top: 50%;
+  transform: translateY(-50%) !important;
+  margin-top: 0 !important;
+}
+
+.btn-cancel-to-ok{
+  border: 1px solid #00a0e9;
+  color: #00a0e9;
+}
+
+.btn_ok_noback{
+  background: #fff;
+  &:hover{
+    background: #fff;
+  }
+}
+
+.expectBlock-wrap {
+  //min-height: 600px;
+}
+
+.detail-btn{
+  color:#1e80d3;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.width-full,.img-full{
+  width: 100%;
+}
+
+.width-content{
+  width: 1200px;
+}
+
+.cursor-pointer{
+  cursor: pointer;
+}
+
+.expectBlock {
+  width: 529px;
+  height: 346px;
+  background: #fff;
+  margin-top: 50px;
+  margin-left: auto;
+  margin-right: auto;
+  .expectBlockCont {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  .expectBlockIcon {
+    font-size: 160px;
+    color: #dddddd;
+  }
+  .expectBlockTip {
+    font-size: 16px;
+    color: #888;
+  }
+
+}
+
+textarea {
+  outline: none !important;
+  box-shadow: none !important;
+}
+

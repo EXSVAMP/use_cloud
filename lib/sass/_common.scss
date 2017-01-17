@@ -275,8 +275,8 @@
   }
   .sub_input{
     display: inline-block;
-    float:right;
-
+    float:left;
+    min-width:180px;
     padding: 0px;
     //border-top: solid 1px #ccc;
     //border-bottom: solid 1px #ccc;

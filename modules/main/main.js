@@ -562,12 +562,14 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
     $scope.params={};
     var instance="";
     var select_topicTemp="";
+    var select_topicTemp_res=""
     $scope.$on("identityState",function(event,data){
         console.log(data);
         instance=data.projectId;
         $http.get(baseUrl + "/api/1/topic/instance?pk="+instance).success(function(data){
             if(data.code==200){
                 select_topicTemp=data.data[0].topic;
+                select_topicTemp_res=data.data[0].topic;
                 $scope.subtite_desc=select_topicTemp;
                 // console.log("<===获取项目详情=>")
                 // console.log(data);
@@ -623,10 +625,14 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
                 $scope.params.classId=classId;
 
                 console.log("<===实例ID===>"+classId);
-                $http.get(baseUrl + "/api/1/topic/class/"+classId+"/").success(function(data){
-                    select_topicTemp=data.data.instance.topic;
+                if(classId!=-1){
+                  $http.get(baseUrl + "/api/1/topic/class/"+classId+"/").success(function(data){
+                    select_topicTemp=data.data.complete_topic;
                     $scope.subtite_desc=select_topicTemp;
-                })
+                  })
+                }else{
+                    $scope.subtite_desc=select_topicTemp_res;
+                }
 
             }
 

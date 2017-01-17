@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="RDash">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>仓储云管理系统</title>    <!--<link rel="stylesheet" type="text/css" href="/lib/icomoon/style.css">-->    <!--<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>-->
+
+    <link rel="stylesheet" type="text/css" href="/statics/bower_components/bootstrap/less/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/statics/bower_components/bootstrap/dist/css/bootstrap.min_475d703.css" />
+    <link rel="stylesheet" type="text/css" href="/statics/bower_components/font-awesome/css/font-awesome.min_cb10f0b.css" />
+    <link rel="stylesheet" type="text/css" href="/statics/bower_components/rdash-ui/dist/css/rdash.min_243623e.css" />
+    <link rel="stylesheet" type="text/css" href="/statics/bower_components/ng-dialog/css/ngDialog.min_c5fa3e8.css" />
+    <link rel="stylesheet" type="text/css" href="/statics/bower_components/ng-dialog/css/ngDialog-theme-default.min_b900984.css" />
+    <link rel="stylesheet" type="text/css" href="/statics/bower_components/angular-ui-select/dist/select.min_7b8d485.css" />
+    <link rel="stylesheet" type="text/css" href="/statics/lib/icomoon/style_9e401ca.css" />
+    <link rel="stylesheet" type="text/css" href="/statics/lib/sass/main.css?" />
+    <link rel="stylesheet" type="text/css" href="/statics/bower_components/angular-busy/dist/angular-busy.min_382a255.css" />
+    <link rel="stylesheet" type="text/css" href="/statics/lib/build/loading-bar_1fbcfd3.css" />
+</head>
+<body ng-controller="MasterCtrl" class="cotanin">
+<div  class="headerManage" ng-controller="headerManageCtrl">
+  <script type="text/ng-template"  id="myModalContent.html">
+      <div class="modal-header">
+          <p>{{item.title}}</p>
+      </div>
+      <div class="modal-body">
+          <div>
+              <span class="icon-icon_poweroff"></span>
+              <span class="quit_desc">确定要退出吗?</span>
+          </div>
+      </div>
+      <div class="modal-footer">
+            <div>
+                <button type="button" class="btn btn_ok" ng-click="ok()">确定</button>
+                <button type="button" class="btn btn_cancel" ng-click="cancel()">取消</button>
+            </div>
+      </div>
+  </script>
+    <div class="logo">
+       <img src="/statics/lib/img/logo200+80_be0a798.svg"/>
+    </div>
+   <div class="head_content">
+           <div class="content_icon">
+               <span class="icon-icon_home"></span>
+               <span class="head_page">首页</span>
+           </div>
+          <div class="conten_right">
+                <!--<div class="user dropdown-toggle" dropdown-toggle data-toggle="dropdown" ng-class="{'use_active':use_active}" ng-click="use_active=!use_active">-->
+                 <div class="user dropdown-toggle" dropdown-toggle data-toggle="dropdown">
+                     <span ng-cloak class="ng-cloak">{{user_name}}</span>
+                 </div>
+                <ul class="dropdown-menu dropdown-user"  role="menu">
+                  <li><a  ng-click="open('md-quit','quit')" >退出</a></li>
+                </ul>
+                 <div class="work">
+                     <span class="icon-icon_worksheet"></span>
+                     <span>工单</span>
+                     <span class="work_count">2</span>
+                 </div>
+          </div>
+   </div>
+</div>
+<div  class="sideBar" ng-controller="sideBarCtrl">
+     <div class="side_user">
+        <div class="user_content">
+          <img class="user_img" src="/statics/lib/img/head_698cbad.svg"/>
+          <p ng-cloak class="ng-cloak">{{user_name}}</p>
+        </div>
+     </div>
+     <div class="side-menu-group">
+         <div class="side-menu">
+             <a class="menu-theme"  ui-sref-active="active" ui-sref="manage" >
+                 <span class="icon-icon_console icon"></span>
+                 <span>管理控制台</span>
+             </a>
+         </div>
+          <div class="side-menu" ng-class="{true:'open'}[status.subject]">
+               <span class="menu-theme" ng-click="toggle('subject')" >
+                    <span class="icon-icon_theme icon"></span>
+                    <span>主题管理</span>
+                    <span class="icon-icon_down icon-rotate"></span>
+                </span>
+              <ul class="menu-group">
+                  <li class="sub-menu" ui-sref-active="active" ui-sref="project">
+                      <a>项目管理</a>
+                  </li>
+              </ul>
+
+            </div>
+
+         <div class="side-menu">
+             <a class="menu-theme" ui-sref-active="active" ui-sref="analysis">
+                 <span class="icon-icon_analysis icon"></span>
+                 <span>物解析管理</span>
+             </a>
+         </div>
+         <div class="side-menu">
+             <a class="menu-theme" ui-sref-active="active" ui-sref="regulation">
+                 <span class="icon-icon_rules icon"></span>
+                 <span>规则管理</span>
+             </a>
+         </div>
+         <div class="side-menu" ng-class="{true:'open'}[status.work_order]">
+               <span class="menu-theme" ng-click="toggle('work_order')" >
+                    <span class="icon-icon_theme icon"></span>
+                    <span>工单管理</span>
+                    <span class="icon-icon_down icon-rotate"></span>
+                </span>
+             <ul class="menu-group">
+                 <li class="sub-menu" ui-sref-active="active" ui-sref="subOrder">
+                     <a>提交工单</a>
+                 </li>
+                 <li class="sub-menu" ui-sref-active="active" ui-sref="myOrder">
+                     <a>我的工单</a>
+                 </li>
+             </ul>
+         </div>
+         <div class="side-menu">
+             <a class="menu-theme" ui-sref-active="active" ui-sref="email">
+                 <span class="icon-icon_mail icon"></span>
+                 <span>站内信管理</span>
+             </a>
+         </div>
+
+     </div>
+
+</div>
+ <div id="page-wrap">
+
+     <div class="page-content">
+       <div ui-view>
+       </div>
+         <!--<link rel="import" href="/modules/partial/foot/manage_foot.html?__inline"/>-->
+     </div>
+      <div class="manage_foot">
+    <p>
+        Copyright 2015 - 2016. 湖北橙石电子商务有限公司 & 上海橙金信息科技有限公司 All Rights Reserved. 沪ICP备16024255号
+    </p>
+</div>
+ </div>
+
+<script type="text/javascript" src="/statics/lib/mod_a11279b.js"></script>
+<script type="text/javascript">/*resourcemap*/
+require.resourceMap({
+  "res": {
+    "login_page/login/login.sync": {
+      "url": "/statics/modules/login_page/login/login.sync_6dbfd7c.js",
+      "type": "js"
+    },
+    "login_page/register/register.sync": {
+      "url": "/statics/modules/login_page/register/register.sync_e345469.js",
+      "type": "js"
+    },
+    "pages/manage/manage.sync": {
+      "url": "/statics/modules/pages/manage/manage.sync_f593474.js",
+      "type": "js"
+    },
+    "pages/regulation/regulation.sync": {
+      "url": "/statics/modules/pages/regulation/regulation.sync_6776593.js",
+      "type": "js"
+    },
+    "pages/email/email.sync": {
+      "url": "/statics/modules/pages/email/email.sync_58200e0.js",
+      "type": "js"
+    },
+    "pages/project/project.sync": {
+      "url": "/statics/modules/pages/project/project.sync_36a1e6a.js",
+      "type": "js"
+    },
+    "pages/analysis/analysis.sync": {
+      "url": "/statics/modules/pages/analysis/analysis.sync_11ef07d.js",
+      "type": "js"
+    },
+    "pages/subOrder/subOrder.sync": {
+      "url": "/statics/modules/pages/subOrder/subOrder.sync_f39dbcb.js",
+      "type": "js"
+    },
+    "pages/myOrder/myOrder.sync": {
+      "url": "/statics/modules/pages/myOrder/myOrder.sync_8787bd8.js",
+      "type": "js"
+    },
+    "pages/category/category.sync": {
+      "url": "/statics/modules/pages/category/category.sync_5f648b9.js",
+      "type": "js"
+    },
+    "pages/identity/identity.sync": {
+      "url": "/statics/modules/pages/identity/identity.sync_9bd97ce.js",
+      "type": "js"
+    },
+    "pages/strategy/strategy.sync": {
+      "url": "/statics/modules/pages/strategy/strategy.sync_0344deb.js",
+      "type": "js"
+    }
+  },
+  "pkg": {}
+});</script>
+<script type="text/javascript" src="/statics/modules/login_page/login/login_18be30f.js"></script>
+<script type="text/javascript" src="/statics/modules/login_page/register/register_d1c68af.js"></script>
+<script type="text/javascript" src="/statics/modules/pages/manage/manage_d8358a0.js"></script>
+<script type="text/javascript" src="/statics/modules/pages/regulation/regulation_62f22fa.js"></script>
+<script type="text/javascript" src="/statics/modules/pages/email/email_42c5f0b.js"></script>
+<script type="text/javascript" src="/statics/modules/pages/project/project_adb390f.js"></script>
+<script type="text/javascript" src="/statics/modules/pages/analysis/analysis_b4beac4.js"></script>
+<script type="text/javascript" src="/statics/modules/pages/subOrder/subOrder_da37120.js"></script>
+<script type="text/javascript" src="/statics/modules/pages/myOrder/myOrder_a47faee.js"></script>
+<script type="text/javascript" src="/statics/modules/pages/category/category_393ece4.js"></script>
+<script type="text/javascript" src="/statics/modules/pages/identity/identity_c711386.js"></script>
+<script type="text/javascript" src="/statics/modules/pages/strategy/strategy_f6a08c7.js"></script>
+<script type="text/javascript" src="/statics/modules/router/router_6aea920.js"></script>
+<script type="text/javascript" src="/statics/modules/interceptor/interceptor_6ffe17c.js"></script>
+<script type="text/javascript" src="/statics/modules/common/constant_5465a66.js"></script>
+<script type="text/javascript" src="/statics/modules/common/service/utils_bfbb7a0.js"></script>
+<script type="text/javascript" src="/statics/modules/components/opTip_0a6c8c5.js"></script>
+<script type="text/javascript" src="/statics/modules/components/cover_83c6012.js"></script>
+<script type="text/javascript" src="/statics/modules/components/addStrategy_4790d75.js"></script>
+<script type="text/javascript" src="/statics/modules/components/addRegulation_61c82c8.js"></script>
+<script type="text/javascript" src="/statics/modules/main/main_08821a6.js"></script>
+<script src="/statics/lib/jquery_ae0f519.js"></script>
+<script src="/statics/lib/jquery-ui.min_cebec43.js"></script>
+<script type="text/javascript" src="/statics/bower_components/angular/angular.min_06accd3.js"></script>
+<script type="text/javascript" src="/statics/bower_components/jquery/dist/jquery.min_e071abd.js"></script>
+<script type="text/javascript" src="/statics/bower_components/bootstrap/js/dropdown_652c9b5.js"></script>
+<script type="text/javascript" src="/statics/bower_components/bootstrap/js/carousel_b3b3e76.js"></script>
+<script type="text/javascript" src="/statics/bower_components/bootstrap/js/transition_328faf4.js"></script>
+<script type="text/javascript" src="/statics/bower_components/angular-bootstrap/ui-bootstrap-tpls.min_3ffe43d.js"></script>
+<script type="text/javascript" src="/statics/bower_components/angular-cookies/angular-cookies.min_1b5fb3c.js"></script>
+<script type="text/javascript" src="/statics/bower_components/ui-router/release/angular-ui-router.min_0ef20b2.js"></script>
+<script type="text/javascript" src="/statics/bower_components/ng-dialog/js/ngDialog.min_9164cdb.js"></script>
+<script type="text/javascript" src="/statics/bower_components/angular-animate/angular-animate.min_3f4e3a1.js"></script>
+<script type="text/javascript" src="/statics/bower_components/angular-busy/dist/angular-busy.min_16c3001.js"></script>
+<script type="text/javascript" src="/statics/bower_components/angular-truncate/src/truncate_c35a9be.js"></script>
+<script type="text/javascript" src="/statics/bower_components/angular-ui-select/dist/select.min_9cc2428.js"></script>
+<script type="text/javascript" src="/statics/bower_components/angular-sanitize/angular-sanitize_018cb4c.js"></script>
+<script src="/statics/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min_4b68703.js"></script>
+<script src="/statics/bower_components/angular-loading-bar/build/loading-bar.min_c1a475d.js"></script>
+<script type="text/javascript" src="/statics/lib/lodash/lodash_1ddc0ab.js"></script>
+<script type="text/javascript">
+    require('main')
+</script>
+</body></html>
