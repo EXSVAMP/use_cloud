@@ -302,7 +302,8 @@ app.controller("headerCtrl", function ($scope, $cookieStore, $http, $uibModal, b
             }
         }
     }
-    $scope.detail = function(){
+    $scope.detail = function(title){
+        $scope.title = title;
         for (i in $scope.nav_state) {
             if (i == 'second_detail') {
                 $scope.nav_state[i] = true;

@@ -203,6 +203,13 @@ $poslist: top right bottom left;
   color: #00a0e9;
 }
 
+.btn_ok_noback{
+  background: #fff;
+  &:hover{
+    background: #fff;
+  }
+}
+
 .expectBlock-wrap {
   //min-height: 600px;
 }
