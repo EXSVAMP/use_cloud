@@ -138,7 +138,7 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
 
     }
 
-    $scope.wsFunc3 = function (username,password,port) {
+    $scope.wsFunc3 = function (username,password,server,port) {
         //var websocket_url = constant.websocket_url;
         //var websocket_userName = constant.websocket_userName;
         //var websocket_password = constant.websocket_password;
@@ -149,7 +149,7 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
         //var websocket_password = 'eb50ff54';
         //var websocket_port = '1883';
 
-        client = new Paho.MQTT.Client(constant.websocket_url, port, "myclientid_" + parseInt(Math.random() * 100, 10));
+        client = new Paho.MQTT.Client(server, port, "myclientid_" + parseInt(Math.random() * 100, 10));
         // set callback handlers
         client.onConnectionLost = onConnectionLost;
         client.onMessageArrived = onMessageArrived;
@@ -174,10 +174,10 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
             //    onFailure: onSubscribeFailure
             //});
 
-            client.subscribe("", {
-                onSuccess: onSubscribeSuccess,
-                onFailure: onSubscribeFailure
-            });
+            //client.subscribe("", {
+            //    onSuccess: onSubscribeSuccess,
+            //    onFailure: onSubscribeFailure
+            //});
 
 
             // message = new Paho.MQTT.Message("Hello");
@@ -235,19 +235,24 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
     };
 
     $scope.resetWatchTopicBtn = function(){
-        $http.get(BaseUrl + "/api/1/topic/class/mqtt/?topic=" +$scope.watchTopic).success(function (data) {
-            if (data.code == 200) {
-                data = data.data
-                $scope.wsFunc3(data.username,data.password,data.port);
+        if($scope.watchTopic){
+            $http.get(BaseUrl + "/api/1/topic/class/mqtt/?topic=" +$scope.watchTopic).success(function (data) {
+                if (data.code == 200) {
+                    data = data.data
+                    $scope.wsFunc3(data.username,data.password,data.server,data.port);
 
-            } else {
-                console.log(data)
-            }
-        }).error(function (data, state) {
-            if (state == 403) {
+                } else {
+                    console.log(data)
+                }
+            }).error(function (data, state) {
+                if (state == 403) {
 
-            }
-        })
+                }
+            })
+        }else{
+            baseUrl.ngDialog('请输入主题')
+        }
+
     }
 
 
