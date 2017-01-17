@@ -15,7 +15,6 @@ app.register.controller("identityCtr", function ($scope, $http, $location, $uibM
     $scope.numbers = [10, 20, 30, 40, 50];
     $scope.maxSize = 5;
     $scope.bigCurrentPage = 1;
-
     $scope.setPage = function (pageNo) {
         if (PageHandle.setPageInput($scope.index_sel, $scope.total_page)) {
             $scope.bigCurrentPage = $scope.index_sel;
@@ -41,7 +40,6 @@ app.register.controller("identityCtr", function ($scope, $http, $location, $uibM
                 $scope.bigTotalItems = data.pageinfo.total_number;
                 $scope.total_page = data.pageinfo.total_page;
                 $scope.currentPageTotal = $scope.query_result.length;
-
 
             } else {
                 console.log(data)
