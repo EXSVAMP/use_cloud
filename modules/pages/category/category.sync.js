@@ -138,15 +138,118 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
 
     }
 
+    $scope.wsFunc3 = function (username,password,port) {
+        //var websocket_url = constant.websocket_url;
+        //var websocket_userName = constant.websocket_userName;
+        //var websocket_password = constant.websocket_password;
+        //var websocket_port = constant.websocket_port;
+
+        var websocket_url = '211.152.46.42';
+        //var websocket_userName = 'eb50fc3e';
+        //var websocket_password = 'eb50ff54';
+        //var websocket_port = '1883';
+
+        client = new Paho.MQTT.Client(constant.websocket_url, port, "myclientid_" + parseInt(Math.random() * 100, 10));
+        // set callback handlers
+        client.onConnectionLost = onConnectionLost;
+        client.onMessageArrived = onMessageArrived;
+        //client.onSubscribeSuccess = onSubscribeSuccess;
+        //client.onSubscribeFailure = onSubscribeFailure;
+
+        // connect the client
+        client.connect({
+            onSuccess: onConnect,
+            userName: username,
+            password: password,
+            mqttVersion: 3
+        });
+
+        // called when the client connects
+        function onConnect() {
+            // Once a connection has been made, make a subscription and send a message.
+            console.log("onConnect");
+
+            //client.subscribe("exingcai/iot/clould/storehouse/" + store_house_id + "/eventlog/warning", {
+            //    onSuccess: onSubscribeSuccess,
+            //    onFailure: onSubscribeFailure
+            //});
+
+            client.subscribe("", {
+                onSuccess: onSubscribeSuccess,
+                onFailure: onSubscribeFailure
+            });
+
+
+            // message = new Paho.MQTT.Message("Hello");
+            // message.destinationName = "/World";
+            // client.send(message);
+        }
+
+        // called when the client loses its connection
+        function onConnectionLost(responseObject) {
+            console.log("responseObject.errorCode:" + responseObject.errorCode);
+
+            if (responseObject.errorCode !== 0) {
+                // client = new Paho.MQTT.Client(constant.websocket_url, constant.websocket_port, "myclientid_" + parseInt(Math.random() * 100, 10));
+
+                client.connect({
+                    onSuccess: onConnect,
+                    userName: username,
+                    password: password,
+                    mqttVersion: 3
+                });
+                console.log("onConnectionLost:" + responseObject.errorMessage);
+            }
+        }
+
+        // called when a message arrives
+        function onMessageArrived(message) {
+
+            console.log("onMessageArrived:" + message.payloadString);
+
+        }
+
+        function onSubscribeSuccess() {
+            subscribed = true;
+            console.log("subscribed", subscribed);
+        };
+
+        function onSubscribeFailure(err) {
+            subscribed = false;
+            console.log("subscribe fail. ErrorCode: %s, ErrorMsg: %s", err.errCode, err.errorMessage);
+        };
+
+    }
+
+    //$scope.wsFunc3();
+
     $scope.watch = function (idx) {
         $scope.categoryMain = false;
         $scope.categoryWatch = true;
+        //$scope.wsFunc3();
     };
 
     $scope.return = function () {
         $scope.categoryMain = true;
         $scope.categoryWatch = false;
     };
+
+    $scope.resetWatchTopicBtn = function(){
+        $http.get(BaseUrl + "/api/1/topic/class/mqtt/?topic=" +$scope.watchTopic).success(function (data) {
+            if (data.code == 200) {
+                data = data.data
+                $scope.wsFunc3(data.username,data.password,data.port);
+
+            } else {
+                console.log(data)
+            }
+        }).error(function (data, state) {
+            if (state == 403) {
+
+            }
+        })
+    }
+
 
 
 })

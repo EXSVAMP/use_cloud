@@ -1099,6 +1099,7 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
         if(oCateData){
 
         }else{
+            console.log('testsetstewtwtwetwet')
             $http.get(url + "/api/1/topic/instance/"+sProjectId+"/").success(function (data) {
                 if (data.code == 200) {
                     $scope.subtite_desc = data.data.topic;
@@ -1130,7 +1131,7 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
                 getCategoryList(data.projectId,'')
             }
 
-            getProjectInfo(data.projectId,$scope.item.data.classification)
+            getProjectInfo(data.projectId,$scope.item.data)
         }
         if ($scope.item.method == 'add') {
             init()
