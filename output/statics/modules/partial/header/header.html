@@ -1,0 +1,322 @@
+<div class="head_com" ng-controller="headerCtrl">
+    <div class="btn_group">
+        <a class="manage_dash" href="manageIndex.html#manage" ng-show="state.manage">管理控制台</a>
+
+        <!--<a class="manage_dash"  ng-show="state.manage">管理控制台</a>-->
+        <a class="head_register" href="#register" ng-show="state.register">注册</a>
+        <a class="head_login" href="login.html" ng-show="state.login">登录</a>
+        <div class="head_login_name">
+         <a  class="dropdown-toggle ng-cloak" dropdown-toggle data-toggle="dropdown"  ng-show="state.user_name" ng-cloak>{{username}}</a>
+            <ul class="dropdown-menu dropdown-menu-register" role="menu">
+                <div class="triangle-up"></div>
+                <li><a  ng-click="quit()">退出</a></li>
+
+            </ul>
+        </div>
+
+        <img class="head_img" src="/statics/lib/img/logo200+100_a853198.svg" />
+    </div>
+    <div class="head_nav">
+         <ul class="nav nav-tabs nav-head">
+             <li>
+                 <a ng-class="{true:'nav_active',flase:'nav_unactive'}[nav_state.first]"  ng-click="toggle('first')"><span>首页</span></a>
+                 <!--<ul  class="dropdown-menu" role="menu">-->
+                     <!--<li>java</li>-->
+                     <!--<li>css</li>-->
+                 <!--</ul>-->
+             </li>
+             <li><a  ng-class="{true:'nav_active',flase:'nav_unactive'}[nav_state.second || nav_state.second_detail]"  ng-click="toggle('second')"><span>案列</span></a></li>
+             <li><a  ng-class="{true:'nav_active',flase:'nav_unactive'}[nav_state.third]" ng-click="toggle('third')"><span>开发文档</span></a></li>
+             <li><a  ng-class="{true:'nav_active',flase:'nav_unactive'}[nav_state.fourth]" ng-click="toggle('fourth')"><span>解决方案</span></a></li>
+             <li><a  ng-class="{true:'nav_active',flase:'nav_unactive'}[nav_state.fifth]" ng-click="toggle('fifth')"><span>关于我们</span></a></li>
+         </ul>
+    </div>
+   <div ng-show="nav_state.first">
+    <div class="head_banner">
+        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+            <!-- 轮播（Carousel）指标 -->
+            <ol class="carousel-indicators">
+                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                <li data-target="#myCarousel" data-slide-to="1"></li>
+                <li data-target="#myCarousel" data-slide-to="2"></li>
+            </ol>
+            <!-- 轮播（Carousel）项目 -->
+            <div class="carousel-inner">
+                <div class="item active">
+                    <img src="/statics/lib/img/banner1-01.jpg" alt="First slide">
+                </div>
+                <div class="item">
+                    <img src="/statics/lib/img/banner2.jpg" alt="Second slide">
+                </div>
+                <div class="item">
+                    <img src="/statics/lib/img/banner3.jpg" alt="Third slide">
+                </div>
+            </div>
+            <!--&lt;!&ndash; 轮播（Carousel）导航 &ndash;&gt;-->
+            <!--<a class="carousel-control left" href="#myCarousel"-->
+               <!--data-slide="prev">&lsaquo;</a>-->
+            <!--<a class="carousel-control right" href="#myCarousel"-->
+               <!--data-slide="next">&rsaquo;</a>-->
+        </div>
+    </div>
+    <div class="head_goods_feture">
+       <img class="img_left" src="/statics/lib/img/line_left_acdd092.svg"/>
+        <span>产品特色</span>
+        <img class="img_right" src="/statics/lib/img/line_right_f9d7183.svg"/>
+    </div>
+    <div class="feture_detail">
+       <ul>
+           <li>
+               <img src="/statics/lib/img/icon_device_56a594b.svg"/>
+               <span>开放式传感设备</span>
+               <p>
+                   针对大宗商品提供专业的智能硬件设备,
+                   输出标准的信息流,
+                   并提供开放的硬件接入
+               </p>
+
+           </li>
+           <li>
+               <img src="/statics/lib/img/icon_pass_service_0354685.svg"/>
+               <span>PaaS服务支持</span>
+               <p>
+                   为开发者提供智能设备专业的开发平台,
+                   提供设备接入,
+                   设备数据解析,数据传输服务.
+                   提供基于行业的位置,
+                   设备状态,消息分发,图片,视频流等服务.
+               </p>
+
+           </li><li>
+           <img src="/statics/lib/img/icon-sass_service_a8c19cc.svg"/>
+           <span>SaaS服务提供</span>
+           <p>
+               提供专业的应用开发平台,
+               借助现在应用管理模块,
+               快速搭建属于自己的管理平台.
+           </p>
+
+       </li><li>
+           <img src="/statics/lib/img/icon_data_store_de54244.svg"/>
+           <span>数据云存储</span>
+           <p>
+               依托物联网专业的时序数据库,
+               提供海量数据的时候收集处理,
+               提供数据可视化等服务.
+           </p>
+
+       </li>
+       </ul>
+    </div>
+   </div>
+    <div ng-show="nav_state.second">
+        <div class="header-content">
+    <div class="head_goods_feture">
+        <img class="img_left" src="/statics/lib/img/line_left_acdd092.svg">
+        <span>案例</span>
+        <img class="img_right" src="/statics/lib/img/line_right_f9d7183.svg">
+    </div>
+    <div class="header-content-empty margin-top-50 margin-bottom-50">
+        <div class="item">
+            <div class="item-img margin-right-50 pull-left">
+                <img src="/statics/lib/img/hulk320+320.png" />
+            </div>
+            <div class="item-text pull-left padding-top-30">
+                <div class="item-text-title">
+                    Hulk－智能仓储系统
+                </div>
+                <div class="item-text-subtitle margin-bottom-25">
+                    货主的贴心管家，商品的银行服务
+                </div>
+                <div class="item-text-content">
+                   全国首家提供单据、货物流转、历史数据追踪服务；软硬件结合，智能化服务，效率、安全；
+                    <br/>
+                    本地存货异地取，方便快捷节省物流费用时间；货物质押、融资、理财、金积服务；
+                    <br/>
+                    银行级别安保；打破系统壁垒，一处可查仓库数据；货区物区流向动态，货物价值体积；
+                    <br/>
+                    货物状态异常报警；动态监控货物状态......
+                </div>
+            </div>
+
+            <button type="button" ng-click="detail('Hulk－智能仓储系统','second_detail')" class="btn btn_ok btn_ok_noback relative pull-right" style="width: 120px;height: 42px;top: 15px;">查看详情</button>
+
+
+        </div>
+
+        <div class="item">
+            <div class="item-img margin-right-50 pull-left">
+                <img src="/statics/lib/img/captain320+320.png" />
+            </div>
+            <div class="item-text pull-left padding-top-30">
+                <div class="item-text-title">
+                    Captain－智能物流系统
+                </div>
+                <div class="item-text-subtitle margin-bottom-25">
+                    智能物流系统，专为大宗产业链定制
+                </div>
+                <div class="item-text-content">
+                    智能调度、在线结算，谁说传统物流企业不能“互联网＋”？
+                    <br/>
+                    信用第一、数据至上，最高行业标准的制定者！
+                    <br/>
+                    手机轻松一键提单，轻松一点方便省心；全程GPS定位跟踪保证货物安全，送货进度一手掌握。
+                    <br/>
+                    实时询价、即时发货，24小时随身云端物流部；车联网、大数据、助您车货情况一手掌握.......
+                </div>
+            </div>
+
+            <button type="button"  ng-click="detail('Captain－智能物流系统','second_detail')" class="btn btn_delete btn-cancel-to-ok relative pull-right" style="width: 120px;height: 42px;top: 15px;">查看详情</button>
+
+
+        </div>
+    </div>
+</div>
+    </div>
+
+    <div ng-show="nav_state.second_detail">
+        <div class="header-content">
+    <div class="head_goods_feture">
+        <img class="img_left" src="/statics/lib/img/line_left_acdd092.svg">
+        <span ng-bind="title"></span>
+        <img class="img_right" src="/statics/lib/img/line_right_f9d7183.svg">
+    </div>
+    <div class="header-content-empty margin-top-50 margin-bottom-50">
+        <img src="/statics/lib/img/IOT-comingsoon-01_c65595d.svg" />
+    </div>
+</div>
+    </div>
+    <div ng-show="nav_state.third">
+        <div class="width-full height-auto margin-bottom-20 relative">
+    <img class="img-full" src="/statics/lib/img/1.png" />
+    <div class="width-full bigfont-onimg text-center"><p>开发指南</p></div>
+</div>
+<div class="width-content margin-auto height-auto">
+    <div class="btn-group devdocbtn-group margin-bottom-20">
+        <button type="button" class="btn btn-default devdocbtn" ng-class="{true:'active',false:''}[devdoc_btn['0']]" ng-click="devdoc_btn_click('0')">快速开始</button>
+        <button type="button" class="btn btn-default devdocbtn" ng-class="{true:'active',false:''}[devdoc_btn['1']]" ng-click="devdoc_btn_click('1')">开发实例</button>
+        <button type="button" class="btn btn-default devdocbtn" ng-class="{true:'active',false:''}[devdoc_btn['2']]" ng-click="devdoc_btn_click('2')">智能硬件</button>
+        <button type="button" class="btn btn-default devdocbtn" ng-class="{true:'active',false:''}[devdoc_btn['3']]" ng-click="devdoc_btn_click('3')">客户端下载</button>
+        <button type="button" class="btn btn-default devdocbtn" ng-class="{true:'active',false:''}[devdoc_btn['4']]" ng-click="devdoc_btn_click('4')">API文档</button>
+        <button type="button" class="btn btn-default devdocbtn" ng-class="{true:'active',false:''}[devdoc_btn['5']]" ng-click="devdoc_btn_click('5')">SDK文档</button>
+    </div>
+    <div class="devdoc-cont margin-bottom-20">
+        <ul class="pull-left devdoc-cont-tab">
+            <li ng-class="{true:'active',false:''}[devdoc_tab['0']]" ng-click="devdoc_tab_click('0')">
+                <span class="relative">注册账号<div class="active-border"></div></span>
+            </li>
+            <li ng-class="{true:'active',false:''}[devdoc_tab['1']]" ng-click="devdoc_tab_click('1')">
+                <span class="relative">用户资料<div class="active-border"></div></span>
+            </li>
+            <li ng-class="{true:'active',false:''}[devdoc_tab['2']]" ng-click="devdoc_tab_click('2')">
+                <span class="relative">如何创建物接入<div class="active-border"></div></span>
+            </li>
+            <li ng-class="{true:'active',false:''}[devdoc_tab['3']]" ng-click="devdoc_tab_click('3')">
+                <span class="relative">如何创建物解析<div class="active-border"></div></span>
+            </li>
+            <li ng-class="{true:'active',false:''}[devdoc_tab['4']]" ng-click="devdoc_tab_click('4')">
+                <span class="relative">如何创建规则<div class="active-border"></div></span>
+            </li>
+            <li ng-class="{true:'active',false:''}[devdoc_tab['5']]" ng-click="devdoc_tab_click('5')">
+                <span class="relative">如何使用时序数据库<div class="active-border"></div></span>
+            </li>
+            <li ng-class="{true:'active',false:''}[devdoc_tab['6']]" ng-click="devdoc_tab_click('6')">
+                <span class="relative">查看个人主页<div class="active-border"></div></span>
+            </li>
+        </ul>
+        <div class="pull-left devdoc-cont-info">
+            <img src="/statics/lib/img/IOT-comingsoon-02_72d256c.svg" class="margin-auto"/>
+            <p class="text-center">我们正在填内容呢！</p>
+        </div>
+    </div>
+</div>
+    </div>
+    <div ng-show="nav_state.fourth">
+        <div class="head_goods_feture solveMethod">
+    <img class="img_left" src="/statics/lib/img/line_left_acdd092.svg"/>
+    <span class="solveTite">解决方案</span>
+    <img class="img_right" src="/statics/lib/img/line_right_f9d7183.svg"/>
+</div>
+<div class="solvecontent">
+    <div class="solve_first">
+      <img class="solve_img1" src="/statics/lib/img/captain320+320.png"/>
+       <div class="content_first">
+         <div class="solove_desc">
+             <div class="solove_desc_title">
+               <p class="lg_title">Captain－智能物流系统</p>
+               <p class="sm_title">智能物流系统，专为大宗产业链定制</p>
+             </div>
+             <div class="solve_desc_content">
+                 <p>
+                     智能调度、在线结算，谁说传统物流企业不能“互联网＋”？</br>
+                     信用第一、数据至上，最高行业标准的制定者！</br>
+                     手机轻松一键提单，轻松一点方便省心；全程GPS定位跟踪保证货物安全，送货进度一手掌握。</br>
+                     实时询价、即时发货，24小时随身云端物流部；车联网、大数据、助您车货情况一手掌握.......
+                 </p>
+             </div>
+             <div class="solove_serach">
+                 <button type="button" ng-click="detail('Captain－智能仓储系统','fourth_detail')" class="btn btn_ok search_btn">查看详情</button>
+             </div>
+
+         </div>
+       </div>
+    </div>
+    <div style="clear: both"></div>
+    <div class="solve_second">
+        <div class="content_first">
+            <div class="solove_desc">
+                <div class="solove_desc_title">
+                    <p class="lg_title">Hulk－智能仓储系统</p>
+                    <p class="sm_title">货主的贴心管家，商品的银行服务</p>
+                </div>
+                <div class="solve_desc_content">
+                    <p>
+                        全国首家提供单据、货物流转、历史数据追踪服务；软硬件结合，智能化服务，效率、安全;</br>
+                        本地存货异地取，方便快捷节省物流费用时间；货物质押、融资、理财、金积服务;</br>
+                        银行级别安保；打破系统壁垒，一处可查仓库数据；货区物区流向动态，货物价值体积；</br>
+                        货物状态异常报警；动态监控货物状态......
+                    </p>
+                </div>
+                <div class="solove_serach">
+                    <button type="button" ng-click="detail('Hulk－智能仓储系统','fourth_detail')" class="btn btn_ok search_btn">查看详情</button>
+                </div>
+
+            </div>
+        </div>
+        <img class="solve_img1" src="/statics/lib/img/hulk320+320.png"/>
+
+    </div>
+
+</div>
+    </div>
+    <div ng-show="nav_state.fourth_detail">
+        <div class="header-content">
+    <div class="head_goods_feture">
+        <img class="img_left" src="/statics/lib/img/line_left_acdd092.svg">
+        <span ng-bind="title"></span>
+        <img class="img_right" src="/statics/lib/img/line_right_f9d7183.svg">
+    </div>
+    <div class="header-content-empty margin-top-50 margin-bottom-50">
+        <img src="/statics/lib/img/IOT-comingsoon-01_c65595d.svg" />
+    </div>
+</div>
+    </div>
+    <div ng-show="nav_state.fifth">
+        <div class="width-full height-auto margin-bottom-20 relative">
+    <img class="img-full" src="/statics/lib/img/2.png" />
+    <div class="width-full bigfont-onimg text-center height-auto-center"><p>关于我们</p></div>
+</div>
+
+<div class="height-auto margin-bottom-20">
+    <img class="img-about margin-auto" src="/statics/lib/img/IOT-comingsoon-01_c65595d.svg" />
+</div>
+
+
+    </div>
+    <div style="clear: both"></div>
+    <div class="head_foot">
+    <p>
+        Copyright 2015 - 2016. 湖北橙石电子商务有限公司 & 上海橙金信息科技有限公司 All Rights Reserved. 沪ICP备16024255号
+    </p>
+</div>
+</div>

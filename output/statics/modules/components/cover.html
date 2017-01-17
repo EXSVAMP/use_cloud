@@ -1,0 +1,185 @@
+<div ng-controller="coverCtr" class="cover_identity">
+   <div class="identity_warp" >
+     <div ng-show="state.undelete">
+       <div class="identity_modal">
+         <div class="identity_modal_header">
+                <p>{{item.title}}</p>
+             <span class="icon-icon_close_circle_o category-pop-close" ng-click="cancel()"></span>
+         </div>
+         <div class="identity_modal_body">
+             <div class="form-group form-group-selin form-group-identity">
+                 <div class="input-group">
+                     <span class="input-group-addon inputdesc">身份名称</span>
+                     <input type="text" class="form-control" ng-model="params.identity_name" placeholder="请输入身份名称">
+                 </div>
+             </div>
+
+             <div class="form-group form-group-selin ">
+                 <div class="input-group input-group-select">
+                     <span class="input-group-addon inputdesc">策略</span>
+                     <ui-select ng-model="params.strategyId"  theme="bootstrap" on-select="select_strategy(params.strategyId)">
+                         <ui-select-match placeholder="请选择策略">{{$select.selected.name}}</ui-select-match>
+                         <ui-select-choices repeat="item.id as item in strategy_list">
+                             <div ng-bind-html="item.name"></div>
+                             <!-- <small ng-bind-html="item.email"></small> -->
+                         </ui-select-choices>
+                     </ui-select>
+                 </div>
+                 <button type="button" class="select_addBtn" ng-click="selectAdd()">
+                     <span class="icon-icon_plus"></span>
+                 </button>
+             </div>
+             <div class="form-group form-group-selin">
+                 <div class="input-group">
+                     <span class="input-group-addon inputdesc">简述</span>
+                     <input type="text" class="form-control" ng-model="params.description" placeholder="请输入内容">
+                 </div>
+             </div>
+             <div class="form-group form-group-selin" ng-show="state.secret">
+                 <div class="input-group">
+                     <span class="input-group-addon inputdesc">密钥</span>
+                     <input type="text" class="form-control" readonly="true" ng-model="params.secret_key" >
+                 </div>
+
+                 <div class="show_reset" >
+                     <button type="button" class="btn btn_ok btn_show" ng-show="edit.showBtn" ng-click="show_secrect()">显示</button>
+                     <button type="button" class="btn btn_ok btn_show" ng-show="edit.hideBtn"  ng-click="hide_secrect()">隐藏</button>
+                     <button type="button" class="btn btn_ok btn_reset" ng-show="edit.resetBtn"   ng-click="reset_secrect(identity_id)">重置</button>
+                 </div>
+             </div>
+
+         </div>
+         <div class="modal-footer modal-footer-identity">
+             <div>
+                 <button type="button" class="btn btn_ok" ng-disabled="state.pointer" ng-class="{true:'no_btn_cancel'}[state.strategy]" ng-click="cancel()" >取消</button>
+                 <button type="button" class="btn btn_cancel" ng-disabled="state.pointer" ng-class="{true:'no_btn_ok'}[state.strategy]"  ng-click="ok()" >保存</button>
+             </div>
+         </div>
+
+     </div>
+       <div class="point_right" ng-show="state.pointer">
+        <span class="icon-icon_double_right"></span>
+    </div>
+       <div class="Strategy_modal" ng-show="state.strategy">
+        <div class="identity_modal_header">
+            <p>添加策略</p>
+            <span class="icon-icon_close_circle_o category-pop-close" ng-click="cancel_strategy()"></span>
+        </div>
+        <div class="identity_modal_body">
+            <div class="form-group form-group-selin form-group-identity">
+                <div class="input-group">
+                    <span class="input-group-addon inputdesc">策略名称</span>
+                    <input type="text" class="form-control" ng-model="params.strategy_name" placeholder="请输入策略名称">
+                </div>
+            </div>
+            <div class="form-group form-group-selin ">
+                <div class="input-group input-group-strategy classSelect">
+                    <span class="input-group-addon inputdesc ">实例类别</span>
+                    <ui-select ng-model="params.classId"  theme="bootstrap" on-select="select_class(params.classId)">
+                        <ui-select-match placeholder="请选择策略">{{$select.selected.name}}</ui-select-match>
+                        <ui-select-choices repeat="item.id as item in class_list">
+                            <div ng-bind-html="item.name"></div>
+                            <!-- <small ng-bind-html="item.email"></small> -->
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+
+            </div>
+            <div class="form-group form-group-selin">
+                <div class="input-group">
+                    <span class="input-group-addon inputdesc">简述</span>
+                    <input type="text" class="form-control" ng-model="params.strategy_desc" placeholder="请输入内容">
+                </div>
+
+            </div>
+            <div class="sub_add">
+              <div ng-repeat="item2 in addTopicList">
+                <div class="form-group form-group-selin relative col-md-12">
+                    <!--<div class="input-group">-->
+
+                        <!--<span class="input-group-addon bg-white inputdesc">主题</span>-->
+                        <!--<span>123</span>-->
+                        <!--<div class="">-->
+
+                        <!--<input type="text" class="form-control" placeholder="请输入主题" ng-model="addTopicList[$index]['name']" >-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <div class="subtite_wrap col-md-6" >
+                       <span class="subtite_desc">主题</span>
+                        <span class="fixed_sub"><span>{{subtite_desc |characters:20:true}}</span></span>
+                    </div>
+                    <div class="sub_input col-md-6">
+                         <input type="text" class="subinput"  placeholder="请输入主题" ng-model="addTopicList[$index]['name']"/>
+                    </div>
+                    <div class="addTopicFlag"></div>
+                </div>
+                <div class="form-group form-group-selin">
+                    <div class="input-group">
+                        <span class="input-group-addon bg-white inputdesc">权限</span>
+
+                        <div class="stategy-rights">
+                            <input type="checkbox" name="topicrightssel{{$index}}" ng-click="addPS($index,'p')" ng-checked="addTopicList[$index]['p']"/>
+                            <span>发布</span>
+                            <span class="strategy-topic-flag" ng-show="addTopicList[$index]['p']">P</span>
+
+                            <input type="checkbox" name="topicrightssel{{$index}}" class="margin-left-20" ng-click="addPS($index,'s')" ng-checked="addTopicList[$index]['s']"/>
+                            <span>订阅</span>
+                            <span class="strategy-topic-flag" ng-show="addTopicList[$index]['s']">S</span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-group form-group-selin" ng-show="$index!=0">
+                    <div class="delTopic" ng-click="delTopicFunc($index)">
+                        <div class="delTopicIcon"></div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div class="form-group form-group-selin relative margin-top-20">
+                <fieldset class="addTopic" ng-click="addTopicFunc()"  ng-disabled="remainTopicToAddCount==0">
+                    <div class="icon-icon_plus addTopicIcon"></div>
+                </fieldset>
+                <span class="remainTopicToAdd margin-left-10">（还可添加{{remainTopicToAddCount}}个）</span>
+                <div class="addTopicFlag"></div>
+            </div>
+
+        </div>
+        <div class="modal-footer modal-footer-identity">
+            <div>
+                <button type="button" class="btn btn_ok" ng-click="cancel_strategy()">取消</button>
+                <button type="button" class="btn btn_cancel" ng-click="ok_strategy()">保存</button>
+            </div>
+        </div>
+
+    </div>
+     </div>
+     <div ng-show="state.delete">
+         <div class="identity_modal">
+             <div class="identity_modal_header">
+                 <p>{{item.title}}</p>
+                 <span class="icon-icon_close_circle_o category-pop-close" ng-click="cancel()"></span>
+             </div>
+             <div class="identity_modal_body">
+                 <div class="warn_delete">
+                     <span class="icon-icon_warn"></span>
+                     <div class='delete_desc'>
+                         <p>确定要删除这个项目吗</p>
+                         <p>注意：删除以后不可恢复！</p>
+                     </div>
+                 </div>
+             </div>
+             <div class="modal-footer modal-footer-identity">
+                 <div>
+                     <button type="button" class="btn btn_delete" ng-click="delete(identity_id)">删除</button>
+                     <button type="button" class="btn btn_cancel " ng-click="cancel()">取消</button>
+                 </div>
+             </div>
+         </div>
+
+
+
+     </div>
+  </div>
+
+</div>

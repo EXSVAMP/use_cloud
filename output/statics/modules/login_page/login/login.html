@@ -1,0 +1,122 @@
+<div class="login">
+    <div class="login_head">
+      <a href="/index.html">
+          <img class="login_logo"  src="/statics/lib/img/logo186+50_8bebede.svg"/>
+      </a>
+        <img class="login_logo_desc" src="/statics/lib/img/slogan_62f3bbd.svg"/>
+    </div>
+    <div class="login_content">
+        <div class="login_content_detail"></div>
+        <div class="login_wrap">
+            <div class="warp_content">
+              <form  role="form" name="login" >
+               <div class="warp_content_head">
+                   <div class="account_head login_active" ng-class="{true:'toggel_active',false:'toggel_unactive'}[state.account]" ng-click="toggle(1)">
+                       <span class="login_account">账号登录</span>
+                       <!--<span class="login_account_trangle"  ></span>-->
+                   </div>
+                   <div class="phone_head" ng-click="toggle(2,record)" ng-class="{true:'toggel_active',false:'toggel_unactive'}[state.phone]">
+                       <span class="login_phone" >手机登录</span>
+                       <!--<span class="login_account_trangle" ></span>-->
+                   </div>
+
+                 <!--<span class="login_account_trangle" ></span>-->
+               </div>
+               <div class="warp_content_detail">
+                 <div class="login_account_warp" ng-show="state.account" >
+                   <div class="form-group input-btn">
+                       <span class="icon-icon_user icon"></span>
+                       <input type="text"  placeholder="邮箱／手机号／用户名" ng-click="showError=false" autocomplete="on" required ng-model="person.username"/>
+                   </div>
+                     <div class="form-group errorWrap" ng-show="login_username_error">
+                         <span class="errorInfo" >请输入用户名</span>
+                     </div>
+                   <div class="form-group input-btn">
+                       <span class="icon-icon_password icon"></span>
+                       <input type="password" placeholder="密码" ng-click="showError=false" autocomplete="on" required ng-model="person.password"/>
+                   </div>
+                     <div class="form-group errorWrap">
+                         <span class="errorInfo"   ng-bind="loginResponse" ng-if="showError"></span>
+                     </div>
+                     <div class="form-group errorWrap errorWrap_pass" ng-show="login_password_error">
+                         <span class="errorInfo" >请输入密码</span>
+                     </div>
+                    <!--<div class="error_wrap">-->
+                        <!--<span class="errorInfo"   ng-bind="loginResponse" ng-if="showError"></span>-->
+                    <!--</div>-->
+                   <div class="form-password">
+                       <input type="checkbox" ng-model="remember_check"/>
+                       <label>记住用户</label>
+                       <a href="#forgetPassWord">忘记密码</a>
+                   </div>
+                 </div>
+                   <div class="login_phone_warp" ng-show="state.phone">
+                       <div class="form-group input-btn">
+                           <span class="icon-icon_mobile icon"></span>
+                           <input type="text" placeholder="请输入手机号码" name="phone_number" required  ng-maxlength="11"
+                                     ng-model="phone.number"/>
+                       </div>
+                       <div class="form-group errorWrap">
+                         <span class="errorInfo" ng-show="login.phone_number.$touched&&login.phone_number.$error.required ||login_phone_error">必填</span>
+                           <span class="errorInfo" ng-show="
+                                 login.phone_number.$invalid&&login.phone_number.$touched ||login_phone_error">
+                               请输入有效的11位手机号</span>
+                       </div>
+                       <div class="form-group errorWrap err_user" ng-show="err_user_state">
+                           <span class="errorInfo" >{{err_user}}</span>
+
+                       </div>
+                       <div class="form-group input-btn">
+                           <span class="icon-icon_verificationcode icon"></span>
+                           <input type="text" class="picture_validate" placeholder="请输入图形验证码" required ng-model="phone.validate_code"/>
+                           <span class="validat_code"><img ng-src="{{picture_src}}" class="validat_mig" ng-click="change_picture()"/></span>
+                       </div>
+                       <div class="form-group errorWrap" ng-show="err_validate_state">
+                           <span class="errorInfo" >{{err_validate}}</span>
+
+                       </div>
+
+                       <div class="form-group errorWrap" ng-show="login_validate_error">
+                           <span class="errorInfo" >请输入图形验证码</span>
+                       </div>
+
+                       <div class="form-group input-btn">
+                           <span class="icon-icon_verificationcode icon"></span>
+                           <input type="text" class="msg_validate" placeholder="短信验证码" required ng-model="phone.msg_code"/>
+                           <button type="button" class="msgBtn" ng-disabled="send_msg_btn" ng-class="{true:'msg_active',flase:'msg_unactive'}[send_msg_state]"  ng-click="send_msg()">{{send_msg_desc}}</button>
+                       </div>
+                       <div class="form-group errorWrap" ng-show="err_msg_state">
+                           <span class="errorInfo" >{{err_msg_state}}</span>
+                       </div>
+                       <div class="form-group errorWrap" ng-show="login_msgcode_error">
+                           <span class="errorInfo" >请输入短信验证码</span>
+                       </div>
+
+
+                   </div>
+
+
+
+
+                   <div class="form-login">
+                       <button type="button" class="loginBtn" ng-class="{true:'btn_active',false:'btn_unactive'}[btn_active]"   ng-click="login_go(flag)">立即登录</button>
+                       <div class="login_desc">
+                           <span class="login_desc_left"></span>
+                           <span class="login_desc_content">没有账号，怎么办？</span>
+                           <span class="login_desc_right"></span>
+                           <p><a class="go_register" href="#register">来，注册一个吧!</a></p>
+                       </div>
+                   </div>
+
+               </div>
+              </form>
+            </div>
+
+        </div>
+    </div>
+    <div class="head_foot">
+    <p>
+        Copyright 2015 - 2016. 湖北橙石电子商务有限公司 & 上海橙金信息科技有限公司 All Rights Reserved. 沪ICP备16024255号
+    </p>
+</div>
+</div>
