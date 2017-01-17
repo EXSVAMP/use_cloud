@@ -191,6 +191,13 @@ $poslist: top right bottom left;
   margin-left: 0 !important;
 }
 
+.height-auto-center{
+  height: auto !important;
+  top: 50%;
+  transform: translateY(-50%) !important;
+  margin-top: 0 !important;
+}
+
 .btn-cancel-to-ok{
   border: 1px solid #00a0e9;
   color: #00a0e9;
