@@ -13,20 +13,20 @@
                     </div>
                 </div>
                 <!--<div class="form-group form-group-selin" ng-show="item.method=='add'">-->
-                    <!--<div class="input-group">-->
-                        <!--<span class="input-group-addon bg-white inputdesc">主题</span>-->
-                        <!--<input type="text" class="form-control" placeholder="请输入主题" ng-model="topic">-->
-                    <!--</div>-->
+                <!--<div class="input-group">-->
+                <!--<span class="input-group-addon bg-white inputdesc">主题</span>-->
+                <!--<input type="text" class="form-control" placeholder="请输入主题" ng-model="topic">-->
+                <!--</div>-->
                 <!--</div>-->
 
                 <div class="form-group form-group-selin relative col-md-12" ng-show="item.method=='add'">
 
-                    <div class="subtite_wrap col-md-6" >
+                    <div class="subtite_wrap col-md-6">
                         <span class="subtite_desc">主题</span>
-                        <span class="fixed_sub"><span>{{subtite_desc |characters:20:true}}</span></span>
+                        <span class="fixed_sub"><span tooltip-placement="bottom" uib-tooltip="{{subtite_desc}}">{{subtite_desc |characters:20:true}}</span></span>
                     </div>
                     <div class="sub_input col-md-6">
-                        <input type="text" class="subinput"  placeholder="请输入主题" ng-model="topic"/>
+                        <input type="text" class="subinput" placeholder="请输入主题" ng-model="topic"/>
                     </div>
                 </div>
 
@@ -92,7 +92,7 @@
                 </button>
             </div>
             <table class="table table-bordered table-content">
-                <thead>
+                <thead ng-show="query_result.length>0">
                 <tr>
                     <th>类别名称</th>
                     <th>主题</th>
@@ -117,7 +117,8 @@
                 </tbody>
             </table>
             <div class="no_content" ng-show="query_result.length==0">
-                <p><span class="icon-no_search"></span></p>
+                <!--<p><span class="icon-no_search"></span></p>-->
+                <p><img class="empty-list-img" src="/lib/img/IOT-no_search.svg"/></p>
 
                 <p>找不到你需要的内容，请重新搜索</p>
             </div>
