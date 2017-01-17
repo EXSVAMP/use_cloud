@@ -17,8 +17,8 @@
             <div class="form-group form-group-selin ">
                 <div class="input-group input-group-select" style="width:auto;">
                     <span class="input-group-addon inputdesc">物接入实例</span>
-                    <ui-select ng-model="instance" style="width:331px;" name="instance" theme="bootstrap"
-                               on-select="setShowNum(instance)">
+                    <ui-select ng-model="instance.name" style="width:331px;" name="instance" theme="bootstrap"
+                               on-select="setShowNum(instance.name)">
                         <ui-select-match placeholder="选择实例类型">{{$select.selected.name}}</ui-select-match>
                         <ui-select-choices repeat="item in numbers">
                             <div ng-bind-html="item.name"></div>

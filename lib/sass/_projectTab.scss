@@ -1,3 +1,6 @@
+ul,li{
+  list-style-type: none;
+}
 .project_tab {
   height: 50px;
   border-bottom: 1px solid #ddd;
@@ -182,6 +185,17 @@ $poslist: top right bottom left;
   text-align: start;
 }
 
+.width-auto-center{
+  width: auto !important;
+  transform: translateX(-50%) !important;
+  margin-left: 0 !important;
+}
+
+.btn-cancel-to-ok{
+  border: 1px solid #00a0e9;
+  color: #00a0e9;
+}
+
 .expectBlock-wrap {
   //min-height: 600px;
 }
@@ -192,8 +206,16 @@ $poslist: top right bottom left;
   cursor: pointer;
 }
 
-.width-full{
+.width-full,.img-full{
   width: 100%;
+}
+
+.width-content{
+  width: 1200px;
+}
+
+.cursor-pointer{
+  cursor: pointer;
 }
 
 .expectBlock {

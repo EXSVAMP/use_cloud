@@ -23,7 +23,7 @@
             <div class="form-group form-group-selin ">
                 <div class="input-group input-group-select" style="width:auto;">
                     <span class="input-group-addon bg-white inputdesc">实例类别</span>
-                    <ui-select ng-model="classification" style="width:331px;" name="classification" theme="bootstrap" on-select="setShowNum(classification)">
+                    <ui-select ng-model="classification.name" style="width:331px;" name="classification" theme="bootstrap" on-select="setShowNum(classification.name)">
                         <ui-select-match placeholder="选择实例类型">{{$select.selected.name}}</ui-select-match>
                         <ui-select-choices repeat="item in numbers">
                             <div ng-bind-html="item.name"></div>
