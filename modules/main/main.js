@@ -409,7 +409,7 @@ app.controller('ModalProject', function ($scope, $cookieStore, $uibModalInstance
                 name: $scope.project_name
             }
             // console.log("<==项目名称====>"+$scope.project_name);
-            $http.post(baseUrl + "/api/1/topic/instance", $scope.params).success(function (data) {
+            $http.post(baseUrl + "/api/1/topic/instance/", $scope.params).success(function (data) {
                 if (data.code == "200") {
                     items.scope.submit_search();
                 }
