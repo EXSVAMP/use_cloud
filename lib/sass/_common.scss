@@ -421,10 +421,30 @@
   display: table;
   font-size: 12px;
   color: #888888;
+
   p {
     display: table-cell;
     vertical-align: middle;
     padding-left: 20px;
+    a{
+      font-size: 14px;
+      color: #00a0e9;
+      position: relative;
+      top: 1px;
+      &:hover{
+        color:#008DCF;
+      }
+      margin-right: 10px;
+      .icon-icon_double_up{
+        display: inline-block;
+        font-size: 12px;
+        -webkit-transform: rotate(-90deg);
+        transform: rotate(-90deg);
+
+      }
+
+    }
+
 
   }
 }

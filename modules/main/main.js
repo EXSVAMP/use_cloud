@@ -1,7 +1,7 @@
 angular.module("RDash", ['ui.bootstrap', 'ui.router', 'ngCookies', 'ngDialog', 'cgBusy', 'truncate', 'ui.select', 'ngSanitize', 'angular-loading-bar', 'ngAnimate']);
 require('router');
 require('interceptor');
-require('common/service/listService');
+// require('common/service/list');
 require('common/constant');
 require('common/service/utils');
 require('components/opTip');
