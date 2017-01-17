@@ -7,6 +7,7 @@ app.register.controller("manageCtr", function ($scope, $http, $location, $uibMod
      $scope.projectId = urlData.projectId;
      $scope.params={
        orderCount:"",
+       emailCount:"",
    }
 
    $http.get(BaseUrl+"/api/1/work_order/?is_page=1").success(function(data){
@@ -15,7 +16,11 @@ app.register.controller("manageCtr", function ($scope, $http, $location, $uibMod
        }
 
    })
-
+  $http.get(BaseUrl+"/api/1/admin/message/").success(function(data){
+      if(data.code==200){
+          $scope.params.emailCount=data.pageinfo.total_number;
+      }
+  })
 
 
 
