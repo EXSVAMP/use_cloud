@@ -51,9 +51,11 @@ app.register.controller("regulationCtr", function (ngDialog, $scope, $http, $loc
     //regulationDetail
     $scope.regulationDetail = false;
     $scope.detailIdx = 0
+    $scope.detail_flag = ''
     $scope.regulationDetailFunc = function (idx) {
         $scope.regulationDetail = true;
         $scope.detailIdx = idx;
+        $scope.detail_flag = '/规则查看'
         $http.get(BaseUrl + "/api/1/rule/" + $scope.query_result[idx].id + '/').success(function (data) {
             if (data.code == 200) {
                 var data = data.data;
@@ -79,6 +81,7 @@ app.register.controller("regulationCtr", function (ngDialog, $scope, $http, $loc
 
     //return
     $scope.return = function () {
+        $scope.detail_flag = ''
         $scope.regulationDetail = false;
     }
 
