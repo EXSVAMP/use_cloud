@@ -291,7 +291,8 @@ app.controller("headerCtrl", function ($scope, $cookieStore, $http, $uibModal, b
         third: false,
         fourth: false,
         fifth: false,
-        second_detail: false
+        second_detail: false,
+        fourth_detail:false,
     }
     $scope.toggle = function (state) {
         for (i in $scope.nav_state) {
@@ -302,10 +303,10 @@ app.controller("headerCtrl", function ($scope, $cookieStore, $http, $uibModal, b
             }
         }
     }
-    $scope.detail = function(title){
+    $scope.detail = function(title,state){
         $scope.title = title;
         for (i in $scope.nav_state) {
-            if (i == 'second_detail') {
+            if (i == state) {
                 $scope.nav_state[i] = true;
             } else {
                 $scope.nav_state[i] = false
