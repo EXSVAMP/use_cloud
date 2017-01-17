@@ -17,8 +17,8 @@
             <div class="form-group form-group-selin ">
                 <div class="input-group input-group-select" style="width:auto;">
                     <span class="input-group-addon inputdesc">物接入实例</span>
-                    <ui-select ng-model="instance" style="width:331px;" name="instance" theme="bootstrap"
-                               on-select="setShowNum(instance)">
+                    <ui-select ng-model="instance.name" style="width:331px;" name="instance" theme="bootstrap"
+                               on-select="setShowNum(instance.name)">
                         <ui-select-match placeholder="选择实例类型">{{$select.selected.name}}</ui-select-match>
                         <!--<ui-select-choices repeat="item.id as item in numbers">-->
                         <ui-select-choices repeat="item in numbers">
@@ -32,11 +32,21 @@
                 <!--</button>-->
             </div>
 
-            <div class="form-group form-group-selin">
-                <div class="input-group">
-                    <span class="input-group-addon inputdesc">主题</span>
-                    <input type="text" class="form-control" placeholder="请输入主题" ng-model="topicName">
+            <!--<div class="form-group form-group-selin">-->
+                <!--<div class="input-group">-->
+                    <!--<span class="input-group-addon inputdesc">主题</span>-->
+                    <!--<input type="text" class="form-control" placeholder="请输入主题" ng-model="topicName">-->
+                <!--</div>-->
+            <!--</div>-->
+            <div class="form-group form-group-selin relative col-md-12">
+                <div class="subtite_wrap col-md-6" >
+                    <span class="subtite_desc">主题</span>
+                    <span class="fixed_sub"><span>{{subtite_desc |characters:20:true}}</span></span>
                 </div>
+                <div class="sub_input col-md-6">
+                    <input type="text" class="subinput"  placeholder="请输入主题" ng-model="topicName"/>
+                </div>
+                <div class="addTopicFlag"></div>
             </div>
             <div class="addTopicListWrap">
                 <div ng-repeat="item2 in addTopicList">
@@ -56,7 +66,7 @@
                         <div class="addTopicFlag"></div>
                     </div>
                     <div class="form-group form-group-selin"
-                         ng-show="addTopicList[$index]['rule_type'].id == 'Rabbitmq'">
+                         ng-show="addTopicList[$index]['rule_type'].id == 'RabbitMQ'">
                         <div class="input-group">
                             <span class="input-group-addon bg-white inputdesc">exchange</span>
 
@@ -68,7 +78,7 @@
                         </div>
                     </div>
                     <div class="form-group form-group-selin"
-                         ng-show="addTopicList[$index]['rule_type'].id == 'Rabbitmq'">
+                         ng-show="addTopicList[$index]['rule_type'].id == 'RabbitMQ'">
                         <div class="input-group">
                             <span class="input-group-addon inputdesc">queue</span>
                             <input type="text" class="form-control" placeholder="请输入队列名"
@@ -76,7 +86,7 @@
                         </div>
                     </div>
                     <div class="form-group form-group-selin"
-                         ng-show="addTopicList[$index]['rule_type'].id == 'Rabbitmq'">
+                         ng-show="addTopicList[$index]['rule_type'].id == 'RabbitMQ'">
                         <div class="input-group">
                             <span class="input-group-addon bg-white inputdesc">持久化</span>
 
@@ -90,7 +100,7 @@
 
                     </div>
 
-                    <div class="form-group form-group-selin" ng-show="addTopicList[$index]['rule_type'].id == 'Api'">
+                    <div class="form-group form-group-selin" ng-show="addTopicList[$index]['rule_type'].id == 'API'">
                         <div class="input-group">
                             <span class="input-group-addon inputdesc">api</span>
                             <input type="text" class="form-control" placeholder="http://www.g.com/aa/bb"
@@ -98,7 +108,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group form-group-selin" ng-show="addTopicList[$index]['rule_type'].id == 'Api'">
+                    <div class="form-group form-group-selin" ng-show="addTopicList[$index]['rule_type'].id == 'API'">
                         <div class="input-group">
                             <span class="input-group-addon inputdesc">调用方式</span>
                             <ui-select ng-model="addTopicList[$index]['method']" style="width:331px;" name="method" theme="bootstrap"
@@ -112,7 +122,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group form-group-selin" ng-show="addTopicList[$index]['rule_type'].id == 'Api'">
+                    <div class="form-group form-group-selin" ng-show="addTopicList[$index]['rule_type'].id == 'API'">
                         <div class="input-group">
                             <span class="input-group-addon inputdesc">请求头</span>
                             <textarea class="form-control" placeholder="请输入内容"

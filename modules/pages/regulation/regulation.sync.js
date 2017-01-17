@@ -58,8 +58,10 @@ app.register.controller("regulationCtr", function (ngDialog, $scope, $http, $loc
             if (data.code == 200) {
                 var data = data.data;
                 $scope.detail_name = data.name;
-                $scope.detail_instance = data.instance;
+                $scope.detail_instance = data.instance.name;
                 $scope.detail_topic = data.topic;
+                data.actuator = data.api_actuators;
+                data.actuator = data.actuator.concat(data.rmq_actuators)
                 $scope.detail_actuator = data.actuator;
 
             } else {

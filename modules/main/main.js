@@ -1,7 +1,7 @@
 angular.module("RDash", ['ui.bootstrap', 'ui.router', 'ngCookies', 'ngDialog', 'cgBusy', 'truncate', 'ui.select', 'ngSanitize', 'angular-loading-bar', 'ngAnimate']);
 require('router');
 require('interceptor');
-// require('common/service/listService');
+require('common/service/listService');
 require('common/constant');
 require('common/service/utils');
 require('components/opTip');
@@ -1051,9 +1051,11 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
                     $scope.classificationTemp = ''
                 }
                 _.forEach($scope.categoryList, function(value) {
-                    $scope.numbers.push({name:value.name,id:value.id})
+                    $scope.numbers.push({name:value.name,id:value.id,topic:value.topic})
                     if(sSelProjectId && sSelProjectId == value.id){
-                        $scope.classification.name = {name:value.name,id:value.id}
+                        $scope.subtite_desc = value.instance.topic+value.topic;
+                        $scope.subtite_desc_pro = $scope.subtite_desc
+                        $scope.classification.name = {name:value.name,id:value.id,topic:value.topic}
                         $scope.classificationTemp = value.id
                     }
                 });
@@ -1071,7 +1073,7 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
             }
         })
 
-        $scope.numbers.push({name:'---------',id:''})
+        $scope.numbers.push({name:'---------',id:'',topic:''})
         //$scope.numbers.push('---------')
 
         //if(!sSelProjectId){
@@ -1084,6 +1086,26 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
         //console.log(category.name+','+category.id)
         console.log('test',category)
         $scope.classificationTemp = category.id;
+        $scope.subtite_desc = $scope.subtite_desc_pro+category.topic;
+    }
+    $scope.subtite_desc_pro = ''
+    var getProjectInfo = function(sProjectId,oCateData){
+        if(oCateData){
+
+        }else{
+            $http.get(url + "/api/1/topic/instance/"+sProjectId+"/").success(function (data) {
+                if (data.code == 200) {
+                    $scope.subtite_desc = data.data.topic;
+                    $scope.subtite_desc_pro = $scope.subtite_desc
+                    //console.log('subtite_desc',$scope.subtite_desc)
+                } else {
+                    console.log(data)
+                }
+            }).error(function (data, state) {
+
+            })
+        }
+
     }
 
     $scope.$on('addstrategy', function (q, data) {
@@ -1101,6 +1123,8 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
             else{
                 getCategoryList(data.projectId,'')
             }
+
+            getProjectInfo(data.projectId,$scope.item.data.classification)
         }
         if ($scope.item.method == 'add') {
             init()
@@ -1124,6 +1148,22 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
             //$scope.topic = data.topic;
             $scope.description = data.description;
             $scope.remainTopicToAddCount = $scope.remainTopicToAddCount - data.topics.length;
+            //var stop = $interval(function(){
+            //    if($scope.subtite_desc){
+            //        $scope.topic = $scope.subtite_desc + data.topic;
+            //        $scope.stopCount()
+            //    }
+            //}, 100);
+            //
+            //stop.then(function(){
+            //    console.log('complete')
+            //}, function(err) {
+            //    console.log('Uh oh, error!', err);
+            //});
+            //
+            //$scope.stopCount = function(){
+            //    $interval.cancel(stop);
+            //}
             _.forEach(data.topics, function (value) {
                 var topicItem = {p: false, s: false, pubsub: '', name: ''}
                 if (value['pubsub']) {
@@ -1143,7 +1183,7 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
                     topicItem['pubsub'] = pubsub;
                 }
 
-                topicItem['name'] = value['value'];
+                topicItem['name'] = value['name'];
                 $scope.addTopicList.push(topicItem)
             });
 
@@ -1347,19 +1387,35 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
     $scope.username = sessionStorage.getItem('loginName');
     console.log('username',$scope.username)
     $scope.numbers = [];
-    $scope.rule_typeArr = [{id:'Rabbitmq',name:'Rabbitmq'},{id:'Api',name:'Api'}];
+    $scope.rule_typeArr = [{id:'RabbitMQ',name:'RabbitMQ'},{id:'API',name:'API'}];
     $scope.methodArr = [{id:'GET',name:'GET'},{id:'POST',name:'POST'},{id:'PUT',name:'PUT'},{id:'DELETE',name:'DELETE'},{id:'OPTION',name:'OPTION'}];
     $scope.item = {};
     $scope.instance = {}
     //$scope.instance = -1
     $scope.instanceTemp = ''
     $scope.instanceTempName = ''
+    $scope.subtite_desc = ''
     $scope.cancel = function () {
         //$scope.instance = {}
         $scope.$emit('addstrategyclose', 'close')
     };
 
+    var getProjectInfo = function(sProjectId){
+        $http.get(url + "/api/1/topic/instance/"+sProjectId+"/").success(function (data) {
+            if (data.code == 200) {
+                $scope.subtite_desc = data.data.topic;
+                //console.log('subtite_desc',$scope.subtite_desc)
+            } else {
+                console.log(data)
+            }
+        }).error(function (data, state) {
+
+        })
+    }
+
     var getProjectList = function(sSelProjectId){
+        //sSelProjectId = sSelProjectId.id;
+        console.log('sSelProjectId',sSelProjectId)
         $scope.numbers = [];
         $http.get(url + "/api/1/topic/instance/" + url_junction.getQuery({
                 index: 1,
@@ -1375,6 +1431,7 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
                         //$scope.instance = {'name':value.name,'id':value.id}
                         //$scope.instance = $scope.numbers[$scope.numbers.length-1]
                        $scope.instance.name = {'name':value.name,'id':value.id}
+                        console.log($scope.instance.name)
                         //$scope.instance = value.id
                         $scope.instanceTemp = value.id
                         $scope.instanceTempName = value.name
@@ -1407,6 +1464,7 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
         console.log('test',instance)
         $scope.instanceTemp = instance.id;
         $scope.instanceTempName = instance.name;
+        getProjectInfo(instance.id)
 
         //$scope.instanceTemp = instance;
         //for(var i=0;i<$scope.numbers.length;i++){
@@ -1449,15 +1507,21 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
             $scope.remainTopicToAddCount = 5;
             $scope.addstrategy_content_topzero = "";
             if($scope.item.data) {
-                getProjectList($scope.item.data.instance)
+                getProjectList($scope.item.data.instance.id)
             }
             else{
                 getProjectList()
             }
+            console.log('$scope.item.data.instance.id',$scope.item.data)
+            if($scope.item.data){
+                getProjectInfo($scope.item.data.instance.id)
+            }
+
         }
         if ($scope.item.method == 'add') {
             init()
             $scope.name = '';
+            $scope.instance = {};
             $scope.instanceTemp = '';
             $scope.topicName = '';
 
@@ -1474,21 +1538,28 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
             nameTemp = $scope.name;
             //$scope.instanceTemp = data.instance;
             $scope.topicName = data.topic;
+            $scope.topicName = $scope.topicName.replace(data.instance.topic,'');
             //$scope.description = data.description;
+            console.log(data.api_actuators.length)
+            data.actuator = data.api_actuators;
+            data.actuator = data.actuator.concat(data.rmq_actuators)
+            console.log(data.rmq_actuators.length)
             if(data.actuator){
                 $scope.remainTopicToAddCount = $scope.remainTopicToAddCount - data.actuator.length;
             }else{
                 data.actuator = []
             }
-
+            console.log(data.actuator.length)
             _.forEach(data.actuator, function (value) {
                 //{exchange:'',queue:'',persist:true,rule_type:{id:'Rabbitmq',name:'Rabbitmq'}},{"api":"","method":{id:'GET',name:'GET'},"header":"","rule_type":{id:'Api',name:'Api'}}
                 var topicItem = value;
-                topicItem['rule_type'] = {id:value['rule_type'],name:value['rule_type']};
-                if(value['rule_type'] == 'Api'){
+                if(value['rule_type'] == 'API'){
                     topicItem['method'] = {id:value['method'],name:value['method']};
+
                 }
+                topicItem['rule_type'] = {id:value['rule_type'],name:value['rule_type']};
                 $scope.addTopicList.push(topicItem)
+                console.log(' $scope.addTopicList344', $scope.addTopicList)
             });
             $timeout(function () {
                 if (angular.element('#addstrategy-content').height() >= angular.element(window).height()) {
@@ -1528,6 +1599,7 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
                 }
 
                 if(isValid && $scope.topicName){
+                    console.log('$scope.topicName',$scope.topicName)
                     var checkTopicRes = baseUrl.checkTopic($scope.topicName);
                     if(checkTopicRes.err == 1){
                         isValid = false;
@@ -1619,10 +1691,10 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
     //选择存储类型
     $scope.setRuleType = function(rule_type,idx){
 
-        if(rule_type.id == 'Rabbitmq'){
-            $scope.addTopicList[idx] = {exchange:'cn.useonline.iotcloud.'+$scope.username,queue:'',persist:true,rule_type:{id:'Rabbitmq',name:'Rabbitmq'}};
-        }else if(rule_type.id == 'Api'){
-            $scope.addTopicList[idx] = {"api":"","method":{id:'GET',name:'GET'},"header":"","rule_type":{id:'Api',name:'Api'}};
+        if(rule_type.id == 'RabbitMQ'){
+            $scope.addTopicList[idx] = {exchange:'cn.useonline.iotcloud.'+$scope.username,queue:'',persist:true,rule_type:{id:'RabbitMQ',name:'RabbitMQ'}};
+        }else if(rule_type.id == 'API'){
+            $scope.addTopicList[idx] = {"api":"","method":{id:'GET',name:'GET'},"header":"","rule_type":{id:'API',name:'API'}};
         }
 
     }
@@ -1638,7 +1710,7 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
     $scope.addTopicFunc = function () {
         if($scope.instanceTemp){
         $scope.remainTopicToAddCount--;
-        $scope.addTopicList.push({exchange:'cn.useonline.iotcloud.'+$scope.username,queue:'',persist:true,rule_type:{id:'Rabbitmq',name:'Rabbitmq'}})
+        $scope.addTopicList.push({exchange:'cn.useonline.iotcloud.'+$scope.username,queue:'',persist:true,rule_type:{id:'RabbitMQ',name:'RabbitMQ'}})
         $timeout(function () {
             if (angular.element('#addstrategy-content').height() >= angular.element(window).height()) {
                 //$scope.addstrategy_content_topzero = "addstrategy-content-topzero"
