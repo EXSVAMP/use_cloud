@@ -395,6 +395,14 @@ app.controller('headerManageCtrl', function ($scope, $cookieStore, $http, $uibMo
         }, function () {
         });
     }
+   var BaseUrl=baseUrl.getUrl();
+    $scope.orderCount="";
+    $http.get(BaseUrl+"/api/1/work_order/?is_page=1").success(function(data){
+        if(data.code==200){
+            $scope.orderCount=data.pageinfo.total_number;
+        }
+
+    })
 
 })
 
