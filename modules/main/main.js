@@ -290,8 +290,8 @@ app.controller("headerCtrl", function ($scope, $cookieStore, $http, $uibModal, b
         second: false,
         third: false,
         fourth: false,
-        fifth: false
-
+        fifth: false,
+        second_detail: false
     }
     $scope.toggle = function (state) {
         for (i in $scope.nav_state) {
@@ -299,6 +299,63 @@ app.controller("headerCtrl", function ($scope, $cookieStore, $http, $uibModal, b
                 $scope.nav_state[i] = true;
             } else {
                 $scope.nav_state[i] = false
+            }
+        }
+    }
+    $scope.detail = function(){
+        for (i in $scope.nav_state) {
+            if (i == 'second_detail') {
+                $scope.nav_state[i] = true;
+            } else {
+                $scope.nav_state[i] = false
+            }
+        }
+    }
+
+    //devdoc
+    $scope.current_devdoc_btn = '0'
+    $scope.devdoc_btn = {
+        0:true,
+        1:false,
+        2:false,
+        3:false,
+        4:false,
+        5:false
+
+    }
+
+    $scope.devdoc_btn_click = function(idx){
+        if($scope.current_devdoc_btn != idx){
+            for (i in $scope.devdoc_btn) {
+                if (i == idx) {
+                    $scope.devdoc_btn[i] = true;
+                } else {
+                    $scope.devdoc_btn[i] = false
+                }
+            }
+
+            $scope.devdoc_tab_click('0')
+            $scope.current_devdoc_btn = idx;
+        }
+    }
+
+    $scope.devdoc_tab = {
+        0:true,
+        1:false,
+        2:false,
+        3:false,
+        4:false,
+        5:false,
+        6:false
+
+    }
+
+    $scope.devdoc_tab_click = function(idx){
+        for (i in $scope.devdoc_tab) {
+            if (i == idx) {
+                $scope.devdoc_tab[i] = true;
+            } else {
+                $scope.devdoc_tab[i] = false
             }
         }
     }
@@ -938,6 +995,7 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
 
     $scope.numbers = [];
     $scope.item = {};
+    $scope.classification = {}
     $scope.classificationTemp = ''
     $scope.cancel = function () {
         //console.log($scope.addTopicList[0])
@@ -956,10 +1014,15 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
             })).success(function (data) {
             if (data.code == 200) {
                 $scope.categoryList = data.data;
+                if(!sSelProjectId){
+                    $scope.classification = {}
+                    //$scope.classification.name = null;
+                    $scope.classificationTemp = ''
+                }
                 _.forEach($scope.categoryList, function(value) {
                     $scope.numbers.push({name:value.name,id:value.id})
                     if(sSelProjectId && sSelProjectId == value.id){
-                        $scope.classification = {name:value.name,id:value.id}
+                        $scope.classification.name = {name:value.name,id:value.id}
                         $scope.classificationTemp = value.id
                     }
                 });
@@ -980,10 +1043,10 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
         $scope.numbers.push({name:'---------',id:''})
         //$scope.numbers.push('---------')
 
-        if(!sSelProjectId){
-            //$scope.classification = {name:'---------',id:''}
-            //$scope.classification = '---------'
-        }
+        //if(!sSelProjectId){
+        //    $scope.classification = {}
+        //    $scope.classificationTemp = ''
+        //}
     }
 
     $scope.setShowNum = function(category){
@@ -1011,7 +1074,7 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
         if ($scope.item.method == 'add') {
             init()
             $scope.name = '';
-            $scope.classification = '';
+            //$scope.classification = {};
             //$scope.topic = data.topic;
             $scope.description = '';
 
@@ -1026,7 +1089,7 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
             var data = $scope.item.data;
             $scope.name = data.name;
             nameTemp = $scope.name;
-            $scope.classificationTemp = data.classification;
+            //$scope.classificationTemp = data.classification;
             //$scope.topic = data.topic;
             $scope.description = data.description;
             $scope.remainTopicToAddCount = $scope.remainTopicToAddCount - data.topics.length;
@@ -1137,7 +1200,7 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
 
                     $scope.params.topic = JSON.stringify($scope.params.topic);
                     if ($scope.item.method == 'add') {
-                        $http.post(url + "/api/1/topic/strategy ", $scope.params).success(function (data) {
+                        $http.post(url + "/api/1/topic/strategy/", $scope.params).success(function (data) {
                             if (data.code == "200") {
                                 $scope.item.scope.optipShow(1, '操作成功')
                                 $scope.item.scope.submit_search();
@@ -1256,10 +1319,11 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
     $scope.rule_typeArr = [{id:'Rabbitmq',name:'Rabbitmq'},{id:'Api',name:'Api'}];
     $scope.methodArr = [{id:'GET',name:'GET'},{id:'POST',name:'POST'},{id:'PUT',name:'PUT'},{id:'DELETE',name:'DELETE'},{id:'OPTION',name:'OPTION'}];
     $scope.item = {};
-    $scope.instance = ''
+    $scope.instance = {}
     $scope.instanceTemp = ''
     $scope.instanceTempName = ''
     $scope.cancel = function () {
+        //$scope.instance = {}
         $scope.$emit('addstrategyclose', 'close')
     };
 
@@ -1276,15 +1340,13 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
                 _.forEach($scope.projectList, function(value) {
                     $scope.numbers.push({name:value.name,id:value.id})
                     if(sSelProjectId && sSelProjectId == value.id){
-                        $scope.instance = {name:value.name,id:value.id}
+                        //$scope.instance = {'name':value.name,'id':value.id}
+                        //$scope.instance = $scope.numbers[$scope.numbers.length-1]
+                        $scope.instance.name = {'name':value.name,'id':value.id}
                         $scope.instanceTemp = value.id
                         $scope.instanceTempName = value.name
                     }
                 });
-                //$scope.bigTotalItems = data.pageinfo.total_number;
-                //$scope.total_page = data.pageinfo.total_page;
-                //$scope.currentPageTotal = $scope.query_result.length;
-
 
             } else {
                 console.log(data)
@@ -1299,8 +1361,10 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
         //$scope.numbers.push('---------')
 
         if(!sSelProjectId){
-            //$scope.classification = {name:'---------',id:''}
-            //$scope.classification = '---------'
+            console.log('sSelProjectId',sSelProjectId)
+           $scope.instance = {}
+            $scope.instanceTemp = ''
+            $scope.instanceTempName = ''
         }
     }
 
@@ -1369,7 +1433,12 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
             //$scope.instanceTemp = data.instance;
             $scope.topicName = data.topic;
             //$scope.description = data.description;
-            $scope.remainTopicToAddCount = $scope.remainTopicToAddCount - data.actuator.length;
+            if(data.actuator){
+                $scope.remainTopicToAddCount = $scope.remainTopicToAddCount - data.actuator.length;
+            }else{
+                data.actuator = []
+            }
+
             _.forEach(data.actuator, function (value) {
                 //{exchange:'',queue:'',persist:true,rule_type:{id:'Rabbitmq',name:'Rabbitmq'}},{"api":"","method":{id:'GET',name:'GET'},"header":"","rule_type":{id:'Api',name:'Api'}}
                 var topicItem = value;

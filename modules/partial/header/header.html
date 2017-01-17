@@ -25,7 +25,7 @@
                      <!--<li>css</li>-->
                  <!--</ul>-->
              </li>
-             <li><a  ng-class="{true:'nav_active',flase:'nav_unactive'}[nav_state.second]"  ng-click="toggle('second')"><span>案列</span></a></li>
+             <li><a  ng-class="{true:'nav_active',flase:'nav_unactive'}[nav_state.second || nav_state.second_detail]"  ng-click="toggle('second')"><span>案列</span></a></li>
              <li><a  ng-class="{true:'nav_active',flase:'nav_unactive'}[nav_state.third]" ng-click="toggle('third')"><span>开发文档</span></a></li>
              <li><a  ng-class="{true:'nav_active',flase:'nav_unactive'}[nav_state.fourth]" ng-click="toggle('fourth')"><span>解决方案</span></a></li>
              <li><a  ng-class="{true:'nav_active',flase:'nav_unactive'}[nav_state.fifth]" ng-click="toggle('fifth')"><span>关于我们</span></a></li>
@@ -112,8 +112,20 @@
     <div ng-show="nav_state.second">
         <link rel="import" href="/modules/partial/content/contact.html?__inline"/>
     </div>
+
+    <div ng-show="nav_state.second_detail">
+        <link rel="import" href="/modules/partial/content/contact_detail.html?__inline"/>
+    </div>
+    <div ng-show="nav_state.third">
+        <link rel="import" href="/modules/partial/content/devdoc.html?__inline"/>
+    </div>
     <div ng-show="nav_state.fourth">
         <link rel="import" href="/modules/partial/content/solveMethod.html?__inline"/>
+
+    </div>
+    <div ng-show="nav_state.fifth">
+        <link rel="import" href="/modules/partial/content/about.html?__inline"/>
+
     </div>
     <div style="clear: both"></div>
     <link rel="import" href="/modules/partial/foot/foot.html?__inline"/>
