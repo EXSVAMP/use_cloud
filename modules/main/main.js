@@ -466,7 +466,7 @@ app.controller('ModalProject', function ($scope, $cookieStore, $uibModalInstance
                 name: $scope.project_name
             }
             // console.log("<==项目名称====>"+$scope.project_name);
-            $http.post(baseUrl + "/api/1/topic/instance", $scope.params).success(function (data) {
+            $http.post(baseUrl + "/api/1/topic/instance/", $scope.params).success(function (data) {
                 if (data.code == "200") {
                     items.scope.submit_search();
                 }
@@ -559,9 +559,21 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
     };
     $scope.params={};
     var instance="";
+    var select_topicTemp="";
     $scope.$on("identityState",function(event,data){
         console.log(data);
         instance=data.projectId;
+        $http.get(baseUrl + "/api/1/topic/instance?pk="+instance).success(function(data){
+            if(data.code==200){
+                select_topicTemp=data.data[0].topic;
+                $scope.subtite_desc=select_topicTemp;
+                // console.log("<===获取项目详情=>")
+                // console.log(data);
+            }
+
+
+        })
+
         if(data.method=='add'||data.method=='edit'){
             $scope.state.undelete=true;
             $scope.state.delete=false;
@@ -607,7 +619,13 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
             //选择实例
             $scope.select_class=function(classId){
                 $scope.params.classId=classId;
+
                 console.log("<===实例ID===>"+classId);
+                $http.get(baseUrl + "/api/1/topic/class/"+classId+"/").success(function(data){
+                    select_topicTemp=data.data.instance.topic;
+                    $scope.subtite_desc=select_topicTemp;
+                })
+
             }
 
 
@@ -624,7 +642,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
                         description:$scope.params.description,
 
                     });
-                    $http.post(baseUrl+"/api/1/topic/identity",query_url).success(function(data){
+                    $http.post(baseUrl+"/api/1/topic/identity/",query_url).success(function(data){
                         if(data.code==200){
                             $scope.item.scope.submit_search();
                             $scope.cancel();
@@ -662,7 +680,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
                         });
 
                     query_url.topic = JSON.stringify(query_url.topic);
-                    $http.post(baseUrl + "/api/1/topic/strategy ", query_url).success(function (data) {
+                    $http.post(baseUrl + "/api/1/topic/strategy/", query_url).success(function (data) {
                                 if (data.code == "200") {
                                     $scope.params.strategyId=data.data.id;
                                     $scope.get_strategyList();
