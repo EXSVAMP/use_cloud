@@ -174,10 +174,10 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
             //    onFailure: onSubscribeFailure
             //});
 
-            //client.subscribe("", {
-            //    onSuccess: onSubscribeSuccess,
-            //    onFailure: onSubscribeFailure
-            //});
+            client.subscribe($scope.watchTopic, {
+                onSuccess: onSubscribeSuccess,
+                onFailure: onSubscribeFailure
+            });
 
 
             // message = new Paho.MQTT.Message("Hello");
@@ -205,8 +205,10 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
         // called when a message arrives
         function onMessageArrived(message) {
 
-            console.log("onMessageArrived:" + message.payloadString);
-
+            console.log("onMessageArrived:", message.payloadString);
+            angular.element("#categoryWatchContent").append(message.payloadString+"<br/>")
+            var div = document.getElementById('categoryWatchContent');
+            div.scrollTop = div.scrollHeight;
         }
 
         function onSubscribeSuccess() {
@@ -236,6 +238,7 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
 
     $scope.resetWatchTopicBtn = function(){
         if($scope.watchTopic){
+            angular.element("#categoryWatchContent").html("")
             $http.get(BaseUrl + "/api/1/topic/class/mqtt/?topic=" +$scope.watchTopic).success(function (data) {
                 if (data.code == 200) {
                     data = data.data
