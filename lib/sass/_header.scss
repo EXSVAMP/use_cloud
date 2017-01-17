@@ -223,7 +223,7 @@
     height: auto;
     overflow: hidden;
     margin-top: 72px;
-    border:solid 1px #000;
+    margin-bottom: 30px;
     .solve_first{
       .solve_img1{
         width: 320px;
@@ -262,6 +262,48 @@
         }
       }
     }
-    .solve_second{}
+    .solve_second{
+      .solve_img1{
+        width: 320px;
+        height: 320px;
+        float:left;
+        margin-left: 80px;
+        position: relative;
+        top: -60px;
+
+      }
+      .content_first{
+        width:650px;
+        float:left;
+        margin-top: 30px;
+        text-align: right;
+
+
+      }
+      .solove_desc{
+        .solove_desc_title{
+          color: #333333;
+          .lg_title{
+            font-size: 24px;
+            font-weight: normal;
+          }
+          .sm_title{
+            font-size: 18px;
+          }
+        }
+        .solve_desc_content{
+          font-size: 14px;
+          color: #aaaaaa;
+          margin-top:10px;
+        }
+        .solove_serach{
+          margin-top: 20px;
+          .search_btn{
+            width: 120px;
+            height: 42px;
+          }
+        }
+      }
+    }
   }
 }
