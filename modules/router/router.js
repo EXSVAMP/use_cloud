@@ -5,6 +5,7 @@
  */
 var login=require("login_page/login/login");
 var register=require("login_page/register/register");
+var forgetPassWord=require("login_page/forgetPassWord/forgetPassWord");
 var manage=require("pages/manage/manage");
 var regulation=require("pages/regulation/regulation");
 var email=require("pages/email/email");
@@ -18,10 +19,9 @@ var strategy=require("pages/strategy/strategy");//策略管理
 
 var app = angular.module('RDash');
 app.config(function($stateProvider, $urlRouterProvider,$controllerProvider){
-    var a=1234567890;
-    console.log(a);
     $stateProvider.state('login', login)
         .state("register",register)
+        .state("forgetPassWord",forgetPassWord)
         .state("regulation",regulation)
         .state("manage",manage)
         .state("project",project)
