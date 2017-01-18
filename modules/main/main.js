@@ -1,7 +1,7 @@
 angular.module("RDash", ['ui.bootstrap', 'ui.router', 'ngCookies', 'ngDialog', 'cgBusy', 'truncate', 'ui.select', 'ngSanitize', 'angular-loading-bar', 'ngAnimate']);
 require('router');
 require('interceptor');
-// require('common/service/list');
+require('common/service/listService');
 require('common/constant');
 require('common/service/utils');
 require('components/opTip');
@@ -454,6 +454,13 @@ app.controller("sideBarCtrl", function ($scope, $cookieStore, $http, $uibModal, 
         }
 
     }
+    var BaseUrl=baseUrl.getUrl();
+    $scope.emailCount="";
+    $http.get(BaseUrl+"/api/1/admin/message/").success(function(data){
+        if(data.code==200){
+            $scope.emailCount=data.pageinfo.total_number;
+        }
+    })
 })
 
 
@@ -574,7 +581,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
     $scope.$on("identityState",function(event,data){
         console.log(data);
         instance=data.projectId;
-        $http.get(baseUrl + "/api/1/topic/instance?pk="+instance).success(function(data){
+        $http.get(baseUrl + "/api/1/topic/instance/?pk="+instance).success(function(data){
             if(data.code==200){
                 select_topicTemp=data.data[0].topic;
                 select_topicTemp_res=data.data[0].topic;
@@ -603,7 +610,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
             $scope.params.classId=-1;
 
             $scope.get_strategyList=function(){
-                $http.get(baseUrl + "/api/1/topic/strategy?instance="+instance).success(function (data) {
+                $http.get(baseUrl + "/api/1/topic/strategy/?instance="+instance).success(function (data) {
                     if (data.code == 200) {
                         $scope.strategy_list = data.data;
                         $scope.strategy_list.push({id: '-1', name: '-------------'});
@@ -611,7 +618,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
                 })
             }
           $scope.get_classList=function(){
-              $http.get(baseUrl + "/api/1/topic/class?instance="+instance).success(function (data) {
+              $http.get(baseUrl + "/api/1/topic/class/?instance="+instance).success(function (data) {
                   if (data.code == 200) {
                       $scope.class_list = data.data;
                       $scope.class_list.push({id: '-1', name: '-------------'});

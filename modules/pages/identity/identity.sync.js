@@ -27,7 +27,7 @@ app.register.controller("identityCtr", function ($scope, $http, $location, $uibM
 
 
     $scope.submit_search = function () {
-        $http.get(BaseUrl + "/api/1/topic/identity" + url_junction.getQuery({
+        $http.get(BaseUrl + "/api/1/topic/identity/" + url_junction.getQuery({
                 name:$scope.identity_name,
                 instance:$scope.projectId,
                 index: $scope.bigCurrentPage,

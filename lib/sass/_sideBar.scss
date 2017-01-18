@@ -91,7 +91,18 @@
           }
         }
       }
-
+      .side_email{
+        display: inline-block;
+        height: 16px;
+        border-radius: 2px;
+        background-color: #85d335;
+        line-height: 19px;
+        text-align: center;
+        color:#ffffff;
+        font-size: 12px;
+        padding: 0px 3px;
+        margin-left: 30px;
+      }
     }
     .open{
       .icon-rotate{

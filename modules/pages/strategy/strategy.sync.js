@@ -85,7 +85,7 @@ app.register.controller("strategyCtr", function (ngDialog, $scope, $http, $locat
     };
 
     $scope.submit_search = function () {
-        $http.get(BaseUrl + "/api/1/topic/strategy" + url_junction.getQuery({
+        $http.get(BaseUrl + "/api/1/topic/strategy/" + url_junction.getQuery({
                 name: $scope.strategy_nameTemp,
                 index: $scope.bigCurrentPage,
                 number: $scope.number,
