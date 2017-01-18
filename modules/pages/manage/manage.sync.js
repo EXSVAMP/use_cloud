@@ -21,7 +21,12 @@ app.register.controller("manageCtr", function ($scope, $http, $location, $uibMod
           $scope.params.emailCount=data.pageinfo.total_number;
       }
   })
-
+ $http.get(BaseUrl+"/api/1/user/login").success(function(data){
+     if(data.code==200){
+         $scope.user_name=data.data.username;
+         $scope.email_active=data.data.email_is_active;
+     }
+ })
 
 
 

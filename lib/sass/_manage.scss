@@ -33,6 +33,13 @@
         .icon-icon_mail{
           color: #727272;
         }
+        .mail_active{
+          display: inline-block;
+          width: 16px;
+          height: 16px;
+          position: relative;
+          top: -3px;
+        }
       }
       .count{
         color:#00a0e9 ;

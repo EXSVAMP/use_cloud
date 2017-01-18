@@ -366,11 +366,7 @@ app.controller("headerCtrl", function ($scope, $cookieStore, $http, $uibModal, b
 
 
 app.controller('headerManageCtrl', function ($scope, $cookieStore, $http, $uibModal, baseUrl, ngDialog, $rootScope) {
-    var username = sessionStorage.getItem("loginName");
-    if (username) {
-        $scope.user_name = username;
-    }
-    ;
+
 
     $scope.open = function (size, method) {
         var modalInstance = $uibModal.open({
@@ -403,6 +399,17 @@ app.controller('headerManageCtrl', function ($scope, $cookieStore, $http, $uibMo
         }
 
     })
+    // var username = sessionStorage.getItem("loginName");
+    // if (username) {
+    //     $scope.user_name = username;
+    // }
+    // ;
+    $http.get(BaseUrl+"/api/1/user/login").success(function(data){
+        if(data.code==200){
+            $scope.user_name=data.data.username;
+        }
+    })
+
 
 })
 
@@ -433,13 +440,10 @@ app.controller('ModalHeader', function ($scope, $cookieStore, $uibModalInstance,
 })
 
 
-app.controller("sideBarCtrl", function ($scope, $cookieStore, $http, $uibModal, $location, baseUrl, ngDialog, $rootScope) {
+app.controller("sideBarCtrl", function ($scope, $cookieStore, $http, $uibModal, $location, baseUrl, ngDialog, $rootScope,constant) {
     console.log("<=====管理控制台首页sidebar=====>")
     console.log("<==地址===>" + $location.path());
-    var username = sessionStorage.getItem("loginName");
-    if (username) {
-        $scope.user_name = username;
-    }
+
     if ($location.path() == "") {
         console.log("<====地址为空===>");
     }
@@ -459,6 +463,15 @@ app.controller("sideBarCtrl", function ($scope, $cookieStore, $http, $uibModal, 
     $http.get(BaseUrl+"/api/1/admin/message/").success(function(data){
         if(data.code==200){
             $scope.emailCount=data.pageinfo.total_number;
+        }
+    })
+    // var username = sessionStorage.getItem("loginName");
+    // if (username) {
+    //     $scope.user_name = username;
+    // }
+    $http.get(BaseUrl+"/api/1/user/login").success(function(data){
+        if(data.code==200){
+            $scope.user_name=data.data.username;
         }
     })
 })
