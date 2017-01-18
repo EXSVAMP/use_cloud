@@ -1,5 +1,5 @@
 var app = angular.module('RDash');
-app.register.controller("loginCtr", function ($scope, $http, $location, $uibModal, $cookieStore, baseUrl, $rootScope, $interval, utils) {
+app.register.controller("loginCtr", function ($scope, $http, $location, $uibModal, $cookieStore, baseUrl, $rootScope, $interval, utils,constant) {
     var BaseUrl = baseUrl.getUrl();
 
     // console.log("<=====登入1234567=======>"+BaseUrl);
@@ -129,7 +129,6 @@ app.register.controller("loginCtr", function ($scope, $http, $location, $uibModa
                 $http.post(BaseUrl + "/api/1/user/login", $scope.person).success(function (data) {
                     if (data.code == '200') {
                         sessionStorage.setItem("loginName", data.data.username);
-
                         if ($scope.remember_check) {
                             sessionStorage.setItem("password", $scope.person.password);
                             $scope.remember_check = true;

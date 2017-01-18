@@ -3,9 +3,10 @@
       <div class="img_wrap">
         <img src="/lib/img/head.svg" class="user_img" />
         <div class="use_wrap">
-            <span class="user_name">DEVIC</span>
-            <img class="phone" src="/lib/img/phone.svg"/>
-            <span class="icon-icon_mail"></span>
+            <span class="user_name">{{user_name}}</span>
+            <img class="phone"  src="/lib/img/phone.svg"/>
+            <span class="icon-icon_mail" ng-show="email_active==0"></span>
+            <img class="mail_active" ng-show="email_active==1" src="/lib/img/mail.svg"/>
         </div>
           <div class="order_wrap">
               <span class="icon-icon_worksheet"></span>
