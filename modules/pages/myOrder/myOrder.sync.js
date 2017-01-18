@@ -6,7 +6,7 @@ app.register.controller("myOrderCtr", function ($scope, $http, $location, $uibMo
         date_end:'',
         state:''
     };
-    listService.init($scope,'/api/1/work_order');
+    listService.init($scope,'/api/1/work_order/');
     $scope.selections={
           state:[{name:'test1',value:1},{name:'test2',value:2}]
     };
