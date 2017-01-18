@@ -42,6 +42,15 @@ app.service("baseUrl", function (constant, ngDialog,$location) {
                 plain: true
             });
         },
+        dialog: function (sAlert) {
+            $('#dialog').show()
+            $('#dialog p').html(sAlert)
+        },
+        closeDialog: function (sAlert) {
+            //$('#dialog').hide()
+            $('#dialog').fadeOut()
+
+        },
         dupInObjArr: function (key, objArr) {
             var isDup = 0;
             //key = 'name'
@@ -1029,7 +1038,6 @@ app.controller('ModalStrategy', function ($scope, $cookieStore, $uibModalInstanc
     };
     if ($scope.item.method == 'delete') {
         var data = items.data;
-        console.log('data', data)
         $scope.ok = function () {
             $http.delete(baseUrl + "/api/1/topic/strategy/" + data.id + "/", {}).success(function (data) {
                 if (data.code == "200") {
@@ -1053,8 +1061,8 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
     $scope.item = {};
     $scope.classification = {}
     $scope.classificationTemp = ''
+    $scope.topicsOrig = []//pk name pubsub
     $scope.cancel = function () {
-        //console.log($scope.addTopicList[0])
         $scope.$emit('addstrategyclose', 'close')
     };
 
@@ -1118,7 +1126,6 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
         if(oCateData){
 
         }else{
-            console.log('testsetstewtwtwetwet')
             $http.get(url + "/api/1/topic/instance/"+sProjectId+"/").success(function (data) {
                 if (data.code == 200) {
                     $scope.subtite_desc = data.data.topic;
@@ -1144,6 +1151,7 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
             $scope.remainTopicToAddCount = 5;
             $scope.addstrategy_content_topzero = "";
             if($scope.item.data) {
+                $scope.topicsOrig = $scope.item.data.topics;
                 getCategoryList(data.projectId,$scope.item.data.classification)
             }
             else{
@@ -1191,7 +1199,7 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
             //    $interval.cancel(stop);
             //}
             _.forEach(data.topics, function (value) {
-                var topicItem = {p: false, s: false, pubsub: '', name: ''}
+                var topicItem = {pk:-1, p: false, s: false, pubsub: '', name: ''}
                 if (value['pubsub']) {
                     var pubsub = value['pubsub'];
                     if (/pubsub/.test(pubsub)) {
@@ -1210,6 +1218,7 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
                 }
 
                 topicItem['name'] = value['name'];
+                topicItem['pk'] = value['id'];
                 $scope.addTopicList.push(topicItem)
             });
 
@@ -1290,8 +1299,13 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
                         } else if (/s/.test(pubsub)) {
                             pubsub = 'subscribe'
                         }
+                        //topicsOrig
+                        if($scope.item.method == 'add'){
+                            $scope.params.topic.push({name: value['name'], pubsub: pubsub})
+                        }else{
+                            $scope.params.topic.push({pk:value['pk'],name: value['name'], pubsub: pubsub})
+                        }
 
-                        $scope.params.topic.push({name: value['name'], pubsub: pubsub})
 
                     });
 
@@ -1359,7 +1373,12 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
     }
     $scope.addTopicFunc = function () {
         $scope.remainTopicToAddCount--;
-        $scope.addTopicList.push({p: false, s: false, name: '', pubsub: ''})
+        if($scope.item.method == 'add'){
+            $scope.addTopicList.push({p: false, s: false, name: '', pubsub: ''})
+        }else{
+            $scope.addTopicList.push({pk:-1, p: false, s: false, name: '', pubsub: ''})
+        }
+
         $timeout(function () {
             if (angular.element('#addstrategy-content').height() >= angular.element(window).height()) {
                 //$scope.addstrategy_content_topzero = "addstrategy-content-topzero"

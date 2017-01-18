@@ -139,7 +139,14 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
 
     }
 
-    $scope.wsFunc3 = function (username,password,server,port) {
+    var client = null;
+    $scope.clientOnListening = false;
+    $scope.username = '';
+    $scope.password = '';
+    $scope.server = '';
+    $scope.port = '';
+
+    $scope.wsFunc3 = function () {
         //var websocket_url = constant.websocket_url;
         //var websocket_userName = constant.websocket_userName;
         //var websocket_password = constant.websocket_password;
@@ -150,7 +157,7 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
         //var websocket_password = 'eb50ff54';
         //var websocket_port = '1883';
 
-        client = new Paho.MQTT.Client(server, port, "myclientid_" + parseInt(Math.random() * 100, 10));
+        client = new Paho.MQTT.Client($scope.server, $scope.port, "myclientid_" + parseInt(Math.random() * 100, 10));
         // set callback handlers
         client.onConnectionLost = onConnectionLost;
         client.onMessageArrived = onMessageArrived;
@@ -160,13 +167,14 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
         // connect the client
         client.connect({
             onSuccess: onConnect,
-            userName: username,
-            password: password,
+            userName: $scope.username,
+            password: $scope.password,
             mqttVersion: 3
         });
 
         // called when the client connects
         function onConnect() {
+            $scope.clientOnListening = true;
             // Once a connection has been made, make a subscription and send a message.
             console.log("onConnect");
 
@@ -192,14 +200,28 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
 
             if (responseObject.errorCode !== 0) {
                 // client = new Paho.MQTT.Client(constant.websocket_url, constant.websocket_port, "myclientid_" + parseInt(Math.random() * 100, 10));
-
+                //client = null;
+                //client = new Paho.MQTT.Client($scope.server, $scope.port, "myclientid_" + parseInt(Math.random() * 100, 10));
                 client.connect({
                     onSuccess: onConnect,
-                    userName: username,
-                    password: password,
+                    userName: $scope.username,
+                    password: $scope.password,
                     mqttVersion: 3
                 });
                 console.log("onConnectionLost:" + responseObject.errorMessage);
+            }else if (responseObject.errorCode == 0) { //disconnect
+                console.log("disconnect ok");
+                client = null;
+                if($scope.categoryWatch){
+                    client = new Paho.MQTT.Client($scope.server, $scope.port, "myclientid_" + parseInt(Math.random() * 100, 10));
+                    client.connect({
+                        onSuccess: onConnect,
+                        userName: $scope.username,
+                        password: $scope.password,
+                        mqttVersion: 3
+                    });
+                }
+
             }
         }
 
@@ -215,6 +237,11 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
         function onSubscribeSuccess() {
             subscribed = true;
             console.log("subscribed", subscribed);
+            baseUrl.dialog('监听成功')
+            $timeout(function(){
+                baseUrl.closeDialog()
+            },1000)
+
         };
 
         function onSubscribeFailure(err) {
@@ -237,24 +264,56 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
         $scope.categoryMain = true;
         $scope.categoryWatch = false;
         $scope.categoryWatchTab = '';
+        client.disconnect()
+        $scope.clientOnListening = false;
     };
 
     $scope.resetWatchTopicBtn = function(){
         if($scope.watchTopic){
             angular.element("#categoryWatchContent").html("")
-            $http.get(BaseUrl + "/api/1/topic/class/mqtt/?topic=" +$scope.watchTopic).success(function (data) {
-                if (data.code == 200) {
-                    data = data.data
-                    $scope.wsFunc3(data.username,data.password,data.server,data.port);
+            if(client && $scope.clientOnListening){
+                $http.get(BaseUrl + "/api/1/topic/class/mqtt/?topic=" +$scope.watchTopic).success(function (data) {
+                    if (data.code == 200) {
+                        data = data.data
+                        $scope.username = data.username;
+                        $scope.password = data.password;
+                        $scope.server = data.server;
+                        $scope.port = data.port;
+                       //$scope.wsFunc3(data.username,data.password,data.server,data.port);
+                        client.disconnect()
+                        $scope.clientOnListening = false;
+                        //console.log('disconnect')
 
-                } else {
-                    console.log(data)
-                }
-            }).error(function (data, state) {
-                if (state == 403) {
+                    } else {
+                        console.log(data)
+                    }
+                }).error(function (data, state) {
+                    if (state == 403) {
 
-                }
-            })
+                    }
+                })
+
+            }else{
+                $http.get(BaseUrl + "/api/1/topic/class/mqtt/?topic=" +$scope.watchTopic).success(function (data) {
+                    if (data.code == 200) {
+                        data = data.data
+                        $scope.username = data.username;
+                        $scope.password = data.password;
+                        $scope.server = data.server;
+                        $scope.port = data.port;
+                        //$scope.wsFunc3(data.username,data.password,data.server,data.port);
+                        $scope.wsFunc3();
+
+                    } else {
+                        console.log(data)
+                    }
+                }).error(function (data, state) {
+                    if (state == 403) {
+
+                    }
+                })
+            }
+
         }else{
             baseUrl.ngDialog('请输入主题')
         }
