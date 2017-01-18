@@ -36,6 +36,7 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
     // console.log("<========>"+$location.path());
     $scope.categoryMain = true;
     $scope.categoryWatch = false;
+    $scope.categoryWatchTab = '';
     $scope.number = "10";
     $scope.maxSize = 5;
     $scope.bigCurrentPage = 1;
@@ -228,12 +229,14 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
     $scope.watch = function (idx) {
         $scope.categoryMain = false;
         $scope.categoryWatch = true;
+        $scope.categoryWatchTab = '/实时消息查看';
         //$scope.wsFunc3();
     };
 
     $scope.return = function () {
         $scope.categoryMain = true;
         $scope.categoryWatch = false;
+        $scope.categoryWatchTab = '';
     };
 
     $scope.resetWatchTopicBtn = function(){
