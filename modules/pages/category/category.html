@@ -78,7 +78,10 @@
 
     </script>
     <div class="main-top-bar">
-        <p>主题管理／项目管理/ {{projectName}}</p>
+        <p>
+            <a href="#project" ng-show="categoryMain"><span class="icon-icon_double_up"></span>返回</a>
+            <a href="" ng-show="categoryWatch" ng-click="return()"><span class="icon-icon_double_up"></span>返回</a>
+            主题管理／项目管理/ {{projectName}}{{categoryWatchTab}}</p>
     </div>
     <div class="main-content clear-padding-top">
         <link rel="import" href="/modules/partial/common/project_tab.html?__inline"/>

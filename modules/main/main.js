@@ -82,10 +82,10 @@ app.service("baseUrl", function (constant, ngDialog,$location) {
         checkTopic: function(input){ //英文 数字 ＃ ＊ 字数限制10
             input = _.trim(input)
             var res = {err:0,msg:''}
-            if(input && input.length > 10){
-                res = {err:1,msg:'主题输入最长为10'}
-            }
-            if(!(/^[a-zA-Z0-9#*/]+$/.test(input))){
+            //if(input && input.length > 10){
+            //    res = {err:1,msg:'主题输入最长为10'}
+            //}
+            if(input && !(/^[a-zA-Z0-9#*/]+$/.test(input))){
                 res = {err:1,msg:'主题限输入英文数字#＊/'}
             }
             return res;
