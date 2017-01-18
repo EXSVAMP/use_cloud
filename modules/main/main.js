@@ -888,6 +888,10 @@ app.controller('ModalCategory', function ($scope, $cookieStore, $uibModalInstanc
                 isValid = false;
                 baseUrl.ngDialog('请填写类别名称')
             }
+            if (!$scope.topic) {
+                isValid = false;
+                baseUrl.ngDialog('请填写主题')
+            }
             if(isValid){
                 var checkTopicRes = baseUrl.checkTopic($scope.topic);
                 if(checkTopicRes.err == 1){
