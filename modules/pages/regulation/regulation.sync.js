@@ -34,6 +34,7 @@ app.register.controller("regulationCtr", function (ngDialog, $scope, $http, $loc
 
     //modify
     $scope.modifyStrategy = function (idx) {
+        console.log('12222111111',$scope.query_result[idx])
         $scope.addstrategy = 'obj-show'
         $scope.$broadcast('addstrategy', {
             method: 'modify',

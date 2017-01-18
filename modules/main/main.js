@@ -958,22 +958,24 @@ app.controller('ModalCategory', function ($scope, $cookieStore, $uibModalInstanc
         console.log('data', data)
         $scope.name = data.name;
         //$scope.topic = data.topic;
-        var stop = $interval(function(){
-            if($scope.subtite_desc){
-                $scope.topic = $scope.subtite_desc + data.topic;
-                $scope.stopCount()
-            }
-        }, 100);
-
-        stop.then(function(){
-            console.log('complete')
-        }, function(err) {
-            console.log('Uh oh, error!', err);
-        });
-
-        $scope.stopCount = function(){
-            $interval.cancel(stop);
-        }
+        //var stop = $interval(function(){
+        //    if($scope.subtite_desc){
+        //        //$scope.topic = $scope.subtite_desc + data.topic;
+        //        $scope.topic = data.topic;
+        //        $scope.stopCount()
+        //    }
+        //}, 100);
+        //
+        //stop.then(function(){
+        //    console.log('complete')
+        //}, function(err) {
+        //    console.log('Uh oh, error!', err);
+        //});
+        //
+        //$scope.stopCount = function(){
+        //    $interval.cancel(stop);
+        //}
+        $scope.topic = data.topic;
         $scope.description = data.description;
 
         var cateName = $scope.name;
@@ -993,7 +995,7 @@ app.controller('ModalCategory', function ($scope, $cookieStore, $uibModalInstanc
             if (isValid) {
                 $scope.params = {
                     name: cateName,
-                    //topic: $scope.topic,
+                    topic: $scope.topic,
                     description: $scope.description
                 }
 
@@ -1445,7 +1447,7 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
     $scope.username = sessionStorage.getItem('loginName');
     console.log('username',$scope.username)
     $scope.numbers = [];
-    $scope.rule_typeArr = [{id:'RabbitMQ',name:'RabbitMQ'},{id:'API',name:'API'}];
+    $scope.rule_typeArr = [{"id":'RabbitMQ',"name":'RabbitMQ'},{"id":'API',"name":'API'}];
     $scope.methodArr = [{id:'GET',name:'GET'},{id:'POST',name:'POST'},{id:'PUT',name:'PUT'},{id:'DELETE',name:'DELETE'},{id:'OPTION',name:'OPTION'}];
     $scope.item = {};
     $scope.instance = {}
@@ -1536,6 +1538,7 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
 
     $scope.$on('addstrategy', function (q, data) {
         $scope.item = data;
+        console.log('$scope.item',$scope.item)
         var isValid = true;
         var invalidMsg = ''
         var nameTemp = ''
@@ -1561,6 +1564,7 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
         })
         var init = function () {
             //$scope.rule_type = {id:'Rabbitmq',name:'Rabbitmq'};
+
             $scope.addTopicList = []; //{exchange:'',queue:false,persist:true,rule_type:''}
             $scope.remainTopicToAddCount = 5;
             $scope.addstrategy_content_topzero = "";
@@ -1592,6 +1596,7 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
         } else if ($scope.item.method == 'modify') {
             init()
             var data = $scope.item.data;
+            console.log('modify',data)
             $scope.name = data.name;
             nameTemp = $scope.name;
             //$scope.instanceTemp = data.instance;
@@ -1599,23 +1604,30 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
             $scope.topicName = $scope.topicName.replace(data.instance.topic,'');
             //$scope.description = data.description;
             console.log(data.api_actuators.length)
+            data.actuator = [];
+            console.log(data.actuator.length,data.actuator)
             data.actuator = data.api_actuators;
+            console.log(data.actuator.length,data.actuator)
             data.actuator = data.actuator.concat(data.rmq_actuators)
+            console.log(data.actuator.length,data.actuator)
             console.log(data.rmq_actuators.length)
             if(data.actuator){
                 $scope.remainTopicToAddCount = $scope.remainTopicToAddCount - data.actuator.length;
             }else{
                 data.actuator = []
             }
-            console.log(data.actuator.length)
+            console.log(data.actuator.length+"---",data.actuator)
             _.forEach(data.actuator, function (value) {
                 //{exchange:'',queue:'',persist:true,rule_type:{id:'Rabbitmq',name:'Rabbitmq'}},{"api":"","method":{id:'GET',name:'GET'},"header":"","rule_type":{id:'Api',name:'Api'}}
                 var topicItem = value;
-                if(value['rule_type'] == 'API'){
+                if(value['rule_type'] == 'API' || value['rule_type']['id'] == 'API'){
                     topicItem['method'] = {id:value['method'],name:value['method']};
+                    topicItem['rule_type'] = {id:'API',name:'API'};
 
+                }else{
+                    topicItem['rule_type'] = {id:'RabbitMQ',name:'RabbitMQ'};
                 }
-                topicItem['rule_type'] = {id:value['rule_type'],name:value['rule_type']};
+                //topicItem['rule_type'] = {id:value['rule_type'],name:value['rule_type']};
                 $scope.addTopicList.push(topicItem)
                 console.log(' $scope.addTopicList344', $scope.addTopicList)
             });

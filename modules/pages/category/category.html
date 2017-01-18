@@ -30,12 +30,23 @@
                     </div>
                 </div>
 
-                <div class="form-group form-group-selin" ng-show="item.method=='modify'">
-                    <div class="input-group">
-                        <span class="input-group-addon bg-white inputdesc">主题</span>
+                <!--<div class="form-group form-group-selin" ng-show="item.method=='modify'">-->
+                    <!--<div class="input-group">-->
+                        <!--<span class="input-group-addon bg-white inputdesc">主题</span>-->
 
-                        <!--<div type="text" class="form-control readonly" ng-bind="topic"></div>-->
-                        <input type="text" class="form-control" placeholder="" ng-model="topic" readonly>
+                        <!--&lt;!&ndash;<div type="text" class="form-control readonly" ng-bind="topic"></div>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<input type="text" class="form-control" placeholder="" ng-model="topic" readonly>&ndash;&gt;-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                <div class="form-group form-group-selin relative col-md-12" ng-show="item.method=='modify'">
+
+                    <div class="subtite_wrap col-md-6">
+                        <span class="subtite_desc">主题</span>
+                        <span class="fixed_sub"><span tooltip-placement="bottom" uib-tooltip="{{subtite_desc}}">{{subtite_desc |characters:20:true}}</span></span>
+                    </div>
+                    <div class="sub_input col-md-6">
+                        <input type="text" class="subinput" placeholder="请输入主题" ng-model="topic"/>
                     </div>
                 </div>
 
@@ -112,7 +123,7 @@
                     <td>{{item.created_at}}</td>
                     <td class="op-btns">
                         <span class="icon-icon_edit edit-icon" ng-click="open('md-add','modify',$index)"></span>
-                        <span class="icon-icon_eye watch-icon" ng-click="watch($index)"></span>
+                        <span class="icon-icon_eye watch-icon" ng-click="watch('tst',$index)"></span>
                         <span class="icon-icon_delete delete-icon" ng-click="open('md-add','delete',$index)"></span>
                     </td>
 
