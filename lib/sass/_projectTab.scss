@@ -146,6 +146,10 @@ $poslist: top right bottom left;
   position: relative;
 }
 
+#dialog {
+  display: none;
+}
+
 .form-group-selin .input-group .readonly {
   width: 331px;
   height: 40px;
