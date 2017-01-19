@@ -1,22 +1,54 @@
 var app = angular.module('RDash');
-app.register.controller("myOrderCtr", function ($scope, $http, $location, $uibModal,$interval,$cookieStore,$cookieStore, baseUrl, $rootScope,utils,$timeout,listService) {
-    $scope.title='工单管理／我的工单';
+app.register.controller("myOrderCtr", function ($scope, $http, $location, $uibModal,$interval,$cookieStore, baseUrl, $rootScope,utils,$timeout,listService,url_junction) {
+    $scope.title = '工单处理／我的工单';
     $scope.params={
         date_start:'',
         date_end:'',
-        state:''
+        state:'',
+        pk:''
     };
-    listService.init($scope,'/api/1/work_order/');
+
     $scope.selections={
-          state:[{name:'test1',value:1},{name:'test2',value:2}]
-    };
-    // utils.getSelection('camera').then(function(data){
-    //     console.log(data);
-    // });
-    $scope.detail=null;
-    $scope.showDetail=function(data){
-        $scope.detail=data;
+        order_state:{},
+        order_type:{}
+    }
+
+    $scope.date_change = function(elem,dateType){
+        $scope.params[dateType] = elem.value
+        $scope.$apply()
+    }
+
+    utils.getSelection('work_order').then(function(data){
+        $scope.selections=data;
+    });
+    listService.init($scope,'/api/1/work_order/',{
+        fieldSet:{
+            message:''
+        }
+    });
+    $scope.refresh();
+    $scope.afterShowData = function(){
         $scope.title = '工单管理／我的工单/工单详情';
+        $http.get(baseUrl.getUrl()+'/api/1/work_order/msg/'+url_junction.getQuery({order_id:$scope.detail.id,is_page:0})).success(function(data){
+            $scope.msgs = data.data;
+            $timeout(function(){
+                var msgsView = angular.element('.detail-center-area.order-list');
+                msgsView.scrollTop(msgsView[0].scrollHeight);
+            });
+        });
+    }
+    $scope.submit=function(){
+        var params = $scope.fieldSet;
+        params.order_id = $scope.detail.id;
+        $http.post(baseUrl.getUrl()+'/api/1/work_order/msg/',params).success(function(res){
+            $scope.afterShowData();
+            $scope.reset();
+        });
+    }
+    $scope.closeOrder = function(){
+        $http.put(baseUrl.getUrl()+'/api/1/work_order/'+$scope.detail.id+'/',{pk:$scope.detail.id}).success(function(res){
+            $scope.back();
+        });
     }
     $timeout(function(){
         $('.date-picker').datepicker({

@@ -14,16 +14,17 @@
                 </div>
             </div>
             <!--<div class="form-group form-group-selin">-->
-                <!--<div class="input-group">-->
-                    <!--<span class="input-group-addon bg-white inputdesc">实例类别</span>-->
-                    <!--<input type="text" class="form-control" placeholder="选择实例类型" ng-model="classification">-->
-                <!--</div>-->
+            <!--<div class="input-group">-->
+            <!--<span class="input-group-addon bg-white inputdesc">实例类别</span>-->
+            <!--<input type="text" class="form-control" placeholder="选择实例类型" ng-model="classification">-->
+            <!--</div>-->
             <!--</div>-->
 
             <div class="form-group form-group-selin ">
                 <div class="input-group input-group-select" style="width:auto;">
                     <span class="input-group-addon bg-white inputdesc">实例类别</span>
-                    <ui-select ng-model="classification.name" style="width:331px;" name="classification" theme="bootstrap" on-select="setShowNum(classification.name)">
+                    <ui-select ng-model="classification.name" style="width:331px;" name="classification"
+                               theme="bootstrap" on-select="setShowNum(classification.name)">
                         <ui-select-match placeholder="选择实例类型">{{$select.selected.name}}</ui-select-match>
                         <ui-select-choices repeat="item in numbers">
                             <div ng-bind-html="item.name"></div>
@@ -32,7 +33,7 @@
                     </ui-select>
                 </div>
                 <!--<button type="button" class="select_addBtn" ng-click="selectAdd()">-->
-                    <!--<span class="icon-icon_plus"></span>-->
+                <!--<span class="icon-icon_plus"></span>-->
                 <!--</button>-->
             </div>
 
@@ -43,53 +44,57 @@
                 </div>
             </div>
             <div class="addTopicListWrap">
-                <div  ng-repeat="item2 in addTopicList">
-                <!--<div class="form-group form-group-selin relative">-->
+                <div ng-repeat="item2 in addTopicList">
+                    <!--<div class="form-group form-group-selin relative">-->
                     <!--<div class="input-group">-->
-                        <!--<span class="input-group-addon  bg-white inputdesc">主题</span>-->
-                        <!--<input type="text" class="form-control" placeholder="请输入主题" ng-model="addTopicList[$index]['name']" >-->
+                    <!--<span class="input-group-addon  bg-white inputdesc">主题</span>-->
+                    <!--<input type="text" class="form-control" placeholder="请输入主题" ng-model="addTopicList[$index]['name']" >-->
                     <!--</div>-->
                     <!--<div class="addTopicFlag"></div>-->
-                <!--</div>-->
-                    <div class="form-group form-group-selin relative col-md-12">
-                        <div class="subtite_wrap col-md-6" >
+                    <!--</div>-->
+                    <div class="form-group form-group-selin relative col-md-12" ng-show="!item2.delete">
+                        <div class="subtite_wrap col-md-6">
                             <span class="subtite_desc">主题</span>
                             <span class="fixed_sub"><span tooltip-placement="bottom" uib-tooltip="{{subtite_desc}}">{{subtite_desc |characters:20:true}}</span></span>
                         </div>
                         <div class="sub_input col-md-6">
-                            <input type="text" class="subinput"  placeholder="请输入主题" ng-model="addTopicList[$index]['name']"/>
+                            <input type="text" class="subinput" placeholder="请输入主题"
+                                   ng-model="addTopicList[$index]['name']"/>
                         </div>
                         <div class="addTopicFlag"></div>
                     </div>
-                <div class="form-group form-group-selin">
-                    <div class="input-group">
-                        <span class="input-group-addon bg-white inputdesc">权限</span>
+                    <div class="form-group form-group-selin" ng-show="!item2.delete">
+                        <div class="input-group">
+                            <span class="input-group-addon bg-white inputdesc">权限</span>
 
-                        <div class="stategy-rights">
-                            <input type="checkbox" name="topicrightssel{{$index}}" ng-click="addPS($index,'p')" ng-checked="addTopicList[$index]['p']"/>
-                            <span>发布</span>
-                            <span class="strategy-topic-flag" ng-show="addTopicList[$index]['p']">P</span>
+                            <div class="stategy-rights">
+                                <input type="checkbox" name="topicrightssel{{$index}}" ng-click="addPS($index,'p')"
+                                       ng-checked="addTopicList[$index]['p']"/>
+                                <span>发布</span>
+                                <span class="strategy-topic-flag" ng-show="addTopicList[$index]['p']">P</span>
 
-                            <input type="checkbox" name="topicrightssel{{$index}}" class="margin-left-20" ng-click="addPS($index,'s')" ng-checked="addTopicList[$index]['s']"/>
-                            <span>订阅</span>
-                            <span class="strategy-topic-flag" ng-show="addTopicList[$index]['s']">S</span>
+                                <input type="checkbox" name="topicrightssel{{$index}}" class="margin-left-20"
+                                       ng-click="addPS($index,'s')" ng-checked="addTopicList[$index]['s']"/>
+                                <span>订阅</span>
+                                <span class="strategy-topic-flag" ng-show="addTopicList[$index]['s']">S</span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-group form-group-selin" ng-show="!item2.delete">
+                        <div class="delTopic" ng-click="delTopicFunc($index)">
+                            <div class="delTopicIcon"></div>
                         </div>
                     </div>
-
                 </div>
-                <div class="form-group form-group-selin">
-                    <div class="delTopic" ng-click="delTopicFunc($index)">
-                        <div class="delTopicIcon"></div>
-                    </div>
-                </div>
-                    </div>
             </div>
 
             <div class="form-group form-group-selin relative margin-top-20">
-                <fieldset class="addTopic" ng-click="addTopicFunc()"  ng-disabled="remainTopicToAddCount==0">
+                <fieldset class="addTopic" ng-click="addTopicFunc()" ng-disabled="remainTopicToAddCount==0">
                     <div class="icon-icon_plus addTopicIcon"></div>
                 </fieldset>
                 <span class="remainTopicToAdd margin-left-10">（还可添加{{remainTopicToAddCount}}个）</span>
+
                 <div class="addTopicFlag"></div>
             </div>
 
