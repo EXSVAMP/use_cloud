@@ -718,6 +718,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
                     $http.post(baseUrl+"/api/1/topic/identity/",query_url).success(function(data){
                         if(data.code==200){
                             $scope.item.scope.submit_search();
+                            $scope.item.scope.optipShow(1, '操作成功')
                             $scope.cancel();
                         };
                     }).error(function(){
@@ -757,6 +758,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
                                 if (data.code == "200") {
                                     $scope.params.strategyId=data.data.id;
                                     $scope.get_strategyList();
+                                    $scope.item.scope.optipShow(1, '操作成功')
                                     $scope.cancel_strategy();
 
                                 }
@@ -815,6 +817,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
                     $http.put(baseUrl+"/api/1/topic/identity/"+$scope.identity_id+"/",query_url).success(function(data){
                          if(data.code==200){
                              $scope.item.scope.submit_search();
+                             $scope.item.scope.optipShow(1, '操作成功')
                              $scope.cancel();
                          }
                     })
@@ -854,6 +857,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
         $http.delete(baseUrl+"/api/1/topic/identity/"+id+"/").success(function(data){
             if(data.code=="200"){
                 $scope.item.scope.submit_search();
+                $scope.item.scope.optipShow(1, '操作成功')
                 $scope.cancel();
             }
 

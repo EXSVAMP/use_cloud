@@ -1,6 +1,6 @@
 
 var app = angular.module('RDash');
-app.register.controller("identityCtr", function ($scope, $http, $location, $uibModal,$interval,$cookieStore, baseUrl, url_junction,$rootScope,utils,PageHandle) {
+app.register.controller("identityCtr", function ($scope, $http, $location, $uibModal,$interval,$cookieStore, baseUrl,$timeout, url_junction,$rootScope,utils,PageHandle) {
     var BaseUrl = baseUrl.getUrl();
     var urlData = $location.search();
     $scope.projectName = urlData.projectName;
@@ -66,6 +66,22 @@ app.register.controller("identityCtr", function ($scope, $http, $location, $uibM
     $scope.$on('addidentityclose',function(){
         $scope.cover='obj-hide'
     })
+    $scope.optip = 'obj-hide'
+
+    $scope.optipHide = function () {
+        $timeout(function () {
+            $scope.optip = 'obj-hide'
+        }, 1000)
+    }
+
+    $scope.optipShow = function (iFlag, message) {
+        if(iFlag == 1){//成功返回
+            $scope.$broadcast('optip', {flag: iFlag, msg: message});
+            $scope.optip = 'obj-show'
+            $scope.optipHide()
+        }
+
+    }
     $scope.cover="obj-hide";
    $scope.open=function(method,item){
        $scope.cover='obj-show';
