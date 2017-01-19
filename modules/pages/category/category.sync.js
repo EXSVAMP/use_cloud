@@ -28,9 +28,11 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
     }
 
     $scope.optipShow = function (iFlag, message) {
-        $scope.$broadcast('optip', {flag: iFlag, msg: message});
-        $scope.optip = 'obj-show'
-        $scope.optipHide()
+        if(iFlag == 1){
+            $scope.$broadcast('optip', {flag: iFlag, msg: message});
+            $scope.optip = 'obj-show'
+            $scope.optipHide()
+        }
     }
 
     // console.log("<========>"+$location.path());
@@ -42,7 +44,7 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
     $scope.bigCurrentPage = 1;
     $scope.numbers = [10, 20, 30, 40, 50];
     $scope.bigCurrentPage = 1;
-    $scope.query_result = []
+    //$scope.query_result = []
     $scope.category_nameTemp = ''
     var BaseUrl = baseUrl.getUrl();
 
@@ -76,7 +78,8 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
             }
         }).error(function (data, state) {
             if (state == 403) {
-                BaseUrl.redirect()
+                //BaseUrl.redirect()
+                baseUrl.redirect('没有权限,即将跳转到登录页')
             }
         })
 
@@ -253,7 +256,7 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
 
     //$scope.wsFunc3();
     console.log('test')
-    $scope.watch = function (test,idx) {
+    $scope.categoryWatchFunc = function () {
         console.log('watch')
         $scope.categoryMain = false;
         $scope.categoryWatch = true;

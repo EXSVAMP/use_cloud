@@ -16,9 +16,11 @@ app.register.controller("regulationCtr", function (ngDialog, $scope, $http, $loc
     }
 
     $scope.optipShow = function (iFlag, message, func) {
-        $scope.$broadcast('optip', {flag: iFlag, msg: message});
-        $scope.optip = 'obj-show'
-        $scope.optipHide(func)
+        if(iFlag == 1){
+            $scope.$broadcast('optip', {flag: iFlag, msg: message});
+            $scope.optip = 'obj-show'
+            $scope.optipHide(func)
+        }
 
     }
 
@@ -73,9 +75,10 @@ app.register.controller("regulationCtr", function (ngDialog, $scope, $http, $loc
         }).error(function (data, state) {
             if (state == 403) {
                 //BaseUrl.redirect()
-                $scope.optipShow(0, "没有权限", function () {
-                    window.location.href = baseUrl.getServerUrl() + '/login.html'
-                })
+                //$scope.optipShow(0, "没有权限", function () {
+                //    window.location.href = baseUrl.getServerUrl() + '/login.html'
+                //})
+                baseUrl.redirect('没有权限,即将跳转到登录页')
             }
         })
     }
@@ -92,7 +95,7 @@ app.register.controller("regulationCtr", function (ngDialog, $scope, $http, $loc
     $scope.bigCurrentPage = 1;
     $scope.numbers = [10, 20, 30, 40, 50];
     $scope.bigCurrentPage = 1;
-    $scope.query_result = []
+    //$scope.query_result = []
     $scope.regulation_nameTmp = ''
     var BaseUrl = baseUrl.getUrl();
 
@@ -127,9 +130,10 @@ app.register.controller("regulationCtr", function (ngDialog, $scope, $http, $loc
         }).error(function (data, state) {
             if (state == 403) {
                 //BaseUrl.redirect()
-                $scope.optipShow(0, "没有权限", function () {
-                    window.location.href = baseUrl.getServerUrl() + '/login.html'
-                })
+                //$scope.optipShow(0, "没有权限", function () {
+                //    window.location.href = baseUrl.getServerUrl() + '/login.html'
+                //})
+                baseUrl.redirect('没有权限,即将跳转到登录页')
             }
         })
 
