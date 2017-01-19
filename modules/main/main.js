@@ -848,7 +848,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
                             baseUrl.ngDialog("请选择权限");
                         }
                         if(!$scope.get_validate_same()){
-                            baseUrl.ngDialog("主题名请不要相同");
+                            baseUrl.ngDialog("主题名称请不要相同");
                         }
 
                     }
