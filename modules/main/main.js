@@ -1400,7 +1400,8 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
                         console.log('value', value['pubsub'])
                         if (isTopicInvalid && !value['delete'] && !value['pubsub']) {
                             isValid = false;
-                            invalidMsg = '主题权限必选'
+                            //invalidMsg = '主题权限必选'
+                            invalidMsg = '请选择权限'
                             isTopicInvalid = false
                         }
                     });
@@ -1412,7 +1413,8 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
 
                 if (isValid && baseUrl.dupInObjArr('name', $scope.addTopicList)) {
                     isValid = false;
-                    invalidMsg = '主题不能重复'
+                    //invalidMsg = '主题不能重复'
+                    invalidMsg = '主题名称不能相同'
                 }
 
                 if (isValid) {
