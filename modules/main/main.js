@@ -1721,7 +1721,19 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
             nameTemp = $scope.name;
             //$scope.instanceTemp = data.instance;
             $scope.topicName = data.topic;
-            $scope.topicName = $scope.topicName.replace(data.instance.topic,'');
+            console.log('topicName',$scope.topicName)
+            console.log('data.instance.topic',data.instance.topic)
+            var instanceTopic = data.instance.topic;
+            if(instanceTopic.endsWith('/')){
+                instanceTopic = instanceTopic.substring(0,instanceTopic.length-1)
+            }
+            if($scope.topicName == instanceTopic || $scope.topicName == data.instance.topic){
+                $scope.topicName = ''
+            }else{
+                $scope.topicName = $scope.topicName.replace(data.instance.topic,'');
+            }
+
+            console.log('topicName',$scope.topicName)
             //$scope.description = data.description;
             console.log(data.api_actuators.length)
             data.actuator = [];

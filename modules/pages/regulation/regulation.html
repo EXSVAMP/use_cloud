@@ -167,7 +167,9 @@
                         exchange
                     </li>
                     <li>
-                        {{item.exchange}}
+                         <span tooltip-placement="bottom" uib-tooltip="{{item.exchange}}" style="display:inline-block;">
+                        {{item.exchange |characters:40:true}}
+                    </span>
                     </li>
                 </ul>
                 <ul class="regulation-detail-item relative" ng-show="item.rule_type == 'RabbitMQ'">
