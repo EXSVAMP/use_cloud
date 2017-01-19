@@ -385,49 +385,63 @@ app.controller("headerCtrl", function ($scope, $cookieStore, $http, $uibModal, b
     //devdoc
     $scope.current_devdoc_btn = '0'
     $scope.devdoc_btn = {
-        0:true,
-        1:false,
-        2:false,
-        3:false,
-        4:false,
-        5:false
-
+        //0:true,
+        //1:false,
+        //2:false,
+        //3:false,
+        //4:false,
+        //5:false
+        0:{active:true,tab_active:0},
+        1:{active:false,tab_active:0},
+        2:{active:false,tab_active:0},
+        3:{active:false,tab_active:0},
+        4:{active:false,tab_active:0},
+        5:{active:false,tab_active:0}
     }
 
     $scope.devdoc_btn_click = function(idx){
         if($scope.current_devdoc_btn != idx){
             for (i in $scope.devdoc_btn) {
                 if (i == idx) {
-                    $scope.devdoc_btn[i] = true;
+                    $scope.devdoc_btn[i]['active'] = true;
                 } else {
-                    $scope.devdoc_btn[i] = false
+                    $scope.devdoc_btn[i]['active'] = false
                 }
             }
 
-            $scope.devdoc_tab_click('0')
+            $scope.devdoc_tab_click(idx,'0')
             $scope.current_devdoc_btn = idx;
         }
     }
 
     $scope.devdoc_tab = {
-        0:true,
-        1:false,
-        2:false,
-        3:false,
-        4:false,
-        5:false,
-        6:false
+        //0:true,
+        //1:false,
+        //2:false,
+        //3:false,
+        //4:false,
+        //5:false,
+        //6:false
 
+        0:['注册账号','用户资料','如何创建物接入','如何创建物解析','如何创建规则','如何使用时序数据库','查看个人主页'],
+        1:['物接入示例','物解析示例','规则创建示例','时序数据库示例'],
+        2:['RFID射频卡','RFID接收器','网络摄像头','智能地磅','自定义硬件'],
+        3:['直播控制客户端','盒子客户端'],
+        4:['物接入API','物管理API'],
+        5:['物接入SDK','物管理SDK']
     }
 
-    $scope.devdoc_tab_click = function(idx){
-        for (i in $scope.devdoc_tab) {
-            if (i == idx) {
-                $scope.devdoc_tab[i] = true;
-            } else {
-                $scope.devdoc_tab[i] = false
-            }
-        }
+    $scope.devdoc_tab_click = function(fathterIdx,idx){
+        //for (i in $scope.devdoc_tab) {
+        //    if (i == idx) {
+        //        $scope.devdoc_tab[$scope.current_devdoc_btn][i] = true;
+        //    } else {
+        //        $scope.devdoc_tab[i] = false
+        //    }
+        //}
+        console.log(fathterIdx)
+        $scope.devdoc_btn[fathterIdx]['tab_active'] = idx;
+
     }
 
 })
@@ -1230,6 +1244,7 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
             //$scope.classification = {};
             //$scope.topic = data.topic;
             $scope.description = '';
+            $scope.addTopicFunc(1)//策略必须得有一个主题 1表示existone为1
 
             $timeout(function () {
                 if (angular.element('#addstrategy-content').height() >= angular.element(window).height()) {
@@ -1333,13 +1348,29 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
                     });
                 }
 
-                if (isValid) {
-                    topicEmpty()
+                var topicRightTell = function () {
+                    var isTopicInvalid = true;
+                    _.forEach($scope.addTopicList, function (value) {
+                        console.log('value', value['pubsub'])
+                        if (isTopicInvalid && !value['delete'] && !value['pubsub']) {
+                            isValid = false;
+                            invalidMsg = '主题权限必选'
+                            isTopicInvalid = false
+                        }
+                    });
                 }
+
+                //if (isValid) {
+                //    topicEmpty()
+                //}
 
                 if (isValid && baseUrl.dupInObjArr('name', $scope.addTopicList)) {
                     isValid = false;
                     invalidMsg = '主题不能重复'
+                }
+
+                if (isValid) {
+                    topicRightTell()
                 }
 
                 if (!isValid) {
@@ -1419,7 +1450,7 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
             $scope.addTopicList[idx]['pubsub'] += type
         }
     }
-    $scope.addTopicFunc = function () {
+    $scope.addTopicFunc = function (existone) {
         $scope.remainTopicToAddCount--;
         if($scope.item.method == 'add'){
             $scope.addTopicList.push({p: false, s: false, name: '', pubsub: ''})
