@@ -496,10 +496,10 @@ app.controller("sideBarCtrl", function ($scope, $cookieStore, $http, $uibModal, 
 
     }
     var BaseUrl=baseUrl.getUrl();
-    $scope.emailCount="";
-    $http.get(BaseUrl+"/api/1/admin/message/").success(function(data){
+    $scope.emailCount=0;
+    $http.get(BaseUrl+"/api/1/message/count/?status=0").success(function(data){
         if(data.code==200){
-            $scope.emailCount=data.pageinfo.total_number;
+            $scope.emailCount=data.data;
         }
     })
     // var username = sessionStorage.getItem("loginName");
