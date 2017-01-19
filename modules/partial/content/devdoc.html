@@ -4,35 +4,17 @@
 </div>
 <div class="width-content margin-auto height-auto">
     <div class="btn-group devdocbtn-group margin-bottom-20">
-        <button type="button" class="btn btn-default devdocbtn" ng-class="{true:'active',false:''}[devdoc_btn['0']]" ng-click="devdoc_btn_click('0')">快速开始</button>
-        <button type="button" class="btn btn-default devdocbtn" ng-class="{true:'active',false:''}[devdoc_btn['1']]" ng-click="devdoc_btn_click('1')">开发实例</button>
-        <button type="button" class="btn btn-default devdocbtn" ng-class="{true:'active',false:''}[devdoc_btn['2']]" ng-click="devdoc_btn_click('2')">智能硬件</button>
-        <button type="button" class="btn btn-default devdocbtn" ng-class="{true:'active',false:''}[devdoc_btn['3']]" ng-click="devdoc_btn_click('3')">客户端下载</button>
-        <button type="button" class="btn btn-default devdocbtn" ng-class="{true:'active',false:''}[devdoc_btn['4']]" ng-click="devdoc_btn_click('4')">API文档</button>
-        <button type="button" class="btn btn-default devdocbtn" ng-class="{true:'active',false:''}[devdoc_btn['5']]" ng-click="devdoc_btn_click('5')">SDK文档</button>
+        <button type="button" class="btn btn-default devdocbtn" ng-class="{true:'active',false:''}[devdoc_btn['0']['active']]" ng-click="devdoc_btn_click('0')">快速开始</button>
+        <button type="button" class="btn btn-default devdocbtn" ng-class="{true:'active',false:''}[devdoc_btn['1']['active']]" ng-click="devdoc_btn_click('1')">开发实例</button>
+        <button type="button" class="btn btn-default devdocbtn" ng-class="{true:'active',false:''}[devdoc_btn['2']['active']]" ng-click="devdoc_btn_click('2')">智能硬件</button>
+        <button type="button" class="btn btn-default devdocbtn" ng-class="{true:'active',false:''}[devdoc_btn['3']['active']]" ng-click="devdoc_btn_click('3')">客户端下载</button>
+        <button type="button" class="btn btn-default devdocbtn" ng-class="{true:'active',false:''}[devdoc_btn['4']['active']]" ng-click="devdoc_btn_click('4')">API文档</button>
+        <button type="button" class="btn btn-default devdocbtn" ng-class="{true:'active',false:''}[devdoc_btn['5']['active']]" ng-click="devdoc_btn_click('5')">SDK文档</button>
     </div>
     <div class="devdoc-cont margin-bottom-20">
         <ul class="pull-left devdoc-cont-tab">
-            <li ng-class="{true:'active',false:''}[devdoc_tab['0']]" ng-click="devdoc_tab_click('0')">
-                <span class="relative">注册账号<div class="active-border"></div></span>
-            </li>
-            <li ng-class="{true:'active',false:''}[devdoc_tab['1']]" ng-click="devdoc_tab_click('1')">
-                <span class="relative">用户资料<div class="active-border"></div></span>
-            </li>
-            <li ng-class="{true:'active',false:''}[devdoc_tab['2']]" ng-click="devdoc_tab_click('2')">
-                <span class="relative">如何创建物接入<div class="active-border"></div></span>
-            </li>
-            <li ng-class="{true:'active',false:''}[devdoc_tab['3']]" ng-click="devdoc_tab_click('3')">
-                <span class="relative">如何创建物解析<div class="active-border"></div></span>
-            </li>
-            <li ng-class="{true:'active',false:''}[devdoc_tab['4']]" ng-click="devdoc_tab_click('4')">
-                <span class="relative">如何创建规则<div class="active-border"></div></span>
-            </li>
-            <li ng-class="{true:'active',false:''}[devdoc_tab['5']]" ng-click="devdoc_tab_click('5')">
-                <span class="relative">如何使用时序数据库<div class="active-border"></div></span>
-            </li>
-            <li ng-class="{true:'active',false:''}[devdoc_tab['6']]" ng-click="devdoc_tab_click('6')">
-                <span class="relative">查看个人主页<div class="active-border"></div></span>
+            <li ng-class="{true:'active',false:''}[devdoc_btn[current_devdoc_btn]['tab_active']==$index]" ng-click="devdoc_tab_click(current_devdoc_btn,$index)" ng-repeat="item in devdoc_tab[current_devdoc_btn]">
+            <span class="relative">{{item}}<div class="active-border"></div></span>
             </li>
         </ul>
         <div class="pull-left devdoc-cont-info">
