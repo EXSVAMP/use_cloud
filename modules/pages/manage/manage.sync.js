@@ -16,9 +16,9 @@ app.register.controller("manageCtr", function ($scope, $http, $location, $uibMod
        }
 
    })
-  $http.get(BaseUrl+"/api/1/admin/message/").success(function(data){
+  $http.get(BaseUrl+"/api/1/message/count/?status=0").success(function(data){
       if(data.code==200){
-          $scope.params.emailCount=data.pageinfo.total_number;
+          $scope.params.emailCount=data.data;
       }
   })
  $http.get(BaseUrl+"/api/1/user/login").success(function(data){
@@ -28,7 +28,11 @@ app.register.controller("manageCtr", function ($scope, $http, $location, $uibMod
      }
  })
 
-
+$http.get(BaseUrl+"/api/1/homepage/count").success(function(data){
+    if(data.code==200){
+        $scope.query_result=data.data;
+    }
+})
 
 
 

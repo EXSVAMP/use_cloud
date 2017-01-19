@@ -30,46 +30,16 @@
           <span>所有服务</span>
        </div>
         <div class="service_wrap">
-            <div class="service_detail_single">
+            <div class="service_detail_single" ng-repeat="item in query_result">
                <span class="icon-icon_theme"></span>
-                <p class="service_desc">主题管理</p>
+                <p class="service_desc">{{item.name}}</p>
                 <p class="service_desc_count">
                     <span>实例总数</span>
-                    <span class="service_count">（2）</span>
+                    <span class="service_count">（{{item.total}}）</span>
                 </p>
             </div>
-            <div class="service_detail_single">
-                <span class="icon-icon_theme"></span>
-                <p class="service_desc">主题管理</p>
-                <p class="service_desc_count">
-                    <span>实例总数</span>
-                    <span class="service_count">（2）</span>
-                </p>
-            </div>
-            <div class="service_detail_single">
-                <span class="icon-icon_theme"></span>
-                <p class="service_desc">主题管理</p>
-                <p class="service_desc_count">
-                    <span>实例总数</span>
-                    <span class="service_count">（2）</span>
-                </p>
-            </div>
-            <div class="service_detail_single">
-                <span class="icon-icon_theme"></span>
-                <p class="service_desc">主题管理</p>
-                <p class="service_desc_count">
-                    <span>实例总数</span>
-                    <span class="service_count">（2）</span>
-                </p>
-            </div>
-            <div class="service_detail_single">
-                <span class="icon-icon_theme"></span>
-                <p class="service_desc">主题管理</p>
-                <p class="service_desc_count">
-                    <span>实例总数</span>
-                    <span class="service_count">（2）</span>
-                </p>
-            </div>
+
+
             <div class="service_detail_single single_more">
                 <span class="icon-icon_more"></span>
                 <p class="service_desc wait">敬请期待</p>
