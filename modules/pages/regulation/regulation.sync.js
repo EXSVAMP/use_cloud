@@ -161,20 +161,7 @@ app.register.controller("regulationCtr", function (ngDialog, $scope, $http, $loc
             size: size,
             resolve: {
                 items: function () {
-                    if (method == "add") {
-                        return {
-                            title: "添加规则",
-                            method: "add",
-                            scope: $scope
-                        }
-                    } else if (method == "modify") {
-                        return {
-                            title: "编辑规则",
-                            method: "modify",
-                            scope: $scope,
-                            data: $scope.query_result[index]
-                        }
-                    } else if (method == "delete") {
+                    if (method == "delete") {
                         return {
                             title: "删除规则",
                             method: "delete",

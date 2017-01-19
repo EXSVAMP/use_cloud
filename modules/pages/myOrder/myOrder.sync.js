@@ -7,10 +7,17 @@ app.register.controller("myOrderCtr", function ($scope, $http, $location, $uibMo
         state:'',
         pk:''
     };
+
     $scope.selections={
         order_state:{},
         order_type:{}
     }
+
+    $scope.date_change = function(elem,dateType){
+        $scope.params[dateType] = elem.value
+        $scope.$apply()
+    }
+
     utils.getSelection('work_order').then(function(data){
         $scope.selections=data;
     });

@@ -3,15 +3,16 @@
         <label class="main-title">
             <a class="font-blue" style="margin-right:10px;" ng-click="back()" ng-show="step!=0"><<返回</a>{{title}}
         </label>
+        ----------start{{params.date_start}},end{{params.date_end}}
         <div ng-show="step==0">
             <div class="search-area">
                 <div class="search-bar">
                     <div><label>时间</label></div>
                     <div><input type="text" class="normal date-picker" data-date-format="yyyy-mm-dd"
-                                ng-model="params.date_start" placeholder="请选择"/></div>
+                                ng-model="params.date_start" placeholder="请选择" onchange="angular.element(this).scope().date_change(this,'date_start');"/></div>
                     <div><label>至</label></div>
                     <div><input type="text" class="normal date-picker" data-date-format="yyyy-mm-dd"
-                                ng-model="params.date_end" placeholder="请选择"/></div>
+                                ng-model="params.date_end" placeholder="请选择" onchange="angular.element(this).scope().date_change(this,'date_end');"/></div>
                 </div>
                 <!--<div class="search-bar">-->
                     <!--<div><label>状态{{parmas.state}}</label></div>-->

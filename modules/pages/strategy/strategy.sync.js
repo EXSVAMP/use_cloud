@@ -138,20 +138,7 @@ app.register.controller("strategyCtr", function (ngDialog, $scope, $http, $locat
             size: size,
             resolve: {
                 items: function () {
-                    if (method == "add") {
-                        return {
-                            title: "添加策略",
-                            method: "add",
-                            scope: $scope
-                        }
-                    } else if (method == "modify") {
-                        return {
-                            title: "编辑策略",
-                            method: "modify",
-                            scope: $scope,
-                            data: $scope.query_result[index]
-                        }
-                    } else if (method == "delete") {
+                    if (method == "delete") {
                         return {
                             title: "删除策略",
                             method: "delete",
