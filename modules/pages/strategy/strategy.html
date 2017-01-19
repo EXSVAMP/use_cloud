@@ -5,43 +5,6 @@
             <p>{{item.title}}</p>
             <span class="icon-icon_close_circle_o category-pop-close" ng-click="cancel()"></span>
         </div>
-        <div ng-show="item.method=='add' || item.method=='modify'">
-            <div class="modal-body">
-                <div class="form-group form-group-selin form-group-category">
-                    <div class="input-group">
-                        <span class="input-group-addon bg-white inputdesc">类别名称</span>
-                        <input type="text" class="form-control" placeholder="请输入类别名称" ng-model="name">
-                    </div>
-                </div>
-                <div class="form-group form-group-selin" ng-show="item.method=='add'">
-                    <div class="input-group">
-                        <span class="input-group-addon bg-white inputdesc">主题</span>
-                        <input type="text" class="form-control" placeholder="请输入主题" ng-model="topic">
-                    </div>
-                </div>
-
-                <div class="form-group form-group-selin" ng-show="item.method=='modify'">
-                    <div class="input-group">
-                        <span class="input-group-addon bg-white inputdesc">主题</span>
-                        <div type="text" class="form-control readonly" ng-bind="topic"></div>
-                    </div>
-                </div>
-                <div class="form-group form-group-selin margin-bottom-30">
-                    <div class="input-group">
-                        <span class="input-group-addon bg-white inputdesc">简述</span>
-                        <input type="text" class="form-control" placeholder="请输入内容" ng-model="description">
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal-footer modal-footer-category">
-                <div>
-                    <button type="button" class="btn btn_ok" ng-click="cancel()">取消</button>
-                    <button type="button" class="btn btn_cancel" ng-click="ok()">保存</button>
-                </div>
-            </div>
-
-        </div>
 
         <div ng-show="item.method == 'delete'">
             <div class="modal-body">
@@ -92,7 +55,7 @@
                 <td>
 
                     <p ng-repeat="topic in item.topics" class="strategy-topic text-start"><span class="strategy-topic-flag" ng-show="topic.pubsub=='subscribe' || topic.pubsub=='pubsub' || topic.pubsub=='publish'">{{topic.pubsub | pubsub}}</span><span
-                            class="strategy-topic-text">{{topic.name}}</span></p>
+                            class="strategy-topic-text">{{topic | strategy_topic}}</span></p>
 
                     <!--<p class="strategy-topic"><span class="strategy-topic-flag">sp</span><span-->
                             <!--class="strategy-topic-text">1234567/a6a84b9c-d704-11e6-92a8-000c29da3805/client</span></p>-->

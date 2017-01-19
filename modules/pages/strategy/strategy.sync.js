@@ -34,9 +34,12 @@ app.register.controller("strategyCtr", function (ngDialog, $scope, $http, $locat
     }
 
     $scope.optipShow = function (iFlag, message) {
-        $scope.$broadcast('optip', {flag: iFlag, msg: message});
-        $scope.optip = 'obj-show'
-        $scope.optipHide()
+        if(iFlag == 1){//成功返回
+            $scope.$broadcast('optip', {flag: iFlag, msg: message});
+            $scope.optip = 'obj-show'
+            $scope.optipHide()
+        }
+
     }
 
     //add
@@ -71,7 +74,7 @@ app.register.controller("strategyCtr", function (ngDialog, $scope, $http, $locat
     $scope.bigCurrentPage = 1;
     $scope.numbers = [10, 20, 30, 40, 50];
     $scope.bigCurrentPage = 1;
-    $scope.query_result = []
+    //$scope.query_result = []
     $scope.strategy_nameTemp = ''
     var BaseUrl = baseUrl.getUrl();
 
@@ -106,7 +109,8 @@ app.register.controller("strategyCtr", function (ngDialog, $scope, $http, $locat
             }
         }).error(function (data, state) {
             if (state == 403) {
-                BaseUrl.redirect()
+                //BaseUrl.redirect()
+                baseUrl.redirect('没有权限,即将跳转到登录页')
             }
         })
 

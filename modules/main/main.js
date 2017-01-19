@@ -22,7 +22,7 @@ app.config(function ($httpProvider) {
 
 });
 
-app.service("baseUrl", function (constant, ngDialog,$location) {
+app.service("baseUrl", function (constant, ngDialog, $location, $timeout) {
     var url = constant.url;
     return {
         getUrl: function () {
@@ -98,6 +98,14 @@ app.service("baseUrl", function (constant, ngDialog,$location) {
                 res = {err:1,msg:'主题限输入英文数字#＊/'}
             }
             return res;
+        },
+        redirect: function(sAlert){
+            $('#dialog').show()
+            $('#dialog p').html(sAlert)
+            $timeout(function(){
+                $('#dialog').fadeOut()
+                window.location.href = baseUrl.getServerUrl() + '/login.html'
+            },1000)
         }
 
     }
@@ -186,6 +194,26 @@ app.filter("booleanToString", function () {
             input = '否';
         }
         return input;
+    }
+});
+
+app.filter("strategy_topic", function () {
+    return function (input) {
+
+        var father = input.father;
+        var name = input.name;
+        if(father){
+            if(name){
+                var splitVar = '/';
+                if(father.endsWith(splitVar)){
+                    splitVar = '';
+                }
+                name = father+splitVar+name;
+            }else{
+                name = father;
+            }
+        }
+        return name;
     }
 });
 
@@ -957,28 +985,28 @@ app.controller('ModalCategory', function ($scope, $cookieStore, $uibModalInstanc
         var data = items.data;
         console.log('data', data)
         $scope.name = data.name;
+        var cateName = $scope.name;
         //$scope.topic = data.topic;
-        //var stop = $interval(function(){
-        //    if($scope.subtite_desc){
-        //        //$scope.topic = $scope.subtite_desc + data.topic;
-        //        $scope.topic = data.topic;
-        //        $scope.stopCount()
-        //    }
-        //}, 100);
-        //
-        //stop.then(function(){
-        //    console.log('complete')
-        //}, function(err) {
-        //    console.log('Uh oh, error!', err);
-        //});
-        //
-        //$scope.stopCount = function(){
-        //    $interval.cancel(stop);
-        //}
-        $scope.topic = data.topic;
+        var stop = $interval(function(){
+            if($scope.subtite_desc){
+                $scope.topic = $scope.subtite_desc + data.topic;
+                //$scope.topic = data.topic;
+                $scope.stopCount()
+            }
+        }, 100);
+
+        stop.then(function(){
+            console.log('complete')
+        }, function(err) {
+            console.log('Uh oh, error!', err);
+        });
+
+        $scope.stopCount = function(){
+            $interval.cancel(stop);
+        }
+        //$scope.topic = data.topic;
         $scope.description = data.description;
 
-        var cateName = $scope.name;
         $scope.ok = function () {
             var isValid = true;
             if (!$scope.name) {
@@ -994,8 +1022,8 @@ app.controller('ModalCategory', function ($scope, $cookieStore, $uibModalInstanc
             }
             if (isValid) {
                 $scope.params = {
-                    name: cateName,
-                    topic: $scope.topic,
+                    name: $scope.name,
+                    //topic: $scope.topic,
                     description: $scope.description
                 }
 
@@ -1077,6 +1105,7 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
     $scope.classification = {}
     $scope.classificationTemp = ''
     $scope.topicsOrig = []//pk name pubsub
+    $scope.projectNameTemp = ''
     $scope.cancel = function () {
         $scope.$emit('addstrategyclose', 'close')
     };
@@ -1098,7 +1127,9 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
                     //$scope.classification.name = null;
                     $scope.classificationTemp = ''
                 }
+
                 _.forEach($scope.categoryList, function(value) {
+
                     $scope.numbers.push({name:value.name,id:value.id,topic:value.topic})
                     if(sSelProjectId && sSelProjectId == value.id){
                         $scope.subtite_desc = value.instance.topic+value.topic;
@@ -1107,6 +1138,7 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
                         $scope.classificationTemp = value.id
                     }
                 });
+
                 //$scope.bigTotalItems = data.pageinfo.total_number;
                 //$scope.total_page = data.pageinfo.total_page;
                 //$scope.currentPageTotal = $scope.query_result.length;
@@ -1138,14 +1170,14 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
     }
     $scope.subtite_desc_pro = ''
     var getProjectInfo = function(sProjectId,oCateData){
-        if(oCateData){
+        if(oCateData && oCateData.classification){
 
         }else{
             $http.get(url + "/api/1/topic/instance/"+sProjectId+"/").success(function (data) {
                 if (data.code == 200) {
                     $scope.subtite_desc = data.data.topic;
                     $scope.subtite_desc_pro = $scope.subtite_desc
-                    //console.log('subtite_desc',$scope.subtite_desc)
+                  console.log('subtite_desc--------------',$scope.subtite_desc)
                 } else {
                     console.log(data)
                 }
@@ -1246,6 +1278,8 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
         }
         if ($scope.item.method == 'add' || $scope.item.method == 'modify') {
             $scope.ok = function () {
+                isValid = true;
+                invalidMsg = ''
                 $scope.params = {
                     name: $scope.name,
                     //classification:$scope.classification,
@@ -1255,7 +1289,7 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
                     instance: $scope.item.projectId,
                     topic: []
                 };
-                if (!$scope.name) {
+                if ($scope.name == '' || $scope.name == null || typeof($scope.name) == 'undefined') {
                     isValid = false;
                     invalidMsg = '策略名称不能为空'
                 }
@@ -1521,6 +1555,7 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
 
     $scope.setShowNum = function(instance){
         //console.log(category.name+','+category.id)
+        $scope.instanceSel = true;
         console.log('test',instance)
         $scope.instanceTemp = instance.id;
         $scope.instanceTempName = instance.name;
@@ -1569,9 +1604,11 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
             $scope.remainTopicToAddCount = 5;
             $scope.addstrategy_content_topzero = "";
             if($scope.item.data) {
+                $scope.instanceSel = true;
                 getProjectList($scope.item.data.instance.id)
             }
             else{
+                $scope.instanceSel = false;
                 getProjectList()
             }
             console.log('$scope.item.data.instance.id',$scope.item.data)
@@ -1621,12 +1658,25 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
                 //{exchange:'',queue:'',persist:true,rule_type:{id:'Rabbitmq',name:'Rabbitmq'}},{"api":"","method":{id:'GET',name:'GET'},"header":"","rule_type":{id:'Api',name:'Api'}}
                 var topicItem = value;
                 if(value['rule_type'] == 'API' || value['rule_type']['id'] == 'API'){
-                    topicItem['method'] = {id:value['method'],name:value['method']};
+                    //topicItem['method'] = {id:value['method'],name:value['method']};
                     topicItem['rule_type'] = {id:'API',name:'API'};
+
+                    if(value['method']['id']){
+                        topicItem['method'] = {id:value['method']['id'],name:value['method']['id']};
+
+                    }else{
+                        topicItem['method'] = {id:value['method'],name:value['method']};
+                    }
 
                 }else{
                     topicItem['rule_type'] = {id:'RabbitMQ',name:'RabbitMQ'};
                 }
+
+                if(topicItem['id']){
+                    topicItem['pk'] = topicItem['id'];
+                    delete topicItem['id'];
+                }
+
                 //topicItem['rule_type'] = {id:value['rule_type'],name:value['rule_type']};
                 $scope.addTopicList.push(topicItem)
                 console.log(' $scope.addTopicList344', $scope.addTopicList)
@@ -1639,6 +1689,8 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
 
         }
         if ($scope.item.method == 'add' || $scope.item.method == 'modify') {
+            isValid = true;
+            invalidMsg = ''
             $scope.ok = function () {
                 $scope.params = {
                     name: $scope.name,
@@ -1779,13 +1831,17 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
     }
     $scope.addTopicFunc = function () {
         if($scope.instanceTemp){
-        $scope.remainTopicToAddCount--;
-        $scope.addTopicList.push({exchange:'cn.useonline.iotcloud.'+$scope.username,queue:'',persist:true,rule_type:{id:'RabbitMQ',name:'RabbitMQ'}})
-        $timeout(function () {
-            if (angular.element('#addstrategy-content').height() >= angular.element(window).height()) {
-                //$scope.addstrategy_content_topzero = "addstrategy-content-topzero"
+            $scope.remainTopicToAddCount--;
+            var topicTemp = {exchange:'cn.useonline.iotcloud.'+$scope.username,queue:'',persist:true,rule_type:{id:'RabbitMQ',name:'RabbitMQ'}}
+            if($scope.item.method == 'modify'){
+                topicTemp['pk'] = ''
             }
-        }, 100)
+            $scope.addTopicList.push(topicTemp)
+            $timeout(function () {
+                if (angular.element('#addstrategy-content').height() >= angular.element(window).height()) {
+                    //$scope.addstrategy_content_topzero = "addstrategy-content-topzero"
+                }
+            }, 100)
         }else{
             baseUrl.ngDialog('请先选择物接入实例')
         }
