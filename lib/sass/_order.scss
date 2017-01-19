@@ -316,3 +316,31 @@ textarea.normal{
 .table-condensed>tbody>tr>td, .table-condensed>tbody>tr>th, .table-condensed>tfoot>tr>td, .table-condensed>tfoot>tr>th, .table-condensed>thead>tr>td, .table-condensed>thead>tr>th{
   cursor: pointer;
 }
+
+.detail-table{
+  width:100%;
+  font-size:16px;
+  line-height: 40px;
+  tr{
+    td{
+      text-align: center;
+      &:first-child{
+        text-align: left;
+      }
+      &:last-child{
+        text-align: right;
+      }
+    }
+
+  }
+}
+
+.msg-table{
+  width:100%;
+  font-size:14px;
+  color:#333333;
+  line-height: 40px;
+  tr{
+    border-bottom: 1px solid #DDDDDD;
+  }
+}

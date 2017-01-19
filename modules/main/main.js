@@ -589,7 +589,6 @@ app.controller('ModalProject', function ($scope, $cookieStore, $uibModalInstance
 
                     items.scope.submit_search();
                 }
-
             }).error(function () {
                 alert("有点故障！")
             });

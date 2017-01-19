@@ -1,6 +1,6 @@
 
 var app = angular.module('RDash');
-app.register.controller("subOrderCtr", function ($scope, $http, $location, $uibModal,$interval,$cookieStore,$cookieStore, baseUrl, $rootScope,utils) {
+app.register.controller("subOrderCtr", function ($scope, $http, $location, $uibModal,$interval,$cookieStore,$cookieStore, baseUrl, $rootScope) {
     $scope.title = '工单管理／提交工单';
     $scope.viewState = 0;
     $scope.step = function(step){
@@ -18,20 +18,23 @@ app.register.controller("subOrderCtr", function ($scope, $http, $location, $uibM
     $scope.fieldSet={
         description:'',
         phone:'',
-        email:''
+        email:'',
+        annex:[]
     }
 
     $scope.reset = function(){
         $scope.fieldSet={
             description:'',
             phone:'',
-            email:''
+            email:'',
+            annex:[]
         };
     }
 
     $scope.submit = function(){
+        var params = $scope.fieldSet;
+        params.annex=params.annex.toString();
         if($scope.viewState==1){
-            var params = $scope.fieldSet;
             params.order_type='topic';
             $http.post(baseUrl.getUrl() + "/api/1/work_order",params).success(function (data) {
                 if (data.code == 200) {
@@ -39,7 +42,6 @@ app.register.controller("subOrderCtr", function ($scope, $http, $location, $uibM
                 }
             });
         }else if($scope.viewState==2){
-            var params = $scope.fieldSet;
             params.order_type='rule';
             $http.post(baseUrl.getUrl() + "/api/1/work_order",params).success(function (data) {
                 if (data.code == 200) {
