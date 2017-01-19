@@ -1,9 +1,73 @@
-<div class="expectBlock-wrap">
-    <div class="expectBlock relative">
-        <div class="expectBlockCont">
-            <p class="expectBlockIcon icon-icon_smile"></p>
-
-            <p class="expectBlockTip text-center margin-top-10">敬请期待</p>
+<div class="main-area">
+    <div class="main-content" style="background-color: #FFFFFF;min-height:500px;">
+        <label class="main-title">
+            <a class="font-blue" style="margin-right:10px;" ng-click="back()" ng-show="step!=0"><<返回</a>{{title}}
+        </label>
+        <div ng-show="step==0">
+            <div class="search-area">
+                <div class="search-bar">
+                    <div><label>时间</label></div>
+                    <div><input type="text" class="normal date-picker" data-date-format="yyyy-mm-dd"
+                                ng-model="params.date_start" placeholder="请选择"/></div>
+                    <div><label>至</label></div>
+                    <div><input type="text" class="normal date-picker" data-date-format="yyyy-mm-dd"
+                                ng-model="params.date_end" placeholder="请选择"/></div>
+                </div>
+                <div classs="search-bar" style="float:right;">
+                    <a href="javascript:void(0)" class="btn-blue-bg btn-normal" ng-click="refresh()">搜索</a>
+                </div>
+            </div>
+            <div class="table-area" ng-show="dataList.length>0">
+                <table class="msg-table">
+                    <tbody>
+                    <tr>
+                        <td><input type="checkbox" ng-model="selectAllFlag"></td>
+                        <td colspan="3">
+                            <a class="btn-gray-border btn-small" ng-click="remove()">删除</a>
+                            <a class="btn-gray-border btn-small" style="margin:0 20px;" ng-click="readMsg()">标记为已读</a>
+                            共{{total}}封邮件
+                        </td>
+                    </tr>
+                    <tr ng-repeat="data in dataList">
+                        <td><input type="checkbox" ng-model="selected[data.id]"></td>
+                        <td><a ng-click="showData(data)">{{data.title}}<sup class="font-red" ng-show="data.read_status==0">New</sup></a></td>
+                        <td>{{data.content}}</td>
+                        <td style="text-align: right;">{{data.created_at}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table class="table table-pagination" ng-show="totalPage>1">
+                    <thead>
+                    <tr>
+                        <th>
+                            <uib-pagination items-per-page="tableParams.number" total-items="total" ng-change="refresh()"
+                                            ng-model="tableParams.index" max-size="5"
+                                            class="pagination-sm" boundary-links="true" force-ellipses="true" first-text="首页"
+                                            last-text="末页" next-text="下一页" previous-text="上一页"></uib-pagination>
+                            <div class="pagination-detail">
+                                <span>共{{totalPage}}页</span>
+                                <span>跳至<input type="text" ng-model="jumpToPage"/>页</span>
+                                <span><button ng-click="refresh(jumpToPage);jumpToPage='';">确定</button></span>
+                            </div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+            <div ng-show="listLoadFlag==2&&dataList&&dataList.length==0" class="emplty-view">
+                <span class="icon icon-icon_alert"></span><span class="empty-view-text">对不起，您搜索的内容不存在。<br/>请重新搜索。</span>
+            </div>
+        </div>
+        <div class="detail-area" ng-show="step==2">
+            <div class="detail-top-area flex-area">
+                <span>{{detail.title}}</span>
+                <span style="text-align: right;">{{detail.created_at}}</span>
+            </div>
+            <div class="detail-center-area order-list">
+                <p style="margin-top:30px;">
+                    {{detail.content}}
+                </p>
+            </div>
         </div>
     </div>
 </div>
