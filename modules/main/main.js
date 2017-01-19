@@ -644,7 +644,8 @@ app.controller('opTipCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
 
 
 app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_junction, ngDialog) {
-    baseUrl = baseUrl.getUrl();
+  var   BaseUrl = baseUrl.getUrl();
+
     $scope.item = {};
     $scope.numbers = [10, 20, 30, 40, 50];
     $scope.state={
@@ -661,7 +662,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
     $scope.$on("identityState",function(event,data){
         console.log(data);
         instance=data.projectId;
-        $http.get(baseUrl + "/api/1/topic/instance/?pk="+instance).success(function(data){
+        $http.get(BaseUrl + "/api/1/topic/instance/?pk="+instance).success(function(data){
             if(data.code==200){
                 select_topicTemp=data.data[0].topic;
                 select_topicTemp_res=data.data[0].topic;
@@ -690,7 +691,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
             $scope.params.classId=-1;
 
             $scope.get_strategyList=function(){
-                $http.get(baseUrl + "/api/1/topic/strategy/?instance="+instance).success(function (data) {
+                $http.get(BaseUrl + "/api/1/topic/strategy/?instance="+instance).success(function (data) {
                     if (data.code == 200) {
                         $scope.strategy_list = data.data;
                         $scope.strategy_list.push({id: '-1', name: '-------------'});
@@ -698,7 +699,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
                 })
             }
           $scope.get_classList=function(){
-              $http.get(baseUrl + "/api/1/topic/class/?instance="+instance).success(function (data) {
+              $http.get(BaseUrl + "/api/1/topic/class/?instance="+instance).success(function (data) {
                   if (data.code == 200) {
                       $scope.class_list = data.data;
                       $scope.class_list.push({id: '-1', name: '-------------'});
@@ -721,7 +722,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
 
                 console.log("<===实例ID===>"+classId);
                 if(classId!=-1){
-                  $http.get(baseUrl + "/api/1/topic/class/"+classId+"/").success(function(data){
+                  $http.get(BaseUrl + "/api/1/topic/class/"+classId+"/").success(function(data){
                     select_topicTemp=data.data.complete_topic;
                     $scope.subtite_desc=select_topicTemp;
                   })
@@ -745,7 +746,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
                         description:$scope.params.description,
 
                     });
-                    $http.post(baseUrl+"/api/1/topic/identity/",query_url).success(function(data){
+                    $http.post(BaseUrl+"/api/1/topic/identity/",query_url).success(function(data){
                         if(data.code==200){
                             $scope.item.scope.submit_search();
                             $scope.item.scope.optipShow(1, '操作成功')
@@ -784,15 +785,60 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
                         });
 
                     query_url.topic = JSON.stringify(query_url.topic);
-                    $http.post(baseUrl + "/api/1/topic/strategy/", query_url).success(function (data) {
-                                if (data.code == "200") {
-                                    $scope.params.strategyId=data.data.id;
-                                    $scope.get_strategyList();
-                                    $scope.item.scope.optipShow(1, '操作成功')
-                                    $scope.cancel_strategy();
+                    var pubsub_validate="";
+                    var pubsub_validate_flag="";
+                    var pubsub_validate_same="";
+                    var temp=[];
+                    $scope.get_validate_same=function(){
+                        _.forEach($scope.addTopicList, function (value) {
+                          if(temp.indexOf(value.name) == -1){
+                              temp.push(value.name);
+                              pubsub_validate_same=true;
+                          }else{
+                              pubsub_validate_same=false;
+                              return false
+                          }
 
-                                }
-                            })
+                        });
+                        return pubsub_validate_same;
+                    }
+
+
+                   $scope.get_validate=function(){
+                       _.forEach($scope.addTopicList, function (value) {
+                           if(value.pubsub==""){
+                               pubsub_validate="请选择权限";
+                               pubsub_validate_flag=false;
+                               return false;
+                           }else{
+                               pubsub_validate_flag=true;
+                               return true
+                           }
+
+                       });
+                       return pubsub_validate_flag;
+                   }
+
+                    if($scope.get_validate()&& $scope.get_validate_same()){
+                        $http.post(BaseUrl + "/api/1/topic/strategy/", query_url).success(function (data) {
+                            if (data.code == "200") {
+                                $scope.params.strategyId=data.data.id;
+                                $scope.get_strategyList();
+                                $scope.item.scope.optipShow(1, '操作成功')
+                                $scope.cancel_strategy();
+
+                            }
+                        })
+                    }else{
+                        if(!$scope.get_validate()){
+                            baseUrl.ngDialog("请选择权限");
+                        }
+                        if(!$scope.get_validate_same()){
+                            baseUrl.ngDialog("主题名请不要相同");
+                        }
+
+                    }
+
 
 
 
@@ -826,7 +872,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
 
                 }
                 $scope.reset_secrect=function(id){
-                    $http.put(baseUrl+"/api/1/topic/identity/reset/"+id+"/").success(function(data){
+                    $http.put(BaseUrl+"/api/1/topic/identity/reset/"+id+"/").success(function(data){
                             if(data.code==200){
                                 if($scope.edit.hideBtn){
                                     $scope.params.secret_key=data.data.secret_key;
@@ -844,7 +890,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
                         description:$scope.params.description,
 
                     });
-                    $http.put(baseUrl+"/api/1/topic/identity/"+$scope.identity_id+"/",query_url).success(function(data){
+                    $http.put(BaseUrl+"/api/1/topic/identity/"+$scope.identity_id+"/",query_url).success(function(data){
                          if(data.code==200){
                              $scope.item.scope.submit_search();
                              $scope.item.scope.optipShow(1, '操作成功')
@@ -884,7 +930,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
 
     //删除
     $scope.delete=function(id){
-        $http.delete(baseUrl+"/api/1/topic/identity/"+id+"/").success(function(data){
+        $http.delete(BaseUrl+"/api/1/topic/identity/"+id+"/").success(function(data){
             if(data.code=="200"){
                 $scope.item.scope.submit_search();
                 $scope.item.scope.optipShow(1, '操作成功')
