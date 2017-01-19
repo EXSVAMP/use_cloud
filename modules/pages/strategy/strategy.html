@@ -54,8 +54,14 @@
                 <td>{{item.name}}</td>
                 <td>
 
-                    <p ng-repeat="topic in item.topics" class="strategy-topic text-start"><span class="strategy-topic-flag" ng-show="topic.pubsub=='subscribe' || topic.pubsub=='pubsub' || topic.pubsub=='publish'">{{topic.pubsub | pubsub}}</span><span
-                            class="strategy-topic-text">{{topic | strategy_topic}}</span></p>
+                    <p ng-repeat="topic in item.topics" class="strategy-topic text-start">
+                        <!--<span class="strategy-topic-flag" ng-show="topic.pubsub=='subscribe' || topic.pubsub=='pubsub' || topic.pubsub=='publish'">{{topic.pubsub | pubsub}}</span>-->
+                         <!-- -->
+                        <span ng-class="{true:'strategy-topic-flag',false:'strategy-topic-flag-place'}[topic.pubsub=='subscribe' || topic.pubsub=='pubsub' || topic.pubsub=='publish']">{{topic.pubsub | pubsub}}</span>
+
+                        <span class="strategy-topic-text">{{topic | strategy_topic}}</span>
+                        <!--<span class="strategy-topic-text">{{topic.complete_topic}}</span>-->
+                    </p>
 
                     <!--<p class="strategy-topic"><span class="strategy-topic-flag">sp</span><span-->
                             <!--class="strategy-topic-text">1234567/a6a84b9c-d704-11e6-92a8-000c29da3805/client</span></p>-->

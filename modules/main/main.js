@@ -58,13 +58,16 @@ app.service("baseUrl", function (constant, ngDialog, $location, $timeout) {
             var temp = []
 
             _.forEach(objArr, function (value) {
-                if (_.find(temp, function (o) {
-                        return o == value[key];
-                    })) {
-                    isDup = 1;
-                    return isDup;
-                } else
-                    temp.push(value[key])
+                if(value[key]){
+                    if (_.find(temp, function (o) {
+                            return o == value[key];
+                        })) {
+                        isDup = 1;
+                        return isDup;
+                    } else
+                        temp.push(value[key])
+                }
+
             });
             console.log(isDup)
             return isDup;
@@ -217,6 +220,28 @@ app.filter("strategy_topic", function () {
     }
 });
 
+app.filter("category_topic", function () {
+    return function (input) {
+        if(input && input.endsWith('/')){
+            input = input.substring(0,input.length-1)
+        }
+        return input;
+    }
+});
+
+app.filter("strategyadd_topic", function () {
+    return function (input) {
+        if(input){
+            for(var i=0; i<input.length;i++){
+                if(input[i]['delete']){
+                    _.pullAt(input, [i]);
+                }
+            }
+        }
+        return input;
+    }
+});
+
 app.factory('HttpInterceptor', ['$q', '$injector', HttpInterceptor]);
 function HttpInterceptor($q, $injector) {
     return {
@@ -250,10 +275,10 @@ function HttpInterceptor($q, $injector) {
             }
             if (-1 === err.status) {
                 // 远程服务器无响应
-                // ngDialog.open({
-                //     template:'<p style=\"text-align: center\">远程服务器无响应</p>',
-                //     plain:true
-                // });
+                 ngDialog.open({
+                     template:'<p style=\"text-align: center\">远程服务器无响应</p>',
+                     plain:true
+                 });
             } else if (500 === err.status) {
                 // 处理各类自定义错误
                 ngDialog.open({
@@ -263,7 +288,13 @@ function HttpInterceptor($q, $injector) {
             } else if (501 === err.status) {
                 // ...
             } else if (403 === err.status) {
-                // window.location.href = "/login.html"
+                 //window.location.href = "/login.html"
+                $('#dialog').show()
+                $('#dialog p').html('没有权限,即将跳转到登录页')
+                $timeout(function(){
+                    $('#dialog').fadeOut()
+                    window.location.href = '/login.html'
+                },1000)
             }
             return $q.reject(err);
         }
@@ -928,7 +959,6 @@ app.controller('ModalCategory', function ($scope, $cookieStore, $uibModalInstanc
         $http.get(url + "/api/1/topic/instance/"+sProjectId+"/").success(function (data) {
             if (data.code == 200) {
                 $scope.subtite_desc = data.data.topic;
-                //console.log('subtite_desc',$scope.subtite_desc)
             } else {
                 console.log(data)
             }
@@ -936,16 +966,15 @@ app.controller('ModalCategory', function ($scope, $cookieStore, $uibModalInstanc
 
         })
     }
-    // console.log("<==项目名称====>"+$scope.project_name);
-    getProjectInfo(items.scope.projectId)
     if ($scope.item.method == 'add') {
+        getProjectInfo(items.scope.projectId)
         $scope.ok = function () {
             var isValid = true;
             if (!$scope.name) {
                 isValid = false;
                 baseUrl.ngDialog('请填写类别名称')
             }
-            if (!$scope.topic) {
+            if (isValid && !$scope.topic) {
                 isValid = false;
                 baseUrl.ngDialog('请填写主题')
             }
@@ -963,8 +992,6 @@ app.controller('ModalCategory', function ($scope, $cookieStore, $uibModalInstanc
                     description: $scope.description,
                     instance: items.scope.projectId
                 }
-
-                console.log("<======>", $scope.params);
                 $http.post(url + "/api/1/topic/class/", $scope.params).success(function (data) {
                     if (data.code == "200") {
                         items.scope.optipShow(1, '操作成功')
@@ -975,7 +1002,7 @@ app.controller('ModalCategory', function ($scope, $cookieStore, $uibModalInstanc
                     //    template: '<p style=\"text-align: center\">添加失败:'+data.description+'</p>',
                     //    plain: true
                     //});
-                    items.scope.optipShow(0, '操作失败,' + data.description)
+                    //items.scope.optipShow(0, '操作失败,' + data.description)
                 });
                 $uibModalInstance.close();
 
@@ -986,25 +1013,24 @@ app.controller('ModalCategory', function ($scope, $cookieStore, $uibModalInstanc
         console.log('data', data)
         $scope.name = data.name;
         var cateName = $scope.name;
-        //$scope.topic = data.topic;
-        var stop = $interval(function(){
-            if($scope.subtite_desc){
-                $scope.topic = $scope.subtite_desc + data.topic;
-                //$scope.topic = data.topic;
-                $scope.stopCount()
-            }
-        }, 100);
-
-        stop.then(function(){
-            console.log('complete')
-        }, function(err) {
-            console.log('Uh oh, error!', err);
-        });
-
-        $scope.stopCount = function(){
-            $interval.cancel(stop);
-        }
-        //$scope.topic = data.topic;
+        //var stop = $interval(function(){
+        //    if($scope.subtite_desc){
+        //        $scope.topic = $scope.subtite_desc + data.topic;
+        //        //$scope.topic = data.topic;
+        //        $scope.stopCount()
+        //    }
+        //}, 100);
+        //
+        //stop.then(function(){
+        //    console.log('complete')
+        //}, function(err) {
+        //    console.log('Uh oh, error!', err);
+        //});
+        //
+        //$scope.stopCount = function(){
+        //    $interval.cancel(stop);
+        //}
+        $scope.topic = data.complete_topic;
         $scope.description = data.description;
 
         $scope.ok = function () {
@@ -1031,9 +1057,6 @@ app.controller('ModalCategory', function ($scope, $cookieStore, $uibModalInstanc
                     cateName = '';
                     delete $scope.params.name;
                 }
-
-                console.log("<======>", $scope.params);
-                console.log("<======>", data.id);
                 $http.put(url + "/api/1/topic/class/" + data.id + "/", $scope.params).success(function (data) {
                     if (data.code == "200") {
                         items.scope.optipShow(1, '操作成功')
@@ -1044,7 +1067,7 @@ app.controller('ModalCategory', function ($scope, $cookieStore, $uibModalInstanc
                     //    template: '<p style=\"text-align: center\">添加失败:'+data.description+'</p>',
                     //    plain: true
                     //});
-                    items.scope.optipShow(0, '操作失败,' + data.description)
+                    //items.scope.optipShow(0, '操作失败,' + data.description)
                 });
                 $uibModalInstance.close();
             }//end ok
@@ -1063,7 +1086,7 @@ app.controller('ModalCategory', function ($scope, $cookieStore, $uibModalInstanc
                 //    template: '<p style=\"text-align: center\">添加失败:'+data.description+'</p>',
                 //    plain: true
                 //});
-                items.scope.optipShow(0, '操作失败,' + data.description)
+                //items.scope.optipShow(0, '操作失败,' + data.description)
             });
             $uibModalInstance.close();
 
@@ -1132,17 +1155,16 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
 
                     $scope.numbers.push({name:value.name,id:value.id,topic:value.topic})
                     if(sSelProjectId && sSelProjectId == value.id){
-                        $scope.subtite_desc = value.instance.topic+value.topic;
+                        //$scope.subtite_desc = value.instance.topic+value.topic;
+                        $scope.subtite_desc = value.complete_topic;
+                        if(!$scope.subtite_desc.endsWith('/')){
+                            $scope.subtite_desc += '/';
+                        }
                         $scope.subtite_desc_pro = $scope.subtite_desc
                         $scope.classification.name = {name:value.name,id:value.id,topic:value.topic}
                         $scope.classificationTemp = value.id
                     }
                 });
-
-                //$scope.bigTotalItems = data.pageinfo.total_number;
-                //$scope.total_page = data.pageinfo.total_page;
-                //$scope.currentPageTotal = $scope.query_result.length;
-
 
             } else {
                 console.log(data)
@@ -1154,17 +1176,10 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
         })
 
         $scope.numbers.push({name:'---------',id:'',topic:''})
-        //$scope.numbers.push('---------')
 
-        //if(!sSelProjectId){
-        //    $scope.classification = {}
-        //    $scope.classificationTemp = ''
-        //}
     }
 
     $scope.setShowNum = function(category){
-        //console.log(category.name+','+category.id)
-        console.log('test',category)
         $scope.classificationTemp = category.id;
         $scope.subtite_desc = $scope.subtite_desc_pro+category.topic;
     }
@@ -1177,7 +1192,6 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
                 if (data.code == 200) {
                     $scope.subtite_desc = data.data.topic;
                     $scope.subtite_desc_pro = $scope.subtite_desc
-                  console.log('subtite_desc--------------',$scope.subtite_desc)
                 } else {
                     console.log(data)
                 }
@@ -1300,7 +1314,7 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
                     var isTopicInvalid = true;
                     _.forEach($scope.addTopicList, function (value) {
                         console.log('value', value['name'])
-                        if (isTopicInvalid && !value['name']) {
+                        if (isTopicInvalid && !value['delete'] && !value['name']) {
                             isValid = false;
                             invalidMsg = '主题不能为空'
                             isTopicInvalid = false
@@ -1331,15 +1345,6 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
 
                 if (isValid) {
                     _.forEach($scope.addTopicList, function (value) {
-                        //console.log(value.name);
-                        //var pubsub = ''
-                        //if($scope.addTopicList[key]['p'] && $scope.addTopicList[key]['s']){
-                        //    pubsub = 'ps'
-                        //}else if($scope.addTopicList[key]['p']){
-                        //    pubsub = 'p'
-                        //}else if($scope.addTopicList[key]['s']){
-                        //    pubsub = 's'
-                        //}
                         var pubsub = value['pubsub'];
                         if (/ps/.test(pubsub)) {
                             pubsub = 'pubsub'
@@ -1349,15 +1354,18 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
                             pubsub = 'subscribe'
                         }
                         //topicsOrig
-                        if($scope.item.method == 'add'){
-                            $scope.params.topic.push({name: value['name'], pubsub: pubsub})
+                        if(!value['delete']){
+                            if($scope.item.method == 'add'){
+                                $scope.params.topic.push({name: value['name'], pubsub: pubsub})
+                            }else{
+                                $scope.params.topic.push({pk:value['pk'],name: value['name'], pubsub: pubsub})
+                            }
                         }else{
-                            $scope.params.topic.push({pk:value['pk'],name: value['name'], pubsub: pubsub})
+                            $scope.params.topic.push({pk:value['pk'],delete: 1})
                         }
 
 
                     });
-
                     $scope.params.topic = JSON.stringify($scope.params.topic);
                     if ($scope.item.method == 'add') {
                         $http.post(url + "/api/1/topic/strategy/", $scope.params).success(function (data) {
@@ -1370,7 +1378,7 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
                             //    template: '<p style=\"text-align: center\">添加失败:'+data.description+'</p>',
                             //    plain: true
                             //});
-                            $scope.item.scope.optipShow(0, '操作失败,' + data.description)
+                            //$scope.item.scope.optipShow(0, '操作失败,' + data.description)
                         });
                     }//end if
                     else {
@@ -1384,7 +1392,7 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
                             //    template: '<p style=\"text-align: center\">添加失败:'+data.description+'</p>',
                             //    plain: true
                             //});
-                            $scope.item.scope.optipShow(0, '操作失败,' + data.description)
+                            //$scope.item.scope.optipShow(0, '操作失败,' + data.description)
                         });
                     }
 
@@ -1401,24 +1409,12 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
     $scope.addstrategy_content_topzero = "";
     $scope.addPS = function (idx, type) {
         $scope.addTopicList[idx][type] = !$scope.addTopicList[idx][type];
-        //if(type == 'p' && /p/.test($scope.addTopicList[idex]['pubsub'])){
-        //    $scope.addTopicList[idex]['pubsub'] = $scope.addTopicList[idex]['pubsub'].replace('p','')
-        //}else if(type == 'p'){
-        //    $scope.addTopicList[idex]['pubsub'] += 'p'
-        //}else if(type == 's' && /s/.test($scope.addTopicList[idex]['pubsub'])){
-        //    $scope.addTopicList[idex]['pubsub'] = $scope.addTopicList[idex]['pubsub'].replace('s','')
-        //}else if(type == 'p'){
-        //    $scope.addTopicList[idex]['pubsub'] += 's'
-        //}
-
         var reg = new RegExp(type)
         if (reg.test($scope.addTopicList[idx]['pubsub'])) {
             $scope.addTopicList[idx]['pubsub'] = $scope.addTopicList[idx]['pubsub'].replace(type, '')
         } else {
             $scope.addTopicList[idx]['pubsub'] += type
         }
-
-        console.log($scope.addTopicList[idx]['pubsub'])
     }
     $scope.addTopicFunc = function () {
         $scope.remainTopicToAddCount--;
@@ -1437,7 +1433,12 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
     }
     $scope.delTopicFunc = function (idx) {
         $scope.remainTopicToAddCount++;
+        //_.pullAt($scope.addTopicList, [idx]);
+        var deleteTopicId = $scope.addTopicList[idx]['pk'];
         _.pullAt($scope.addTopicList, [idx]);
+        if($scope.item.method == 'modify'){
+            $scope.addTopicList.push({'pk':deleteTopicId,'delete':1})
+        }
         $timeout(function () {
             if (angular.element('#addstrategy-content').height() < angular.element(window).height()) {
                 //$scope.addstrategy_content_topzero = ""
