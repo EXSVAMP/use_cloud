@@ -729,7 +729,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
             //选择策略
             $scope.select_strategy=function(strategyId){
                 $scope.params.strategyId=strategyId;
-                console.log("<===策略ID===>"+strategyId);
+                // console.log("<===策略ID===>"+strategyId);
             }
             //选择实例
             $scope.select_class=function(classId){
