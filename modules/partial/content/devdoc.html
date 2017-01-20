@@ -15,6 +15,7 @@
         <ul class="pull-left devdoc-cont-tab">
             <li ng-class="{true:'active',false:''}[devdoc_btn[current_devdoc_btn]['tab_active']==$index]" ng-click="devdoc_tab_click(current_devdoc_btn,$index)" ng-repeat="item in devdoc_tab[current_devdoc_btn]">
             <span class="relative">{{item}}<div class="active-border"></div></span>
+                <div class="border-right"></div>
             </li>
         </ul>
         <div class="pull-left devdoc-cont-info">
