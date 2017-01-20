@@ -37,6 +37,10 @@ app.register.controller("identityCtr", function ($scope, $http, $location, $uibM
             })).success(function (data) {
             if (data.code == 200) {
                 $scope.query_result = data.data;
+                angular.forEach($scope.query_result,function(item){
+                    item.state=true;
+                    item.state_desc="隐藏";
+                })
                 $scope.bigTotalItems = data.pageinfo.total_number;
                 $scope.total_page = data.pageinfo.total_page;
                 $scope.currentPageTotal = $scope.query_result.length;
@@ -98,9 +102,23 @@ app.register.controller("identityCtr", function ($scope, $http, $location, $uibM
    }
 
 
+$scope.show_hide=function(item){
+
+    angular.forEach($scope.query_result,function(value){
+        if(value.id==item.id){
+           value.state=!value.state;
+            if(value.state==true){
+                value.state_desc="隐藏";
+            }
+            if(value.state==false){
+                value.state_desc="显示";
+            }
+        }
+
+    })
 
 
-
+}
 
 
 })
