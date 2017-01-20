@@ -182,6 +182,8 @@ app.register.controller("regulationCtr", function (ngDialog, $scope, $http, $loc
 
     }
 
+    $scope.subtite_desc = 'trsyeryeryeetutrureeritrsyeryeryeetutrureeritrsyeryeryeetutrureeritrsyeryeryeetutrureeri'
+
 
 })
 
