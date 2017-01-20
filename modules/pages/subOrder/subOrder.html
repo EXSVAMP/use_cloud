@@ -31,6 +31,19 @@
                         <input ng-model="fieldSet.email" placeholder="联系邮箱">
                         </input>
                     </div>
+                    <div class="form-row">
+                        <label>附件</label>
+                        <div class="upload-area">
+                            <div class="btn-upload btn-blue-border btn-small" id="btn-upload-1">
+                                <!--<input type="file" nv-file-select uploader="uploader"/>-->
+                                浏览...
+                            </div>
+                            <span ng-show="fieldSet.annex.length==0">未选择文件</span>
+                            <span class="upload-file" ng-repeat="file in fieldSet.annex">{{getFileName(file)}}
+                                <a class="upload-file-delete" ng-click="fieldSet.annex.splice($index,1)">×</a>
+                            </span>
+                        </div>
+                    </div>
                 </div>
                 <div class="btn-area-center">
                     <a class="btn-normal btn-blue-bg" ng-click="submit()">提交</a>

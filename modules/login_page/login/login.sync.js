@@ -128,7 +128,9 @@ app.register.controller("loginCtr", function ($scope, $http, $location, $uibModa
             if ($scope.person.username && $scope.person.password) {
                 $http.post(BaseUrl + "/api/1/user/login", $scope.person).success(function (data) {
                     if (data.code == '200') {
+                        console.log(data.data)
                         sessionStorage.setItem("loginName", data.data.username);
+                        sessionStorage.setItem("loginId", data.data.id);
                         if ($scope.remember_check) {
                             sessionStorage.setItem("password", $scope.person.password);
                             $scope.remember_check = true;
@@ -193,6 +195,7 @@ app.register.controller("loginCtr", function ($scope, $http, $location, $uibModa
                     if (data.code == 200) {
                         $scope.err_msg_state = false;
                         sessionStorage.setItem("loginName", data.data.username);
+                        sessionStorage.setItem("loginId", data.data.userId);
                         // sessionStorage.setItem("passwprd",$scope.person.password);
                         sessionStorage.setItem("user_token", data.data.token);
                         var register_step=data.data.register_step;

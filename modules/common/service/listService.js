@@ -47,7 +47,6 @@ app.factory('listService', function ($http,baseUrl,url_junction) {
                 scope.listLoadFlag = 1;
                 var params = {};
                 angular.merge(params,scope.tableParams,scope.params);
-                console.log(params)
                 $http.get(baseUrl.getUrl() + url+url_junction.getQuery(params)).success(function(data){
                     scope.listLoadFlag=2;
                     if(data.code==200){

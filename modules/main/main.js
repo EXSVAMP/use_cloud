@@ -9,6 +9,7 @@ require('components/opTip');
 require('components/cover');
 require('components/addStrategy');
 require('components/addRegulation');
+require('common/fliter');
 
 
 /**
