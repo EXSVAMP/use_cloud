@@ -18,7 +18,7 @@
                  <tr>
                      <th>身份名称</th>
                      <th>策略</th>
-                     <th>密钥</th>
+                     <th>账户/密钥</th>
                      <th>简述</th>
                      <th>创建时间</th>
                      <th>操作</th>
@@ -28,7 +28,7 @@
                   <tr ng-repeat="item in query_result">
                       <td>{{item.name}}</td>
                       <td>{{item.strategy}}</td>
-                      <td>{{item.secret_key}}</td>
+                      <td>{{item.identity_name}}/{{item.secret_key}}</td>
                       <td>{{item.description }}</td>
                       <td>{{item.created_at}}</td>
                       <td>

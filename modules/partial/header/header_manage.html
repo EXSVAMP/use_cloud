@@ -28,7 +28,7 @@
           <div class="conten_right">
                 <!--<div class="user dropdown-toggle" dropdown-toggle data-toggle="dropdown" ng-class="{'use_active':use_active}" ng-click="use_active=!use_active">-->
                  <div class="user dropdown-toggle" dropdown-toggle data-toggle="dropdown">
-                     <span ng-cloak class="ng-cloak">{{user_name}}</span>
+                     <span  ng-bind="user_name"></span>
                  </div>
                 <ul class="dropdown-menu dropdown-user"  role="menu">
                   <li><a  ng-click="open('md-quit','quit')" >退出</a></li>
