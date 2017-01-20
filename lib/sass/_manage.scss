@@ -56,6 +56,7 @@
         }
         .order_detail{
           margin-top: 17px;
+          cursor: pointer;
         }
       }
       .interval_line{
@@ -109,6 +110,11 @@
         }
         .wait{
           color:#888888;
+        }
+        .service_desc_wrap{
+          cursor: pointer;
+          width: 100px;
+          margin: 0 auto;
         }
         .service_desc_count{
           font-size: 12px;

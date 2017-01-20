@@ -357,8 +357,8 @@ app.register.controller("registerCtr", function ($scope, $http, $location, $uibM
               web_site:$scope.detail.web_site,
           }
 
-          console.log($scope.detail.password);
-          console.log($scope.detail.repassword);
+          // console.log($scope.detail.password);
+          // console.log($scope.detail.repassword);
           if($scope.detail.username&&$scope.detail.password&&$scope.detail.repassword){
                $http.post(BaseUrl+"/api/1/user/profile",$scope.datail_params).success(function (data) {
                  if(data.code==200){

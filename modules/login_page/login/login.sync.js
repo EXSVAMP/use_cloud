@@ -107,7 +107,7 @@ app.register.controller("loginCtr", function ($scope, $http, $location, $uibModa
     //*******
     $scope.login_go = function (flag) {
 
-        console.log("<==name=>" + $scope.person.username + "<====password===>" + $scope.person.password);
+        // console.log("<==name=>" + $scope.person.username + "<====password===>" + $scope.person.password);
         if (flag == 1) {
             $scope.$watch("person.username", function (newValue, oldValue) {
                 if (newValue) {
@@ -227,8 +227,8 @@ app.register.controller("loginCtr", function ($scope, $http, $location, $uibModa
     $scope.send_msg_btn = false;
 
     $scope.send_msg = function () {
-        console.log("<==手机号==>" + $scope.phone.number);
-        console.log("<==验证码==>" + $scope.phone.validate_code);
+        // console.log("<==手机号==>" + $scope.phone.number);
+        // console.log("<==验证码==>" + $scope.phone.validate_code);
 
 
         $scope.$watch("phone.number", function (newValue, oldValue) {

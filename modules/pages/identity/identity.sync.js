@@ -42,7 +42,7 @@ app.register.controller("identityCtr", function ($scope, $http, $location, $uibM
                 $scope.currentPageTotal = $scope.query_result.length;
 
             } else {
-                console.log(data)
+                // console.log(data)
             }
         }).error(function (data, state) {
             if (state == 403) {
