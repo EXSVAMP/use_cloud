@@ -256,8 +256,9 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
 
     //$scope.wsFunc3();
     console.log('test')
-    $scope.categoryWatchFunc = function () {
+    $scope.categoryWatchFunc = function (obj) {
         console.log('watch')
+        $scope.watchTopic = obj.complete_topic;
         $scope.categoryMain = false;
         $scope.categoryWatch = true;
         $scope.categoryWatchTab = '/实时消息查看';

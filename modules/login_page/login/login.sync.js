@@ -195,7 +195,15 @@ app.register.controller("loginCtr", function ($scope, $http, $location, $uibModa
                         sessionStorage.setItem("loginName", data.data.username);
                         // sessionStorage.setItem("passwprd",$scope.person.password);
                         sessionStorage.setItem("user_token", data.data.token);
-                        window.location.href = "/index.html";
+                        var register_step=data.data.register_step;
+                        sessionStorage.setItem("register_step",register_step);
+                        if(register_step==0){
+                            window.location.href = "/index.html#/register";
+                        }
+                        if(register_step==1){
+                            window.location.href = "/index.html";
+                        }
+
 
                     } else {
                         $scope.err_msg_state = true;

@@ -23,7 +23,7 @@
 
                     <div class="subtite_wrap col-md-6">
                         <span class="subtite_desc">主题</span>
-                        <span class="fixed_sub"><span tooltip-placement="bottom" uib-tooltip="{{subtite_desc}}">{{subtite_desc |characters:20:true}}</span></span>
+                        <span class="fixed_sub"><span tooltip-placement="bottom" uib-tooltip="{{subtite_desc}}">{{subtite_desc |characters:10:true}}</span></span>
                     </div>
                     <div class="sub_input col-md-6">
                         <input type="text" class="subinput" placeholder="请输入主题" ng-model="topic"/>
@@ -43,7 +43,7 @@
 
                     <!--<div class="subtite_wrap col-md-6">-->
                         <!--<span class="subtite_desc">主题</span>-->
-                        <!--<span class="fixed_sub"><span tooltip-placement="bottom" uib-tooltip="{{subtite_desc}}">{{subtite_desc |characters:20:true}}</span></span>-->
+                        <!--<span class="fixed_sub"><span tooltip-placement="bottom" uib-tooltip="{{subtite_desc}}">{{subtite_desc |characters:10:true}}</span></span>-->
                     <!--</div>-->
                     <!--<div class="sub_input col-md-6">-->
                         <!--<input type="text" class="subinput" placeholder="请输入主题" ng-model="topic"/>-->
@@ -123,7 +123,7 @@
                     <td>{{item.created_at}}</td>
                     <td class="op-btns">
                         <span class="icon-icon_edit edit-icon" ng-click="open('md-add','modify',$index)"></span>
-                        <span class="icon-icon_eye watch-icon" ng-click="categoryWatchFunc()"></span>
+                        <span class="icon-icon_eye watch-icon" ng-click="categoryWatchFunc(item)"></span>
                         <span class="icon-icon_delete delete-icon" ng-click="open('md-add','delete',$index)"></span>
                     </td>
 

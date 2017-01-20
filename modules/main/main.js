@@ -386,49 +386,63 @@ app.controller("headerCtrl", function ($scope, $cookieStore, $http, $uibModal, b
     //devdoc
     $scope.current_devdoc_btn = '0'
     $scope.devdoc_btn = {
-        0:true,
-        1:false,
-        2:false,
-        3:false,
-        4:false,
-        5:false
-
+        //0:true,
+        //1:false,
+        //2:false,
+        //3:false,
+        //4:false,
+        //5:false
+        0:{active:true,tab_active:0},
+        1:{active:false,tab_active:0},
+        2:{active:false,tab_active:0},
+        3:{active:false,tab_active:0},
+        4:{active:false,tab_active:0},
+        5:{active:false,tab_active:0}
     }
 
     $scope.devdoc_btn_click = function(idx){
         if($scope.current_devdoc_btn != idx){
             for (i in $scope.devdoc_btn) {
                 if (i == idx) {
-                    $scope.devdoc_btn[i] = true;
+                    $scope.devdoc_btn[i]['active'] = true;
                 } else {
-                    $scope.devdoc_btn[i] = false
+                    $scope.devdoc_btn[i]['active'] = false
                 }
             }
 
-            $scope.devdoc_tab_click('0')
+            $scope.devdoc_tab_click(idx,'0')
             $scope.current_devdoc_btn = idx;
         }
     }
 
     $scope.devdoc_tab = {
-        0:true,
-        1:false,
-        2:false,
-        3:false,
-        4:false,
-        5:false,
-        6:false
+        //0:true,
+        //1:false,
+        //2:false,
+        //3:false,
+        //4:false,
+        //5:false,
+        //6:false
 
+        0:['注册账号','用户资料','如何创建物接入','如何创建物解析','如何创建规则','如何使用时序数据库','查看个人主页'],
+        1:['物接入示例','物解析示例','规则创建示例','时序数据库示例'],
+        2:['RFID射频卡','RFID接收器','网络摄像头','智能地磅','自定义硬件'],
+        3:['直播控制客户端','盒子客户端'],
+        4:['物接入API','物管理API'],
+        5:['物接入SDK','物管理SDK']
     }
 
-    $scope.devdoc_tab_click = function(idx){
-        for (i in $scope.devdoc_tab) {
-            if (i == idx) {
-                $scope.devdoc_tab[i] = true;
-            } else {
-                $scope.devdoc_tab[i] = false
-            }
-        }
+    $scope.devdoc_tab_click = function(fathterIdx,idx){
+        //for (i in $scope.devdoc_tab) {
+        //    if (i == idx) {
+        //        $scope.devdoc_tab[$scope.current_devdoc_btn][i] = true;
+        //    } else {
+        //        $scope.devdoc_tab[i] = false
+        //    }
+        //}
+        console.log(fathterIdx)
+        $scope.devdoc_btn[fathterIdx]['tab_active'] = idx;
+
     }
 
 })
@@ -645,7 +659,8 @@ app.controller('opTipCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
 
 
 app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_junction, ngDialog) {
-    baseUrl = baseUrl.getUrl();
+  var   BaseUrl = baseUrl.getUrl();
+
     $scope.item = {};
     $scope.numbers = [10, 20, 30, 40, 50];
     $scope.state={
@@ -662,7 +677,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
     $scope.$on("identityState",function(event,data){
         console.log(data);
         instance=data.projectId;
-        $http.get(baseUrl + "/api/1/topic/instance/?pk="+instance).success(function(data){
+        $http.get(BaseUrl + "/api/1/topic/instance/?pk="+instance).success(function(data){
             if(data.code==200){
                 select_topicTemp=data.data[0].topic;
                 select_topicTemp_res=data.data[0].topic;
@@ -691,7 +706,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
             $scope.params.classId=-1;
 
             $scope.get_strategyList=function(){
-                $http.get(baseUrl + "/api/1/topic/strategy/?instance="+instance).success(function (data) {
+                $http.get(BaseUrl + "/api/1/topic/strategy/?instance="+instance).success(function (data) {
                     if (data.code == 200) {
                         $scope.strategy_list = data.data;
                         $scope.strategy_list.push({id: '-1', name: '-------------'});
@@ -699,7 +714,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
                 })
             }
           $scope.get_classList=function(){
-              $http.get(baseUrl + "/api/1/topic/class/?instance="+instance).success(function (data) {
+              $http.get(BaseUrl + "/api/1/topic/class/?instance="+instance).success(function (data) {
                   if (data.code == 200) {
                       $scope.class_list = data.data;
                       $scope.class_list.push({id: '-1', name: '-------------'});
@@ -722,7 +737,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
 
                 console.log("<===实例ID===>"+classId);
                 if(classId!=-1){
-                  $http.get(baseUrl + "/api/1/topic/class/"+classId+"/").success(function(data){
+                  $http.get(BaseUrl + "/api/1/topic/class/"+classId+"/").success(function(data){
                     select_topicTemp=data.data.complete_topic;
                     $scope.subtite_desc=select_topicTemp;
                   })
@@ -746,7 +761,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
                         description:$scope.params.description,
 
                     });
-                    $http.post(baseUrl+"/api/1/topic/identity/",query_url).success(function(data){
+                    $http.post(BaseUrl+"/api/1/topic/identity/",query_url).success(function(data){
                         if(data.code==200){
                             $scope.item.scope.submit_search();
                             $scope.item.scope.optipShow(1, '操作成功')
@@ -785,15 +800,60 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
                         });
 
                     query_url.topic = JSON.stringify(query_url.topic);
-                    $http.post(baseUrl + "/api/1/topic/strategy/", query_url).success(function (data) {
-                                if (data.code == "200") {
-                                    $scope.params.strategyId=data.data.id;
-                                    $scope.get_strategyList();
-                                    $scope.item.scope.optipShow(1, '操作成功')
-                                    $scope.cancel_strategy();
+                    var pubsub_validate="";
+                    var pubsub_validate_flag="";
+                    var pubsub_validate_same="";
+                    var temp=[];
+                    $scope.get_validate_same=function(){
+                        _.forEach($scope.addTopicList, function (value) {
+                          if(temp.indexOf(value.name) == -1){
+                              temp.push(value.name);
+                              pubsub_validate_same=true;
+                          }else{
+                              pubsub_validate_same=false;
+                              return false
+                          }
 
-                                }
-                            })
+                        });
+                        return pubsub_validate_same;
+                    }
+
+
+                   $scope.get_validate=function(){
+                       _.forEach($scope.addTopicList, function (value) {
+                           if(value.pubsub==""){
+                               pubsub_validate="请选择权限";
+                               pubsub_validate_flag=false;
+                               return false;
+                           }else{
+                               pubsub_validate_flag=true;
+                               return true
+                           }
+
+                       });
+                       return pubsub_validate_flag;
+                   }
+
+                    if($scope.get_validate()&& $scope.get_validate_same()){
+                        $http.post(BaseUrl + "/api/1/topic/strategy/", query_url).success(function (data) {
+                            if (data.code == "200") {
+                                $scope.params.strategyId=data.data.id;
+                                $scope.get_strategyList();
+                                $scope.item.scope.optipShow(1, '操作成功')
+                                $scope.cancel_strategy();
+
+                            }
+                        })
+                    }else{
+                        if(!$scope.get_validate()){
+                            baseUrl.ngDialog("请选择权限");
+                        }
+                        if(!$scope.get_validate_same()){
+                            baseUrl.ngDialog("主题名称请不要相同");
+                        }
+
+                    }
+
 
 
 
@@ -827,7 +887,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
 
                 }
                 $scope.reset_secrect=function(id){
-                    $http.put(baseUrl+"/api/1/topic/identity/reset/"+id+"/").success(function(data){
+                    $http.put(BaseUrl+"/api/1/topic/identity/reset/"+id+"/").success(function(data){
                             if(data.code==200){
                                 if($scope.edit.hideBtn){
                                     $scope.params.secret_key=data.data.secret_key;
@@ -845,7 +905,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
                         description:$scope.params.description,
 
                     });
-                    $http.put(baseUrl+"/api/1/topic/identity/"+$scope.identity_id+"/",query_url).success(function(data){
+                    $http.put(BaseUrl+"/api/1/topic/identity/"+$scope.identity_id+"/",query_url).success(function(data){
                          if(data.code==200){
                              $scope.item.scope.submit_search();
                              $scope.item.scope.optipShow(1, '操作成功')
@@ -885,7 +945,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
 
     //删除
     $scope.delete=function(id){
-        $http.delete(baseUrl+"/api/1/topic/identity/"+id+"/").success(function(data){
+        $http.delete(BaseUrl+"/api/1/topic/identity/"+id+"/").success(function(data){
             if(data.code=="200"){
                 $scope.item.scope.submit_search();
                 $scope.item.scope.optipShow(1, '操作成功')
@@ -1231,6 +1291,7 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
             //$scope.classification = {};
             //$scope.topic = data.topic;
             $scope.description = '';
+            $scope.addTopicFunc(1)//策略必须得有一个主题 1表示existone为1
 
             $timeout(function () {
                 if (angular.element('#addstrategy-content').height() >= angular.element(window).height()) {
@@ -1334,13 +1395,31 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
                     });
                 }
 
-                if (isValid) {
-                    topicEmpty()
+                var topicRightTell = function () {
+                    var isTopicInvalid = true;
+                    _.forEach($scope.addTopicList, function (value) {
+                        console.log('value', value['pubsub'])
+                        if (isTopicInvalid && !value['delete'] && !value['pubsub']) {
+                            isValid = false;
+                            //invalidMsg = '主题权限必选'
+                            invalidMsg = '请选择权限'
+                            isTopicInvalid = false
+                        }
+                    });
                 }
+
+                //if (isValid) {
+                //    topicEmpty()
+                //}
 
                 if (isValid && baseUrl.dupInObjArr('name', $scope.addTopicList)) {
                     isValid = false;
-                    invalidMsg = '主题不能重复'
+                    //invalidMsg = '主题不能重复'
+                    invalidMsg = '主题名称不能相同'
+                }
+
+                if (isValid) {
+                    topicRightTell()
                 }
 
                 if (!isValid) {
@@ -1420,7 +1499,7 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
             $scope.addTopicList[idx]['pubsub'] += type
         }
     }
-    $scope.addTopicFunc = function () {
+    $scope.addTopicFunc = function (existone) {
         $scope.remainTopicToAddCount--;
         if($scope.item.method == 'add'){
             $scope.addTopicList.push({p: false, s: false, name: '', pubsub: ''})
@@ -1643,7 +1722,19 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
             nameTemp = $scope.name;
             //$scope.instanceTemp = data.instance;
             $scope.topicName = data.topic;
-            $scope.topicName = $scope.topicName.replace(data.instance.topic,'');
+            console.log('topicName',$scope.topicName)
+            console.log('data.instance.topic',data.instance.topic)
+            var instanceTopic = data.instance.topic;
+            if(instanceTopic.endsWith('/')){
+                instanceTopic = instanceTopic.substring(0,instanceTopic.length-1)
+            }
+            if($scope.topicName == instanceTopic || $scope.topicName == data.instance.topic){
+                $scope.topicName = ''
+            }else{
+                $scope.topicName = $scope.topicName.replace(data.instance.topic,'');
+            }
+
+            console.log('topicName',$scope.topicName)
             //$scope.description = data.description;
             console.log(data.api_actuators.length)
             data.actuator = [];

@@ -18,6 +18,8 @@ app.register.controller("registerCtr", function ($scope, $http, $location, $uibM
     $scope.btn_active = false;
     $scope.detail_active=false;
 
+
+
     $scope.state = {
         first: true,
         second: false,
@@ -44,6 +46,13 @@ app.register.controller("registerCtr", function ($scope, $http, $location, $uibM
         email:"",
     }
 
+    var register_step=sessionStorage.getItem("register_step");
+    if(register_step==0){
+        $scope.register_first=false;
+        $scope.register_second=true;
+        $scope.complete_first=true;
+        $scope.state.second=true;
+    }
 
     //监控注册按钮
     

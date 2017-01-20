@@ -23,11 +23,12 @@
            <div class="content_icon">
                <span class="icon-icon_home"></span>
                <span class="head_page">首页</span>
+               <a class="a-cont" href="/index.html"></a>
            </div>
           <div class="conten_right">
                 <!--<div class="user dropdown-toggle" dropdown-toggle data-toggle="dropdown" ng-class="{'use_active':use_active}" ng-click="use_active=!use_active">-->
                  <div class="user dropdown-toggle" dropdown-toggle data-toggle="dropdown">
-                     <span ng-cloak class="ng-cloak">{{user_name}}</span>
+                     <span  ng-bind="user_name"></span>
                  </div>
                 <ul class="dropdown-menu dropdown-user"  role="menu">
                   <li><a  ng-click="open('md-quit','quit')" >退出</a></li>
