@@ -37,11 +37,19 @@
       .user{
         float:right;
         width:80px;
-        height: 100%;
-        line-height: 80px;
+        //height: 100%;
+        //line-height: 80px;
+        height: 80px;
         text-align: center;
         position: relative;
         cursor: pointer;
+        word-break: break-all;
+        display: table;
+        vertical-align: middle;
+        span{
+          display: table-cell;
+          vertical-align: middle;
+        }
 
       }
       //.dropdown-user{
