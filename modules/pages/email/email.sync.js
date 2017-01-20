@@ -1,6 +1,6 @@
 
 var app = angular.module('RDash');
-app.register.controller("emailCtr", function ($scope, $http, $location, $uibModal,$interval,$cookieStore,url_junction, baseUrl, $rootScope,listService,utils) {
+app.register.controller("emailCtr", function ($scope, $http, $location, $uibModal,$interval,$timeout,$cookieStore,url_junction, baseUrl, $rootScope,listService,utils) {
     $scope.title = '站内信管理／我的站内信';
     $scope.params={
         date_start:'',
@@ -44,16 +44,6 @@ app.register.controller("emailCtr", function ($scope, $http, $location, $uibModa
             });
             if(ids.length==0)return;
         }
-        // $http({
-        //     method:'delete',
-        //     url:baseUrl.getUrl()+'/api/1/message/',
-        //     params:{messageId:ids}
-        // }).success(function(data){
-        //     if($scope.step==0)$scope.refresh();
-        // });
-        // $http.delete(baseUrl.getUrl()+'/api/1/message/'+url_junction.getQuery({messageId:ids.toString()})).success(function(data){
-        //     if($scope.step==0)$scope.refresh();
-        // });
         $http({
             method: 'delete',
             url: baseUrl.getUrl()+'/api/1/message/',
@@ -71,4 +61,17 @@ app.register.controller("emailCtr", function ($scope, $http, $location, $uibModa
         });
     }
     $scope.refresh();
+    
+    $timeout(function(){
+        $('.date-picker').datepicker({
+            language: 'zh',
+            orientation: "left",
+            todayHighlight: true,
+            autoclose:true,
+            templates:{
+                leftArrow: '<i class="fa fa-angle-left"></i>',
+                rightArrow: '<i class="fa fa-angle-right"></i>'
+            }
+        });
+    });
 })

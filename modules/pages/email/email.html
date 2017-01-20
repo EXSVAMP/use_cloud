@@ -7,11 +7,11 @@
             <div class="search-area">
                 <div class="search-bar">
                     <div><label>时间</label></div>
-                    <div><input type="text" class="normal date-picker" data-date-format="yyyy-mm-dd"
-                                ng-model="params.date_start" placeholder="请选择"/></div>
+                    <div><input type="text" class="normal date-picker" data-date-format="yyyy-mm-dd" placeholder="请选择"
+                                onchange="angular.element(this).scope().params.date_start=this.value;"/></div>
                     <div><label>至</label></div>
-                    <div><input type="text" class="normal date-picker" data-date-format="yyyy-mm-dd"
-                                ng-model="params.date_end" placeholder="请选择"/></div>
+                    <div><input type="text" class="normal date-picker" data-date-format="yyyy-mm-dd" placeholder="请选择"
+                                onchange="angular.element(this).scope().params.date_end=this.value"/></div>
                 </div>
                 <div classs="search-bar" style="float:right;">
                     <a href="javascript:void(0)" class="btn-blue-bg btn-normal" ng-click="refresh()">搜索</a>

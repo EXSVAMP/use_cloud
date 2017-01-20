@@ -1,8 +1,8 @@
 
 var app = angular.module('RDash');
-app.register.controller("subOrderCtr", function ($scope, $http, $location, $uibModal,$interval,$cookieStore,$cookieStore, baseUrl, $rootScope) {
+app.register.controller("subOrderCtr", function ($scope, $http, $location, $uibModal,$interval,$cookieStore,$cookieStore,$timeout, baseUrl,utils) {
     $scope.title = '工单管理／提交工单';
-    $scope.viewState = 0;
+    $scope.viewState = 2;
     $scope.step = function(step){
         $scope.reset();
         $scope.viewState=step;
@@ -32,7 +32,7 @@ app.register.controller("subOrderCtr", function ($scope, $http, $location, $uibM
     }
 
     $scope.submit = function(){
-        var params = $scope.fieldSet;
+        var params = angular.copy($scope.fieldSet);
         params.annex=params.annex.toString();
         if($scope.viewState==1){
             params.order_type='topic';
@@ -50,4 +50,11 @@ app.register.controller("subOrderCtr", function ($scope, $http, $location, $uibM
             });
         }
     }
-})
+
+    $scope.getFileName=utils.getFileName;
+
+    utils.getUploader('btn-upload',function(data,file){
+        $scope.fieldSet.annex.push(data.key);
+        $scope.$apply();
+    });
+});

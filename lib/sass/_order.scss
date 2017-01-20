@@ -96,7 +96,7 @@
       padding:10px;
       outline: 0;
     }
-    input{
+    input:not([type=file]){
       float: left;
       border:1px solid #DDDDDD;
       border-radius: 0;
@@ -104,6 +104,60 @@
       height: 42px;
       line-height: 40px;
       padding:0 10px;
+    }
+    .upload-area{
+      float: left;
+      border:1px solid #DDDDDD;
+      width:89%;
+      height: 42px;
+      line-height: 40px;
+      padding:0 10px;
+      .btn-upload{
+        margin:0 0 0 10px;
+        position: relative;
+        top:8px;
+        float:left;
+        overflow: hidden;
+        display: inline-block;
+        font-size:14px;
+        line-height:24px;
+        height:24px;
+        input[type=file]{
+          position: absolute;
+          top:0;
+          left:0;
+          width:100%;
+          height:100%;
+          opacity: 0;
+        }
+      }
+      .upload-file{
+        position: relative;
+        background-color: #EEEEEE;
+        border:1px solid #EEEEEE;
+        border-radius: 2px;
+        padding:0 30px 0 10px;
+        &:not(:last-child){
+          margin-right:10px;
+        }
+        .upload-file-delete{
+          position: absolute;
+          display: inline-block;
+          width: 14px;
+          height:14px;
+          line-height: 14px;
+          top: 3px;
+          right: 10px;
+          padding-left: 2px;
+          font-size:14px;
+          color:#999999;
+          border-radius: 10px;
+          &:hover{
+            background-color: #999999;
+            color:#EEEEEE;
+          }
+        }
+      }
     }
   }
 }

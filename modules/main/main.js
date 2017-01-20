@@ -1,4 +1,5 @@
-angular.module("RDash", ['ui.bootstrap', 'ui.router', 'ngCookies', 'ngDialog', 'cgBusy', 'truncate', 'ui.select', 'ngSanitize', 'angular-loading-bar', 'ngAnimate']);
+angular.module("RDash", ['ui.bootstrap', 'ui.router', 'ngCookies', 'ngDialog', 'cgBusy',
+    'truncate', 'ui.select', 'ngSanitize', 'angular-loading-bar', 'ngAnimate']);
 require('router');
 require('interceptor');
 require('common/service/listService');

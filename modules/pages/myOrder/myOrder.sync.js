@@ -13,11 +13,6 @@ app.register.controller("myOrderCtr", function ($scope, $http, $location, $uibMo
         order_type:{}
     }
 
-    $scope.date_change = function(elem,dateType){
-        $scope.params[dateType] = elem.value
-        $scope.$apply()
-    }
-
     utils.getSelection('work_order').then(function(data){
         $scope.selections=data;
     });

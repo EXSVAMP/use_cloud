@@ -50,15 +50,17 @@ app.factory('listService', function ($http,baseUrl,url_junction) {
                 console.log(params)
                 $http.get(baseUrl.getUrl() + url+url_junction.getQuery(params)).success(function(data){
                     scope.listLoadFlag=2;
-                    if(scope.options.isAdd){
-                        scope.dataList=scope.dataList.concat(data.data);
-                    }else{
-                        scope.dataList=data.data;
+                    if(data.code==200){
+                        if(scope.options.isAdd){
+                            scope.dataList=scope.dataList.concat(data.data);
+                        }else{
+                            scope.dataList=data.data;
+                        }
+                        scope.total=data.pageinfo.total_number;
+                        scope.totalPage=data.pageinfo.total_page;
+                        if(callback&&angular.isFunction(callback))callback(data);
+                        if(scope.listCallback&&angular.isFunction(scope.listCallback))scope.listCallback(data);
                     }
-                    scope.total=data.pageinfo.total_number;
-                    scope.totalPage=data.pageinfo.total_page;
-                    if(callback&&angular.isFunction(callback))callback(data);
-                    if(scope.listCallback&&angular.isFunction(scope.listCallback))scope.listCallback(data);
                 });
             }
             // scope.$watch(scope.tableParams,function(newVal,oldVal,scope){
