@@ -73,6 +73,14 @@
       color: #fff;
       background:#00a0e9;
     }
+    &.btn.active, &.btn:active{
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      border: none;
+    }
+    &.btn-default.active, &.btn-default:hover{
+      border-color: transparent;
+    }
   }
 }
 
@@ -116,9 +124,15 @@
           background: #00a0e9;
         }
         .border-right{
+          //background: #fff;
+        }
+      }
+      &.active{
+        .border-right{
           background: #fff;
         }
       }
+
     }
 
   }
