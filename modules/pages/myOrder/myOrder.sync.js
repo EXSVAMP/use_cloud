@@ -57,4 +57,8 @@ app.register.controller("myOrderCtr", function ($scope, $http, $location, $uibMo
             }
         });
     });
+    $scope.loginId = sessionStorage.getItem("loginId");
+    $scope.showImgs=function(imgs){
+        utils.showImgs(imgs);
+    }
 });

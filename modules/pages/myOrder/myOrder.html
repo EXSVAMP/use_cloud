@@ -86,37 +86,48 @@
                     <tr>
                         <td style="width:33%;">联系手机：{{detail.phone}}</td>
                         <td style="width:33%;">联系邮箱：{{detail.email}}</td>
-                        <td style="width:33%;">附件：<a>查看</a></td>
+                        <td style="width:33%;">附件：{{detail.urls.length==0?'无附件':''}}<a ng-show="detail.urls.length>0" ng-click="showImgs(detail.urls)">查看</a></td>
                     </tr>
                     </tbody>
-
                 </table>
             </div>
             <div class="detail-center-area order-list">
                 <div class="msg-mine">
                     <div class="msg-title">
                         <img class="msg-img" src="/lib/img/head.svg">
-                        <span class="msg-user-name">{{detail.user}}</span>
+                        <span class="msg-user-name">{{detail.username}}</span>
                     </div>
                     <div class="msg-content">
                         <p>{{detail.description}}</p>
                         <span class="msg-time">{{detail.created_at}}</span>
                     </div>
                 </div>
-                <div class="msg-other" ng-repeat="data in msgs">
-                    <div class="msg-content">
-                        <p>{{data.message}}</p>
-                        <span class="msg-time">{{data.created_at}}</span>
+                <div ng-repeat="data in msgs">
+                    <div ng-class="loginId==data.user?'msg-mine':'msg-other'" ng-if="loginId==data.user">
+                        <div class="msg-title">
+                            <img class="msg-img" src="/lib/img/head.svg">
+                            <span class="msg-user-name">{{data.username}}</span>
+                        </div>
+                        <div class="msg-content">
+                            <p>{{data.message}}</p>
+                            <span class="msg-time">{{data.created_at}}</span>
+                        </div>
                     </div>
-                    <div class="msg-title">
-                        <img class="msg-img" src="/lib/img/head.svg">
-                        <span class="msg-user-name">{{data.user}}</span>
+                    <div ng-class="loginId==data.user?'msg-mine':'msg-other'" ng-if="loginId!=data.user">
+                        <div class="msg-content">
+                            <p>{{data.message}}</p>
+                            <span class="msg-time">{{data.created_at}}</span>
+                        </div>
+                        <div class="msg-title">
+                            <img class="msg-img" src="/lib/img/head.svg">
+                            <span class="msg-user-name">{{data.username}}</span>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="detail-bottom-area flex-area">
-                <textarea class="normal" style="height:80px;" placeholder="请填回复内容"></textarea>
-                <a class="btn-blue-bg btn-normal" style="line-height: 80px;border-radius: 0;margin-left:20px;flex-grow: 0;min-width: 80px;">回复</a>
+                <textarea class="normal" style="height:80px;" ng-model="fieldSet.message" placeholder="请填回复内容"></textarea>
+                <a class="btn-blue-bg btn-normal" style="line-height: 80px;border-radius: 0;margin-left:20px;flex-grow: 0;min-width: 80px;" ng-click="submit()">回复</a>
             </div>
         </div>
     </div>
