@@ -33,7 +33,6 @@ app.register.controller("subOrderCtr", function ($scope, $http, $location, $uibM
 
     $scope.submit = function(){
         var params = angular.copy($scope.fieldSet);
-        params.annex=params.annex.toString();
         if($scope.viewState==1){
             params.order_type='topic';
             $http.post(baseUrl.getUrl() + "/api/1/work_order",params).success(function (data) {

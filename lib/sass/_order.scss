@@ -76,19 +76,20 @@
     overflow: hidden;
     margin-bottom:5px;
     background-color: #fff;
+    border:1px solid #DDDDDD;
     label{
       display: inline-block;
       float: left;
       width:11%;
       height:100%;
       text-align: right;
-      border:1px solid #DDDDDD;
       border-right:0;
       padding-right:10px;
     }
     textarea{
       float: left;
-      border:1px solid #DDDDDD;
+      border:0px;
+      border-left:1px solid #DDDDDD;
       border-radius: 0;
       height:100%;
       width:89%;
@@ -98,7 +99,8 @@
     }
     input:not([type=file]){
       float: left;
-      border:1px solid #DDDDDD;
+      border:0px;
+      border-left:1px solid #DDDDDD;
       border-radius: 0;
       width:89%;
       height: 42px;
@@ -107,9 +109,9 @@
     }
     .upload-area{
       float: left;
-      border:1px solid #DDDDDD;
+      border:0px;
+      border-left:1px solid #DDDDDD;
       width:89%;
-      height: 42px;
       line-height: 40px;
       padding:0 10px;
       .btn-upload{
@@ -132,6 +134,10 @@
         }
       }
       .upload-file{
+        display: inline-block;
+        float: left;
+        line-height: 20px;
+        margin: 10px;
         position: relative;
         background-color: #EEEEEE;
         border:1px solid #EEEEEE;
