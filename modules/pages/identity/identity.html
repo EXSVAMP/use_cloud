@@ -18,7 +18,8 @@
                  <tr>
                      <th>身份名称</th>
                      <th>策略</th>
-                     <th>账户/密钥</th>
+                     <th>账户</th>
+                     <th>密钥</th>
                      <th>简述</th>
                      <th>创建时间</th>
                      <th>操作</th>
@@ -27,8 +28,12 @@
               <tbody ng-show="query_result.length>0">
                   <tr ng-repeat="item in query_result">
                       <td>{{item.name}}</td>
-                      <td>{{item.strategy}}</td>
-                      <td>{{item.identity_name}}/{{item.secret_key}}</td>
+                      <td>{{item.strategy.name}}</td>
+                      <td>{{item.identity_name}}</td>
+                      <td>
+                          <span class="secrect_single" ng-show="item.state">{{item.secret_key}}</span>
+                          <span class="secrectBtn" ng-click="show_hide(item)">{{item.state_desc}}</span>
+                      </td>
                       <td>{{item.description }}</td>
                       <td>{{item.created_at}}</td>
                       <td>

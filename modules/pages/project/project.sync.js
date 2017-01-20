@@ -2,8 +2,6 @@
 var app = angular.module('RDash');
 app.register.controller("projectCtr", function ($scope, $http, $location, $uibModal,$interval,$cookieStore,$cookieStore,$state, baseUrl,url_junction, $rootScope,utils,PageHandle) {
 
-    console.log("主题项目管理控制台");
-
     // console.log("<========>"+$location.path());
     $scope.number = "10";
     $scope.maxSize = 5;

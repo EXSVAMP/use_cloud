@@ -34,7 +34,14 @@ $http.get(BaseUrl+"/api/1/homepage/count").success(function(data){
     }
 })
 
-
+$scope.go=function(item){
+    if(item.tag==1){
+      window.location.href="#/regulation";
+    }
+    if(item.tag==2){
+        window.location.href="#/project";
+    }
+}
 
 
 })

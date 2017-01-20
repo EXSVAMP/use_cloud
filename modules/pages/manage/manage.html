@@ -10,18 +10,22 @@
         </div>
           <div class="order_wrap">
               <span class="icon-icon_worksheet"></span>
-              <p class="order_detail">
+              <a href="#myOrder">
+               <p class="order_detail">
                   <span>工单</span>
                   <span class="count">（{{params.orderCount}}）</span>
-              </p>
+               </p>
+              </a>
           </div>
           <div class="interval_line"></div>
           <div class="order_wrap">
               <span class="icon-icon_mail"></span>
-              <p class="order_detail">
+              <a href="#email">
+                <p class="order_detail">
                   <span>站内信</span>
                   <span class="count">（{{params.emailCount}}）</span>
-              </p>
+                </p>
+              </a>
           </div>
       </div>
     </div>
@@ -32,11 +36,13 @@
         <div class="service_wrap">
             <div class="service_detail_single" ng-repeat="item in query_result">
                <span class="icon-icon_theme"></span>
-                <p class="service_desc">{{item.name}}</p>
-                <p class="service_desc_count">
+                <div class="service_desc_wrap"  ng-click="go(item)">
+                 <p class="service_desc">{{item.name}}</p>
+                 <p class="service_desc_count">
                     <span>实例总数</span>
                     <span class="service_count">（{{item.total}}）</span>
-                </p>
+                 </p>
+                </div>
             </div>
 
 
