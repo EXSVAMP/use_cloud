@@ -43,7 +43,8 @@ app.register.controller("regulationCtr", function (ngDialog, $scope, $http, $loc
             title: '编辑规则',
             projectId: $scope.projectId,
             scope: $scope,
-            data: $scope.query_result[idx]
+            data: $scope.query_result[idx],
+            modifyInDetail: idx
         });
     }
 
@@ -109,6 +110,7 @@ app.register.controller("regulationCtr", function (ngDialog, $scope, $http, $loc
     };
 
     $scope.submit_search = function () {
+        console.log('submit_search')
         $http.get(BaseUrl + "/api/1/rule/" + url_junction.getQuery({
                 name: $scope.regulation_nameTmp,
                 index: $scope.bigCurrentPage,
@@ -181,8 +183,6 @@ app.register.controller("regulationCtr", function (ngDialog, $scope, $http, $loc
 
 
     }
-
-    $scope.subtite_desc = 'trsyeryeryeetutrureeritrsyeryeryeetutrureeritrsyeryeryeetutrureeritrsyeryeryeetutrureeri'
 
 
 })

@@ -110,6 +110,11 @@
          color:#555555;
         vertical-align: middle;
          text-align: center;
+          &.nav_active{
+            span {
+              border-bottom: solid 2px #95ccf5;
+            }
+          }
           span{
             padding-bottom: 5px;
             &:hover{
