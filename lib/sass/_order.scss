@@ -35,6 +35,9 @@
         font-size:160px;
         color:#D8D8D8;
       }
+      .icon-color-light{
+        color: #f5f5f5;
+      }
       .item-content{
         position: relative;
         min-height:180px;
@@ -432,4 +435,8 @@ textarea.normal{
       }
     }
   }
+}
+
+.ui-select-container-order{
+  width: 150px !important;
 }

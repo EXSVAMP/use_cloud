@@ -6,15 +6,15 @@
         <div ng-show="step==0">
             <div class="search-area">
                 <div class="search-bar">
-                    <div><label>时间</label></div>
+                    <div><label class="font-weight-normal">时间</label></div>
                     <div><input type="text" class="normal date-picker" data-date-format="yyyy-mm-dd" placeholder="请选择"
                                 onchange="angular.element(this).scope().params.date_start=this.value;"/></div>
-                    <div><label>至</label></div>
+                    <div><label class="font-weight-normal">至</label></div>
                     <div><input type="text" class="normal date-picker" data-date-format="yyyy-mm-dd" placeholder="请选择"
                                 onchange="angular.element(this).scope().params.date_end=this.value;"/></div>
                 </div>
                 <div class="search-bar" style="flex-grow: 0;">
-                    <div><label>状态</label></div>
+                    <div><label class="font-weight-normal">状态</label></div>
                     <ui-select ng-model="paramsState" theme="bootstrap" on-select="params.state = $select.selected.key;" style="flex-grow: 0;">
                         <ui-select-match placeholder="请选择">{{$select.selected.value}}</ui-select-match>
                         <ui-select-choices repeat="(key,item) in selections.order_state">
