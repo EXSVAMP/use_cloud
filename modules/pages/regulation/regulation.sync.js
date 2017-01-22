@@ -16,6 +16,7 @@ app.register.controller("regulationCtr", function (ngDialog, $scope, $http, $loc
     }
 
     $scope.optipShow = function (iFlag, message, func) {
+        baseUrl.bodyScroll()
         if(iFlag == 1){
             $scope.$broadcast('optip', {flag: iFlag, msg: message});
             $scope.optip = 'obj-show'

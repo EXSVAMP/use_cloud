@@ -34,6 +34,7 @@ app.register.controller("strategyCtr", function (ngDialog, $scope, $http, $locat
     }
 
     $scope.optipShow = function (iFlag, message) {
+        baseUrl.bodyScroll()
         if(iFlag == 1){//成功返回
             $scope.$broadcast('optip', {flag: iFlag, msg: message});
             $scope.optip = 'obj-show'

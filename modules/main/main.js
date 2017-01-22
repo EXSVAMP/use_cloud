@@ -114,6 +114,9 @@ app.service("baseUrl", function (constant, ngDialog, $location, $timeout) {
         },
         bodyNoScroll: function(){
             angular.element('body').addClass('height-view')
+        },
+        bodyScroll: function(){
+            angular.element('body').removeClass('height-view')
         }
 
     }
@@ -566,9 +569,11 @@ app.controller("sideBarCtrl", function ($scope, $cookieStore, $http, $uibModal, 
 
 app.controller('ModalProject', function ($scope, $cookieStore, $uibModalInstance, $http, items, baseUrl, url_junction, ngDialog) {
     baseUrl.bodyNoScroll()
+    var baseUrlTemp = baseUrl
     baseUrl = baseUrl.getUrl();
     $scope.item = items;
     $scope.cancel = function () {
+        baseUrlTemp.bodyScroll()
         $uibModalInstance.dismiss('cancel');
     };
     $scope.state = {
@@ -965,6 +970,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
 
     }
     $scope.cancel = function(){
+        baseUrl.bodyScroll()
         $scope.$emit('addidentityclose','close')
     };
 
@@ -1024,6 +1030,7 @@ app.controller('ModalCategory', function ($scope, $cookieStore, $uibModalInstanc
     var url = baseUrl.getUrl();
     $scope.item = items;
     $scope.cancel = function () {
+        baseUrl.bodyScroll()
         $uibModalInstance.dismiss('cancel');
     };
     var getProjectInfo = function(sProjectId){
@@ -1169,15 +1176,16 @@ app.controller('ModalCategory', function ($scope, $cookieStore, $uibModalInstanc
 
 app.controller('ModalStrategy', function ($scope, $cookieStore, $uibModalInstance, $http, items, baseUrl, url_junction, ngDialog) {
     baseUrl.bodyNoScroll()
-    baseUrl = baseUrl.getUrl();
+    var url = baseUrl.getUrl();
     $scope.item = items;
     $scope.cancel = function () {
+        baseUrl.bodyScroll()
         $uibModalInstance.dismiss('cancel');
     };
     if ($scope.item.method == 'delete') {
         var data = items.data;
         $scope.ok = function () {
-            $http.delete(baseUrl + "/api/1/topic/strategy/" + data.id + "/", {}).success(function (data) {
+            $http.delete(url + "/api/1/topic/strategy/" + data.id + "/", {}).success(function (data) {
                 if (data.code == "200") {
                     items.scope.optipShow(1, '操作成功')
                     items.scope.submit_search();
@@ -1202,6 +1210,7 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
     $scope.topicsOrig = []//pk name pubsub
     $scope.projectNameTemp = ''
     $scope.cancel = function () {
+        baseUrl.bodyScroll()
         $scope.$emit('addstrategyclose', 'close')
     };
 
@@ -1546,16 +1555,17 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
 
 app.controller('ModalRegulation', function ($scope, $cookieStore, $uibModalInstance, $http, items, baseUrl, url_junction, ngDialog) {
     baseUrl.bodyNoScroll()
-    baseUrl = baseUrl.getUrl();
+    var url = baseUrl.getUrl();
     $scope.item = items;
     $scope.cancel = function () {
+        baseUrl.bodyScroll()
         $uibModalInstance.dismiss('cancel');
     };
     if ($scope.item.method == 'delete') {
         var data = items.data;
         console.log('data', data)
         $scope.ok = function () {
-            $http.delete(baseUrl + "/api/1/rule/" + data.id + "/", {}).success(function (data) {
+            $http.delete(url + "/api/1/rule/" + data.id + "/", {}).success(function (data) {
                 if (data.code == "200") {
                     items.scope.optipShow(1, '操作成功')
                     items.scope.submit_search();
@@ -1584,6 +1594,7 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
     $scope.subtite_desc = ''
     //$scope.modifyInDetail = 0
     $scope.cancel = function () {
+        baseUrl.bodyScroll()
         //$scope.instance = {}
         $scope.$emit('addstrategyclose', 'close')
     };
