@@ -178,14 +178,17 @@
         </div>
         <div ng-show="categoryWatch" class="height-auto">
             <div class="form-search">
-                <div class="form-group form-group-selin border-light relative clear-padding-left margin-auto"
+                <div class="form-group form-group-selin border-light relative clear-padding-left margin-auto padding-bottom-10"
                      style="width:91.6%;float: none;">
                     <div class="input-group" style="display:inline-table;">
                         <span class="input-group-addon bg-white inputdesc">主题</span>
-                        <input type="text" class="form-control" placeholder="请输入主题" ng-model="watchTopic">
+                        <div class="relative category-topic-in-wrapper">
+                            <span class="category-topic-uid" tooltip-placement="bottom" uib-tooltip="{{subtite_desc}}">{{subtite_desc |characters:10:true}}</span>
+                            <input class="category-topic-in" type="text" class="form-control" placeholder="请输入主题" ng-model="watchTopic">
+                        </div>
                     </div>
                     <button type="button" class="searchBtn" type="button" ng-click="resetWatchTopicBtn()"
-                            style="border-radius: 4px;width: 134px;margin-left: 50px;position: relative;top: -15px;">
+                            style="border-radius: 4px;width: 134px;margin-left: 50px;position: relative;top: 0;">
                         重置监听主题
                     </button>
                     <span class="categoryWatchTip">实时消息查看</span>
