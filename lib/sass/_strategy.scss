@@ -91,6 +91,19 @@
   max-height: 340px;
   clear: both;
   overflow: auto;
+  .addTopicListItem{
+    &:last-child {
+      .form-group-selin {
+        &:last-child {
+          margin-bottom: 0px;
+        }
+      }
+    }
+  }
+    .input-group textarea{
+      width: 331px;
+      height: 100px !important;
+    }
 }
 
 .addTopicFlag {
@@ -219,4 +232,11 @@
     padding-left: 5px;
     border-left: 1px solid #ddd;
   }
+}
+
+.inputdesc-mod-textarea{
+  display: table-cell;
+  vertical-align: top;
+  float: none;
+  padding-top: 3px;
 }

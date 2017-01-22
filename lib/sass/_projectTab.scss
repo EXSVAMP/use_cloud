@@ -57,7 +57,7 @@ ul,li{
 }
 
 //margin padding
-$list: 1 2 3 4 5 10 12 15 20 25 30 35 40 45 50;
+$list: 5 10 12 15 20 25 30 35 40 45 50;
 $poslist: top right bottom left;
 @each $i in $list {
   @each $j in $poslist {
@@ -237,14 +237,6 @@ $poslist: top right bottom left;
   width: 1200px;
 }
 
-.width-view{
-  width: 100vw;
-}
-
-.height-view{
-  height: 100vh;
-}
-
 .cursor-pointer{
   cursor: pointer;
 }
@@ -306,10 +298,6 @@ textarea {
 .a-cont{
   position: absolute;
   top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: none;
-  border: none;
+
 }
 
