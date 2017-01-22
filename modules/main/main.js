@@ -800,6 +800,8 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
                             var pubsub = value['pubsub'];
                             if (/ps/.test(pubsub)) {
                                 pubsub = 'pubsub'
+                            }else if (/sp/.test(pubsub)) {
+                                pubsub = 'pubsub'
                             } else if (/p/.test(pubsub)) {
                                 pubsub = 'publish'
                             } else if (/s/.test(pubsub)) {
@@ -1448,6 +1450,8 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
                     _.forEach($scope.addTopicList, function (value) {
                         var pubsub = value['pubsub'];
                         if (/ps/.test(pubsub)) {
+                            pubsub = 'pubsub'
+                        } else if (/sp/.test(pubsub)) {
                             pubsub = 'pubsub'
                         } else if (/p/.test(pubsub)) {
                             pubsub = 'publish'
