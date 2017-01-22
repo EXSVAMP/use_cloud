@@ -1895,7 +1895,8 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
                         $http.put(url + "/api/1/rule/" + $scope.item.data.id + "/", $scope.params).success(function (data) {
                             if (data.code == "200") {
                                 $scope.item.scope.optipShow(1, '操作成功')
-                                if($scope.item.modifyInDetail) {
+                                if($scope.item.modifyInDetail || $scope.item.modifyInDetail == 0) {
+                                   // console.log('$scope.item.modifyInDetail',$scope.item.modifyInDetail)
                                     $scope.item.scope.regulationDetailFunc($scope.item.modifyInDetail);
                                 }else{
                                     $scope.item.scope.submit_search();
