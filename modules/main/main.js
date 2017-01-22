@@ -111,6 +111,9 @@ app.service("baseUrl", function (constant, ngDialog, $location, $timeout) {
                 $('#dialog').fadeOut()
                 window.location.href = baseUrl.getServerUrl() + '/login.html'
             },1000)
+        },
+        bodyNoScroll: function(){
+            angular.element('body').addClass('height-view')
         }
 
     }
@@ -562,6 +565,7 @@ app.controller("sideBarCtrl", function ($scope, $cookieStore, $http, $uibModal, 
 
 
 app.controller('ModalProject', function ($scope, $cookieStore, $uibModalInstance, $http, items, baseUrl, url_junction, ngDialog) {
+    baseUrl.bodyNoScroll()
     baseUrl = baseUrl.getUrl();
     $scope.item = items;
     $scope.cancel = function () {
@@ -676,6 +680,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
     var select_topicTemp="";
     var select_topicTemp_res=""
     $scope.$on("identityState",function(event,data){
+        baseUrl.bodyNoScroll()
         console.log(data);
         instance=data.projectId;
         $http.get(BaseUrl + "/api/1/topic/instance/?pk="+instance).success(function(data){
@@ -1015,6 +1020,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
 
 
 app.controller('ModalCategory', function ($scope, $cookieStore, $uibModalInstance, $http, items, baseUrl, url_junction, ngDialog,$interval) {
+    baseUrl.bodyNoScroll()
     var url = baseUrl.getUrl();
     $scope.item = items;
     $scope.cancel = function () {
@@ -1162,6 +1168,7 @@ app.controller('ModalCategory', function ($scope, $cookieStore, $uibModalInstanc
 })
 
 app.controller('ModalStrategy', function ($scope, $cookieStore, $uibModalInstance, $http, items, baseUrl, url_junction, ngDialog) {
+    baseUrl.bodyNoScroll()
     baseUrl = baseUrl.getUrl();
     $scope.item = items;
     $scope.cancel = function () {
@@ -1268,6 +1275,7 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
     }
 
     $scope.$on('addstrategy', function (q, data) {
+        baseUrl.bodyNoScroll()
         $scope.item = data;
         var isValid = true;
         var invalidMsg = ''
@@ -1537,6 +1545,7 @@ app.controller('addStrategyCtr', function ($scope, $cookieStore, $http, baseUrl,
 })
 
 app.controller('ModalRegulation', function ($scope, $cookieStore, $uibModalInstance, $http, items, baseUrl, url_junction, ngDialog) {
+    baseUrl.bodyNoScroll()
     baseUrl = baseUrl.getUrl();
     $scope.item = items;
     $scope.cancel = function () {
@@ -1653,6 +1662,7 @@ app.controller('addRegulationCtr', function ($scope, $cookieStore, $http, baseUr
     }
 
     $scope.$on('addstrategy', function (q, data) {
+        baseUrl.bodyNoScroll()
         $scope.item = data;
         var isValid = true;
         var invalidMsg = ''
