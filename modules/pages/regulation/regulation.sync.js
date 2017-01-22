@@ -16,6 +16,7 @@ app.register.controller("regulationCtr", function (ngDialog, $scope, $http, $loc
     }
 
     $scope.optipShow = function (iFlag, message, func) {
+        baseUrl.bodyScroll()
         if(iFlag == 1){
             $scope.$broadcast('optip', {flag: iFlag, msg: message});
             $scope.optip = 'obj-show'
@@ -35,17 +36,23 @@ app.register.controller("regulationCtr", function (ngDialog, $scope, $http, $loc
     })
 
     //modify
-    $scope.modifyStrategy = function (idx) {
+    $scope.modifyStrategy = function (idx,resetDetailInfo) {
         console.log('12222111111',$scope.query_result[idx])
         $scope.addstrategy = 'obj-show'
-        $scope.$broadcast('addstrategy', {
+        var modifyParams = {
             method: 'modify',
             title: '编辑规则',
             projectId: $scope.projectId,
             scope: $scope,
-            data: $scope.query_result[idx],
-            modifyInDetail: idx
-        });
+            data: $scope.query_result[idx]
+        }
+        if(resetDetailInfo){
+            modifyParams.modifyInDetail = idx;
+        }
+
+        //console.log('modifyParams',modifyParams)
+
+        $scope.$broadcast('addstrategy', modifyParams);
     }
 
     $scope.$on('addstrategyclose', function () {

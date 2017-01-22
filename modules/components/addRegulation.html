@@ -49,7 +49,7 @@
                 <div class="addTopicFlag"></div>
             </div>
             <div class="addTopicListWrap">
-                <div ng-repeat="item2 in addTopicList">
+                <div  class="addTopicListItem" ng-repeat="item2 in addTopicList">
                     <div class="form-group form-group-selin relative">
                         <div class="input-group input-group-width">
                             <span class="input-group-addon bg-white inputdesc inputdesc-mod">存储类型</span>
@@ -124,7 +124,7 @@
 
                     <div class="form-group form-group-selin" ng-show="addTopicList[$index]['rule_type'].id == 'API'">
                         <div class="input-group input-group-width">
-                            <span class="input-group-addon bg-white inputdesc inputdesc-mod">请求头</span>
+                            <span class="input-group-addon bg-white inputdesc inputdesc-mod inputdesc-mod-textarea">请求头</span>
                             <textarea class="form-control" placeholder="请输入内容"
                                    ng-model="addTopicList[$index]['header']"></textarea>
                         </div>

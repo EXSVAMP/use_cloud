@@ -1,6 +1,5 @@
 var app = angular.module('RDash');
 app.register.controller("categoryCtr", function ($scope, $http, $location, $uibModal, $interval, $cookieStore, baseUrl, $rootScope, utils, PageHandle, $stateParams, $timeout, url_junction) {
-    //console.log("主题2222项目管理控制台");
     //console.log('id',$stateParams.projectId)
     //console.log('name',$stateParams.projectName)
 
@@ -8,15 +7,10 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
     //$scope.projectId = $stateParams.projectId;
 
     var urlData = $location.search()
-    console.log('urlData', urlData)
     $scope.projectName = urlData.projectName;
     $scope.projectId = urlData.projectId;
 
-    console.log('id', $scope.projectId)
-    console.log('name', $scope.projectName)
-
     $scope.$on('to-pare', function (d, data) {
-        console.log(data);
         $scope.$broadcast('to-child', {id: $scope.projectId, name: $scope.projectName, tabName: 'category'});
     });
 
@@ -28,6 +22,7 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
     }
 
     $scope.optipShow = function (iFlag, message) {
+        baseUrl.bodyScroll()
         if(iFlag == 1){
             $scope.$broadcast('optip', {flag: iFlag, msg: message});
             $scope.optip = 'obj-show'
@@ -107,7 +102,6 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
             size: size,
             resolve: {
                 items: function () {
-                    console.log('$scope.query_result', $scope.query_result)
                     if (method == "add") {
                         return {
                             title: "添加硬件类别",
@@ -150,16 +144,7 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
     $scope.port = '';
 
     $scope.wsFunc3 = function () {
-        //var websocket_url = constant.websocket_url;
-        //var websocket_userName = constant.websocket_userName;
-        //var websocket_password = constant.websocket_password;
-        //var websocket_port = constant.websocket_port;
-
         var websocket_url = '211.152.46.42';
-        //var websocket_userName = 'eb50fc3e';
-        //var websocket_password = 'eb50ff54';
-        //var websocket_port = '1883';
-
         client = new Paho.MQTT.Client($scope.server, $scope.port, "myclientid_" + parseInt(Math.random() * 100, 10));
         // set callback handlers
         client.onConnectionLost = onConnectionLost;
@@ -186,7 +171,9 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
             //    onFailure: onSubscribeFailure
             //});
 
-            client.subscribe($scope.watchTopic, {
+            //console.log('$scope.subtite_desc+$scope.watchTopic',$scope.subtite_desc+$scope.watchTopic)
+
+            client.subscribe($scope.subtite_desc+$scope.watchTopic, {
                 onSuccess: onSubscribeSuccess,
                 onFailure: onSubscribeFailure
             });
@@ -214,15 +201,12 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
                 console.log("onConnectionLost:" + responseObject.errorMessage);
             }else if (responseObject.errorCode == 0) { //disconnect
                 console.log("disconnect ok");
-                client = null;
+
                 if($scope.categoryWatch){
-                    client = new Paho.MQTT.Client($scope.server, $scope.port, "myclientid_" + parseInt(Math.random() * 100, 10));
-                    client.connect({
-                        onSuccess: onConnect,
-                        userName: $scope.username,
-                        password: $scope.password,
-                        mqttVersion: 3
-                    });
+
+                    $scope.wsFunc3()
+                }else{
+                    client = null;
                 }
 
             }
@@ -231,7 +215,7 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
         // called when a message arrives
         function onMessageArrived(message) {
 
-            console.log("onMessageArrived:", message.payloadString);
+            //console.log("onMessageArrived:", message.payloadString);
             angular.element("#categoryWatchContent").append(message.payloadString+"<br/>")
             var div = document.getElementById('categoryWatchContent');
             div.scrollTop = div.scrollHeight;
@@ -240,25 +224,42 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
         function onSubscribeSuccess() {
             subscribed = true;
             console.log("subscribed", subscribed);
-            baseUrl.dialog('监听成功')
-            $timeout(function(){
-                baseUrl.closeDialog()
-            },1000)
+            //baseUrl.dialog('监听成功')
+            //$timeout(function(){
+            //    baseUrl.closeDialog()
+            //},1000)
 
         };
 
         function onSubscribeFailure(err) {
             subscribed = false;
             console.log("subscribe fail. ErrorCode: %s, ErrorMsg: %s", err.errCode, err.errorMessage);
+            //baseUrl.dialog('监听失败')
+            //$timeout(function(){
+            //    baseUrl.closeDialog()
+            //},1000)
         };
 
     }
 
     //$scope.wsFunc3();
-    console.log('test')
     $scope.categoryWatchFunc = function (obj) {
         console.log('watch')
-        $scope.watchTopic = obj.complete_topic;
+        $scope.subtite_desc = ''
+        $scope.watchTopic = ''
+        //$scope.watchTopic = obj.complete_topic;
+        if(obj.complete_topic){
+            var subtite_desc_idx = obj.complete_topic.indexOf('/')
+            console.log('subtite_desc_idx',subtite_desc_idx)
+            if(subtite_desc_idx){
+                $scope.subtite_desc = obj.complete_topic.substring(0,subtite_desc_idx+1)
+                $scope.watchTopic = obj.complete_topic.substring(subtite_desc_idx+1)
+                console.log('$scope.subtite_desc',$scope.subtite_desc)
+                console.log('$scope.watchTopic',$scope.watchTopic)
+            }else{
+                $scope.subtite_desc = obj.complete_topic
+            }
+        }
         $scope.categoryMain = false;
         $scope.categoryWatch = true;
         $scope.categoryWatchTab = '/实时消息查看';
@@ -266,18 +267,19 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
     };
 
     $scope.return = function () {
+        angular.element("#categoryWatchContent").html('')
         $scope.categoryMain = true;
         $scope.categoryWatch = false;
         $scope.categoryWatchTab = '';
-        client.disconnect()
         $scope.clientOnListening = false;
+        client.disconnect()
     };
 
     $scope.resetWatchTopicBtn = function(){
         if($scope.watchTopic){
             angular.element("#categoryWatchContent").html("")
             if(client && $scope.clientOnListening){
-                $http.get(BaseUrl + "/api/1/topic/class/mqtt/?topic=" +$scope.watchTopic).success(function (data) {
+                $http.get(BaseUrl + "/api/1/topic/class/mqtt/?topic=" +$scope.subtite_desc+$scope.watchTopic).success(function (data) {
                     if (data.code == 200) {
                         data = data.data
                         $scope.username = data.username;
@@ -299,7 +301,7 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
                 })
 
             }else{
-                $http.get(BaseUrl + "/api/1/topic/class/mqtt/?topic=" +$scope.watchTopic).success(function (data) {
+                $http.get(BaseUrl + "/api/1/topic/class/mqtt/?topic=" +$scope.subtite_desc+$scope.watchTopic).success(function (data) {
                     if (data.code == 200) {
                         data = data.data
                         $scope.username = data.username;

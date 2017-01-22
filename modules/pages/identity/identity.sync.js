@@ -79,6 +79,7 @@ app.register.controller("identityCtr", function ($scope, $http, $location, $uibM
     }
 
     $scope.optipShow = function (iFlag, message) {
+        baseUrl.bodyScroll()
         if(iFlag == 1){//成功返回
             $scope.$broadcast('optip', {flag: iFlag, msg: message});
             $scope.optip = 'obj-show'
