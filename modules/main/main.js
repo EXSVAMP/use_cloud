@@ -477,7 +477,7 @@ app.controller('headerManageCtrl', function ($scope, $cookieStore, $http, $uibMo
     }
    var BaseUrl=baseUrl.getUrl();
     $scope.orderCount="";
-    $http.get(BaseUrl+"/api/1/work_order/?is_page=1").success(function(data){
+    $http.get(BaseUrl+"/api/1/work_order/?is_page=1&&state=feedback").success(function(data){
         if(data.code==200){
             $scope.orderCount=data.pageinfo.total_number;
         }
@@ -493,7 +493,9 @@ app.controller('headerManageCtrl', function ($scope, $cookieStore, $http, $uibMo
             $scope.user_name=data.data.username;
         }
     })
-
+    $scope.go=function(){
+        window.location.href="#/myOrder";
+    }
 
 })
 
@@ -670,6 +672,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
         secret:false,
         undelete:false,
         delete:false
+
     };
     $scope.params={};
     var instance="";
@@ -730,7 +733,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
             //选择策略
             $scope.select_strategy=function(strategyId){
                 $scope.params.strategyId=strategyId;
-                // console.log("<===策略ID===>"+strategyId);
+                console.log("<===策略ID===>"+strategyId);
             }
             //选择实例
             $scope.select_class=function(classId){
@@ -751,7 +754,6 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
 
            //添加项目操作
             if(data.method=='add'){
-
 
                 //保存
                 $scope.ok=function(){
@@ -866,7 +868,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
             if(data.method=="edit"){
                 $scope.identity_id=data.item.id;
                 $scope.params.identity_name=data.item.name;
-                $scope.params.strategyId=data.item.strategy;
+                $scope.params.strategyId=data.item.strategy.id;
                 $scope.params.description=data.item.description;
                 var temp_secret=data.item.secret_key;
                 $scope.edit={
@@ -901,12 +903,13 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
 
                 }
                 $scope.ok=function(){
-                    var query_url = url_junction.getDict({
+                    var query_url_edit = url_junction.getDict({
+                        // name:$scope.params.identity_name,
                         strategy:$scope.params.strategyId,
                         description:$scope.params.description,
 
                     });
-                    $http.put(BaseUrl+"/api/1/topic/identity/"+$scope.identity_id+"/",query_url).success(function(data){
+                    $http.put(BaseUrl+"/api/1/topic/identity/"+$scope.identity_id+"/",query_url_edit).success(function(data){
                          if(data.code==200){
                              $scope.item.scope.submit_search();
                              $scope.item.scope.optipShow(1, '操作成功')
