@@ -36,6 +36,22 @@
       float:right;
       padding-right:20px;
       position: relative;
+      &.open{
+        .user{
+          background: transparent;
+        }
+        &>.dropdown-menu{
+          display: none;
+        }
+        &:hover{
+          .user{
+            background: #555555;
+          }
+          &>.dropdown-menu{
+            display: block;
+          }
+        }
+      }
       .user{
         float:right;
         width:80px;
