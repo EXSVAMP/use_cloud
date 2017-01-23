@@ -49,6 +49,13 @@ app.service("utils", function ($http, $q, baseUrl, $timeout,$uibModal) {
                 // drop_element: 'container',          // 拖曳上传区域元素的ID，拖曳文件或文件夹后可触发上传
                 chunk_size: '4mb',                  // 分块上传时，每块的体积
                 auto_start: true,                   // 选择文件后自动上传，若关闭需要自己绑定事件触发上传
+                filters:{
+                    max_file_size : '100mb',
+                    prevent_duplicates: true,
+                    mime_types: [
+                        {title : "Image files", extensions : "jpg,gif,png"},// 限定jpg,gif,png后缀上传
+                    ]
+                },
                 init: {
                     'FilesAdded': function (up, files) {
                     },
