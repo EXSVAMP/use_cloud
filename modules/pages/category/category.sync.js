@@ -214,9 +214,9 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
 
         // called when a message arrives
         function onMessageArrived(message) {
-
-            //console.log("onMessageArrived:", message.payloadString);
-            angular.element("#categoryWatchContent").append(message.payloadString+"<br/>")
+            console.log("onMessageArrived:", message.destinationName+','+message.payloadString);
+            //console.log("onMessageArrived:", message);
+            angular.element("#categoryWatchContent").append(message.destinationName+','+message.payloadString+"<br/>")
             var div = document.getElementById('categoryWatchContent');
             div.scrollTop = div.scrollHeight;
         }
@@ -276,6 +276,7 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
     };
 
     $scope.resetWatchTopicBtn = function(){
+        console.log('$scope.watchTopic----------------------------',$scope.watchTopic)
         if($scope.watchTopic){
             angular.element("#categoryWatchContent").html("")
             if(client && $scope.clientOnListening){
@@ -301,6 +302,7 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
                 })
 
             }else{
+                console.log('$scope.subtite_desc+$scope.watchTopic-------------',$scope.subtite_desc+$scope.watchTopic)
                 $http.get(BaseUrl + "/api/1/topic/class/mqtt/?topic=" +$scope.subtite_desc+$scope.watchTopic).success(function (data) {
                     if (data.code == 200) {
                         data = data.data
