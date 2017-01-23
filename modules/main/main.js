@@ -916,7 +916,7 @@ app.controller('coverCtr', function ($scope, $cookieStore, $http, baseUrl, url_j
                 }
                 $scope.ok=function(){
                     var query_url_edit = url_junction.getDict({
-                        // name:$scope.params.identity_name,
+                        name:$scope.params.identity_name,
                         strategy:$scope.params.strategyId,
                         description:$scope.params.description,
 

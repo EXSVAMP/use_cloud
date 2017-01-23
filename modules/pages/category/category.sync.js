@@ -302,8 +302,10 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
                 })
 
             }else{
-                console.log('$scope.subtite_desc+$scope.watchTopic-------------',$scope.subtite_desc+$scope.watchTopic)
-                $http.get(BaseUrl + "/api/1/topic/class/mqtt/?topic=" +$scope.subtite_desc+$scope.watchTopic).success(function (data) {
+                console.log('$scope.subtite_desc+$scope.watchTopic-------------',($scope.subtite_desc+$scope.watchTopic).toString())
+                var query=escape(($scope.subtite_desc+$scope.watchTopic).toString());
+
+                $http.get(BaseUrl + "/api/1/topic/class/mqtt/?topic="+query).success(function (data) {
                     if (data.code == 200) {
                         data = data.data
                         $scope.username = data.username;
