@@ -256,7 +256,8 @@
   }
   .detail-center-area{
     height: 400px;
-    overflow-y:scroll;
+    //overflow-y:scroll;
+    overflow-y: auto;
   }
   .detail-bottom-area{
     margin-top:20px;
