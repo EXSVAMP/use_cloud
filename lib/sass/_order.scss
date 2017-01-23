@@ -256,7 +256,8 @@
   }
   .detail-center-area{
     height: 400px;
-    overflow-y:scroll;
+    //overflow-y:scroll;
+    overflow-y: auto;
   }
   .detail-bottom-area{
     margin-top:20px;
@@ -437,3 +438,13 @@ textarea.normal{
   }
 }
 
+.order-select{
+  .dropdown-menu{
+    min-width: 0;
+    width: 100%;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+}

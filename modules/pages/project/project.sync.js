@@ -89,6 +89,7 @@ app.register.controller("projectCtr", function ($scope, $http, $location, $uibMo
         modalInstance.result.then(function (selectedItem) {
             $scope.selected = selectedItem;
         }, function () {
+            baseUrl.bodyScroll()
         })
         
         
