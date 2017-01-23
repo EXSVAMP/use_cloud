@@ -155,6 +155,7 @@ app.register.controller("strategyCtr", function (ngDialog, $scope, $http, $locat
         modalInstance.result.then(function (selectedItem) {
             $scope.selected = selectedItem;
         }, function () {
+            baseUrl.bodyScroll()
         })
 
 

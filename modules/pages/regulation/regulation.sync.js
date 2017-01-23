@@ -186,6 +186,7 @@ app.register.controller("regulationCtr", function (ngDialog, $scope, $http, $loc
         modalInstance.result.then(function (selectedItem) {
             $scope.selected = selectedItem;
         }, function () {
+            baseUrl.bodyScroll()
         })
 
 

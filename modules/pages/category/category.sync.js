@@ -131,6 +131,7 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
         modalInstance.result.then(function (selectedItem) {
             $scope.selected = selectedItem;
         }, function () {
+            baseUrl.bodyScroll()
         })
 
 
