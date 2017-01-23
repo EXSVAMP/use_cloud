@@ -35,10 +35,15 @@ app.register.controller("myOrderCtr", function ($scope, $http, $location, $uibMo
     $scope.submit=function(){
         var params = $scope.fieldSet;
         params.order_id = $scope.detail.id;
-        $http.post(baseUrl.getUrl()+'/api/1/work_order/msg/',params).success(function(res){
-            $scope.afterShowData();
-            $scope.reset();
-        });
+        if(params.message!=""){
+            $http.post(baseUrl.getUrl()+'/api/1/work_order/msg/',params).success(function(res){
+                $scope.afterShowData();
+                $scope.reset();
+            });
+        }else {
+            baseUrl.ngDialog("请填写发送消息内容")
+        }
+
     }
     $scope.closeOrder = function(){
         $http.put(baseUrl.getUrl()+'/api/1/work_order/'+$scope.detail.id+'/',{pk:$scope.detail.id}).success(function(res){

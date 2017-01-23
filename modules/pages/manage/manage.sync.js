@@ -10,7 +10,7 @@ app.register.controller("manageCtr", function ($scope, $http, $location, $uibMod
        emailCount:"",
    }
 
-   $http.get(BaseUrl+"/api/1/work_order/?is_page=1").success(function(data){
+   $http.get(BaseUrl+"/api/1/work_order/?is_page=1&&state=feedback").success(function(data){
        if(data.code==200){
            $scope.params.orderCount=data.pageinfo.total_number;
        }

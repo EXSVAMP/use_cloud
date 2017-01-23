@@ -22,7 +22,8 @@ app.register.controller("subOrderCtr", function ($scope, $http, $location, $uibM
             });
         }
     }
-
+    $scope.phone_pattern = /^1[34578]\d{9}$/;
+    $scope.email_pattern =/^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/
     $scope.fieldSet={
         description:'',
         phone:'',
@@ -38,17 +39,56 @@ app.register.controller("subOrderCtr", function ($scope, $http, $location, $uibM
             annex:[]
         };
     }
+     $scope.validta=function(params){
+         var res="";
+         if(params.description&&params.email&&params.phone&&
+             $scope.phone_pattern.test(params.phone)
+            &&$scope.email_pattern.test(params.email)){
+             return {
+                 result:true,
+                 res:res
+             }
+         }else{
+             if(params.description==""){
+                 res="问题描述必填";
+                 return {
+                     result:false,
+                     res:res
+                 }
+             }
+             if(params.phone==""||!$scope.phone_pattern.test(params.phone)){
+                 res="请填写有效手机号";
+                 return {
+                     result:false,
+                     res:res
+                 }
+             }
+             if(params.email==""||!$scope.email_pattern.test(params.email)){
+                 res="请填写有效邮箱";
+                 return {
+                     result:false,
+                     res:res
+                 }
+             }
 
+         }
+
+     }
     $scope.submit = function(){
         var params = angular.copy($scope.fieldSet);
         params.annex = angular.toJson(params.annex);
         if($scope.viewState==1){
             params.order_type='topic';
-            $http.post(baseUrl.getUrl() + "/api/1/work_order/",params).success(function (data) {
-                if (data.code == 200) {
-                    $scope.step(0);
-                }
-            });
+          if($scope.validta(params).result){
+              $http.post(baseUrl.getUrl() + "/api/1/work_order/",params).success(function (data) {
+                  if (data.code == 200) {
+                      $scope.step(0);
+                  }
+              });
+          }else{
+              baseUrl.ngDialog($scope.validta(params).res)
+          }
+
         }else if($scope.viewState==2){
             params.order_type='rule';
             $http.post(baseUrl.getUrl() + "/api/1/work_order/",params).success(function (data) {
