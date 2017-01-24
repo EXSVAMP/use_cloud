@@ -553,11 +553,15 @@ app.controller("sideBarCtrl", function ($scope, $cookieStore, $http, $uibModal, 
     }
     var BaseUrl=baseUrl.getUrl();
     $scope.emailCount=0;
-    $http.get(BaseUrl+"/api/1/message/count/?status=0").success(function(data){
-        if(data.code==200){
-            $scope.emailCount=data.data;
-        }
-    })
+   
+    $scope.get_emailCount=function(){
+        $http.get(BaseUrl+"/api/1/message/count/?status=0").success(function(data){
+            if(data.code==200){
+                $scope.emailCount=data.data;
+            }
+        })
+    }
+    $scope.get_emailCount();
     // var username = sessionStorage.getItem("loginName");
     // if (username) {
     //     $scope.user_name = username;

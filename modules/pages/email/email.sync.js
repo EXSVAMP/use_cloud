@@ -29,7 +29,11 @@ app.register.controller("emailCtr", function ($scope, $http, $location, $uibModa
         }
         $http.put(baseUrl.getUrl()+'/api/1/message/',{messageId:ids.toString()}).success(function(data){
             if($scope.step==0)$scope.refresh();
+
+            var sideScope =angular.element('div[ng-controller="sideBarCtrl"]').scope();
+            sideScope.get_emailCount()
         });
+
     }
     $scope.afterBack=function(){
         $scope.title='站内信管理／我的站内信';
