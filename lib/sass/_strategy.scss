@@ -173,11 +173,20 @@
     background-color: #ffffff;
     border: solid 1px #00a0e9;
     color: #00a0e9;
+    &:hover{
+      border:1px solid #008dcf;
+      color: #008dcf;
+    }
   }
   .btn_cancel {
     background-color: #00a0e9;
     color: #ffffff;
     margin-left: 30px !important;
+    &:hover{
+      background-color: #008dcf;
+      border:1px solid #008dcf;
+      color:#fff;
+    }
   }
 
 }
