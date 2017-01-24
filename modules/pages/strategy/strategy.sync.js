@@ -83,7 +83,7 @@ app.register.controller("strategyCtr", function (ngDialog, $scope, $http, $locat
         if (PageHandle.setPageInput($scope.index_sel, $scope.total_page)) {
             $scope.bigCurrentPage = $scope.index_sel;
             $scope.index_sel = "";
-            // $scope.submit_search();
+            $scope.submit_search();
         } else
             $scope.index_sel = "";
     };

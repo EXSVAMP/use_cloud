@@ -111,7 +111,7 @@ app.register.controller("regulationCtr", function (ngDialog, $scope, $http, $loc
         if (PageHandle.setPageInput($scope.index_sel, $scope.total_page)) {
             $scope.bigCurrentPage = $scope.index_sel;
             $scope.index_sel = "";
-            // $scope.submit_search();
+            $scope.submit_search();
         } else
             $scope.index_sel = "";
     };
