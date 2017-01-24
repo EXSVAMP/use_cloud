@@ -35,21 +35,31 @@ a:hover{
     margin-right:5px;
   }
 }
-.btn-blue-bg{
-  background-color: #00A0E9;
-  border:1px solid #00A0E9;
+
+.btn-blue-bg,a.btn-blue-bg{
+  background-color: #00a0e9;
+  border:1px solid #00a0e9;
   left:-10px;
   bottom:-10px;
   color: #ffffff;
+  &:hover{
+    background-color: #008dcf;
+    border:1px solid #008dcf;
+    color:#fff;
+  }
 }
 
 .btn-blue-border{
   background-color: #ffffff;
-  border:1px solid #00A0E9;
+  border:1px solid #00a0e9;
   border-radius: 4px;
   left:-10px;
   bottom:-10px;
-  color: #00A0E9;
+  color: #00a0e9;
+  &:hover{
+    border:1px solid #008dcf;
+    color: #008dcf;
+  }
 }
 
 .font-red{
