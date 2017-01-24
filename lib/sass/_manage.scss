@@ -52,7 +52,10 @@
         //border:solid 1px #000000;
         .icon-icon_worksheet,.icon-icon_mail{
             font-size: 42px;
-            color:#327999; ;
+            color:#327999;
+            &:hover{
+              color:#00a0e9;
+            }
         }
         .order_detail{
           margin-top: 17px;
