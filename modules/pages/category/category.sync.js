@@ -281,7 +281,8 @@ app.register.controller("categoryCtr", function ($scope, $http, $location, $uibM
         if($scope.watchTopic){
             angular.element("#categoryWatchContent").html("")
             if(client && $scope.clientOnListening){
-                $http.get(BaseUrl + "/api/1/topic/class/mqtt/?topic=" +$scope.subtite_desc+$scope.watchTopic).success(function (data) {
+                var query=escape(($scope.subtite_desc+$scope.watchTopic).toString());
+                $http.get(BaseUrl + "/api/1/topic/class/mqtt/?topic=" +query).success(function (data) {
                     if (data.code == 200) {
                         data = data.data
                         $scope.username = data.username;
