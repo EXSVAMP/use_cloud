@@ -25,8 +25,8 @@ app.factory('listService', function ($http,baseUrl,url_junction) {
             }
             scope.refresh=function(page,callback){
                 scope.selected={};
-                if(angular.isNumber(page)&&page>scope.totalPage)return;
-                if(angular.isNumber(page)){
+                if(/^\d+$/.test(page)&&page>scope.totalPage)return;
+                if(/^\d+$/.test(page)){
                     scope.tableParams.index=page
                 }else if(!angular.isUndefined(page)&&page!=null&&page!==''){
                     return;
