@@ -17,6 +17,10 @@
       cursor: pointer;
       height:24px ;
       line-height: 24px;
+      &:hover{
+        border: solid 1px #00a0e9;
+        color: #00a0e9;
+      }
     }
     .manage_dash{
       float: right;

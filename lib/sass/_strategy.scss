@@ -123,6 +123,12 @@
   cursor: pointer;
   text-align: center;
   line-height: 40px;
+  &:hover{
+    border: 1px solid #ff6b6b;
+    //.delTopicIcon {
+    //  background: #ff6b6b;
+    //}
+  }
   .delTopicIcon {
     width: 20px;
     height: 2px;
@@ -144,6 +150,14 @@
 
 .addTopic {
   display: inline-block;
+  &:hover{
+    border: 1px solid #00a0e9;
+    .addTopicIcon {
+      &.icon-icon_plus {
+        color: #008dcf;
+      }
+    }
+  }
 }
 
 .remainTopicToAdd {
