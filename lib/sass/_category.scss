@@ -74,14 +74,23 @@
       margin-left: 20px;
       margin-right: 20px;
       cursor:pointer;
+      &:hover{
+        color: #008dcf;
+      }
     }
     .delete-icon{
       color: #ff6b6b;
       cursor:pointer;
+      &:hover{
+        color: #e66060;
+      }
     }
     .edit-icon{
       color: #45b6b0;
       cursor:pointer;
+      &:hover{
+        color: #3b9c97;
+      }
     }
   }
 }

@@ -67,10 +67,16 @@
         color:#45b6b0;
         margin-right: 24px;
         cursor: pointer;
+        &:hover{
+          color: #3b9c97;
+        }
       }
       .delete-icon{
         color:#ff6b6b;
         cursor: pointer;
+        &:hover{
+          color: #e66060;
+        }
       }
 
     }

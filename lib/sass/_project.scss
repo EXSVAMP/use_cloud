@@ -68,6 +68,9 @@
           font-size: 16px;
           color:#ff6b6b;
           cursor: pointer;
+          &:hover{
+            color:#e66060;
+          }
         }
         .name_go{
           cursor: pointer;

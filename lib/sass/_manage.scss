@@ -97,6 +97,9 @@
           text-align: center;
           border-right: solid 1px #DDDDDD;
          float: left;
+        &:hover{
+          .icon-icon_theme{color:#00a0e9;}
+        }
        .icon-icon_theme{
           font-size: 64px;
           color:#327999;
